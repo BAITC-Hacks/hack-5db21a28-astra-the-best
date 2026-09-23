@@ -1,0 +1,24 @@
+{
+  "task": "O02",
+  "status": "done",
+  "agent": "CodexDesktop",
+  "session": "codex-desktop-20260923-o02-final",
+  "claimed_at": "2026-09-23T15:51:39.7503952+05:00",
+  "updated_at": "2026-09-23T15:51:39.7894834+05:00",
+  "signature": "CodexDesktop / codex-desktop-20260923-o02-final accepts task O02",
+  "artifacts": [
+    "src/features/city-decoration/CityDecoration.tsx",
+    "src/features/city-decoration/CityDecoration.test.tsx",
+    "src/app/AppShell.tsx",
+    "src/app/AppShell.module.css",
+    "tests/e2e/optional-features.spec.ts",
+    "tests/fixtures/performance/chrome-30s-decoration.zip",
+    "tests/fixtures/performance/headed-decoration-run.json"
+  ],
+  "checks": [
+    "Root integration: npm test 80 passed, full Playwright 29 passed, lint/typecheck/build passed",
+    "PresentMon own Chrome GPU PID4084 swapchain0x21475AE6E40:1985 displayed rows, median67 per-second bins over30s;1920x1080 start,1920x1079 end",
+    "Browser390:toggle enabled/disabled works, no document overflow"
+  ],
+  "notes": "Root completed final integration independently at user request. Previous implementation owner finished and handed integration to root; archived record coordination/history/O02-codex-city-decoration-20260923-final-handoff.json. No new work assigned to other agent."
+}

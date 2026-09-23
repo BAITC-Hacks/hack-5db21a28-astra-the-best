@@ -12,6 +12,8 @@
 .tableScroll table { border-collapse: collapse; width: 100%; min-width: 650px; text-align: left; font-size: 14px; }
 .tableScroll caption { text-align: left; padding: 12px; color: var(--ink-muted); }
 .tableScroll td, .tableScroll th { vertical-align: top; padding: 14px 12px; border-top: 1px solid var(--border); line-height: 1.5; }
+.tableScroll td, .tableScroll th { overflow-wrap: normal; }
+.tableScroll td:not(:first-child):not(:last-child) { white-space: nowrap; font-variant-numeric: tabular-nums; }
 .tableScroll th:first-child { min-width: 180px; max-width: 320px; }
 .tableScroll thead, .current { background: var(--surface-soft); }
 .tableScroll details { margin-top: 8px; font-size: 13px; font-weight: 400; }

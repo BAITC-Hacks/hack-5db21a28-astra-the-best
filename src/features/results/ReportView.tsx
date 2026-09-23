@@ -1,6 +1,8 @@
 'use client';
 
-import type { AnalysisState, IndicatorId, ScenarioResponse, SimulationResponse } from '@/contracts';
+import type { AnalysisState, Decision, IndicatorId, ScenarioResponse, SimulationResponse } from '@/contracts';
+import { ExportReport } from '@/features/export/ExportReport';
+import { ComparisonPanel } from '@/features/comparison/ComparisonPanel';
 import styles from './ReportView.module.css';
 
 export interface ReportViewProps {
@@ -9,14 +11,15 @@ export interface ReportViewProps {
   analysis: AnalysisState;
   onAnalyze: () => void;
   onRetryAnalysis: () => void;
+  onLoadDecisions?: (decisions: readonly Decision[]) => void;
 }
 
 const number = (value: number) => value.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const signed = (value: number) => `${value >= 0 ? '+' : '−'}${number(Math.abs(value))}`;
 
-export function ReportView({ scenario, simulation, analysis, onAnalyze, onRetryAnalysis }: ReportViewProps) {
+export function ReportView({ scenario, simulation, analysis, onAnalyze, onRetryAnalysis, onLoadDecisions }: ReportViewProps) {
   if (!simulation || simulation.datasetVersion !== scenario.datasetVersion) {
-    return <section className={styles.empty} aria-live="polite"><h2>Отчёт появится после расчёта</h2><p>Выберите ровно пять решений и запустите симуляцию.</p></section>;
+    return <div className={styles.report}><section className={styles.empty} aria-live="polite"><h2>Отчёт появится после расчёта</h2><p>Выберите ровно пять решений и запустите симуляцию.</p></section>{onLoadDecisions && <ComparisonPanel scenario={scenario} simulation={null} onLoadDecisions={onLoadDecisions} />}</div>;
   }
 
   const districtNames = new Map(scenario.districts.map((district) => [district.id, district.name]));
@@ -42,6 +45,8 @@ export function ReportView({ scenario, simulation, analysis, onAnalyze, onRetryA
       <div className={styles.score} aria-label={`Итоговый Score ${number(simulation.result.score)} балла`}><span>Astana Quality of Life Score</span><strong>{number(simulation.result.score)}</strong><small>{signed(simulation.scoreDelta)} к исходным {number(simulation.baseline.score)}</small></div>
     </header>
 
+    <ExportReport scenario={scenario} simulation={simulation} analysis={analysis} />
+
     <section className={styles.stats} aria-label="Основные показатели">
       <Metric label="Потрачено" value={`${number(simulation.cost)} / ${number(scenario.budget)}`} unit="единиц бюджета" />
       <Metric label="Осталось" value={number(simulation.remainingBudget)} unit="единиц бюджета" />
@@ -49,6 +54,8 @@ export function ReportView({ scenario, simulation, analysis, onAnalyze, onRetryA
       <Metric label="Слабейший район" value={number(simulation.result.minimumDistrictScore)} unit="балла" />
       <Metric label="Критических показателей" value={String(simulation.result.criticalCount)} unit={`ниже ${scenario.rules.criticalThreshold} баллов`} />
     </section>
+
+    {onLoadDecisions && <ComparisonPanel scenario={scenario} simulation={simulation} onLoadDecisions={onLoadDecisions} />}
 
     {tradeoffMeasure && tradeoffEffect && <section className={styles.tradeoff} aria-label="Проверяемый компромисс решения">
       <div><span className={styles.eyebrow}>Цена и время решения</span><h2>{tradeoffMeasure.name}</h2><p>Район: <strong>{districtNames.get(tradeoffEffect.districtId)}</strong>. Мера стоит <strong>{number(tradeoffMeasure.cost)} ед.</strong> бюджета и начинает действовать через <strong>{tradeoffMeasure.lagQuarters} кв.</strong></p></div>
@@ -75,7 +82,7 @@ export function ReportView({ scenario, simulation, analysis, onAnalyze, onRetryA
 
     <section className={styles.section}><h2>Эффекты решений</h2><div className={styles.tableWrap}><table><thead><tr><th scope="col">Решение</th><th scope="col">Район</th><th scope="col">Показатель</th><th scope="col">Полный эффект</th><th scope="col">Учтено за {scenario.horizonQuarters} кв.</th></tr></thead><tbody>{simulation.ledger.measures.map((entry, index) => <tr key={`${entry.measureId}-${entry.districtId}-${entry.indicatorId}-${index}`}><th scope="row">{measureNames.get(entry.measureId)}</th><td>{districtNames.get(entry.districtId)}</td><td>{indicatorNames.get(entry.indicatorId)}</td><td>{signed(entry.fullEffect)}</td><td>{signed(entry.realizedEffect)} ({number(entry.realizedFraction * 100)}%)</td></tr>)}</tbody></table></div>{simulation.ledger.synergies.length > 0 && <div className={styles.synergies}><h3>Синергии</h3>{simulation.ledger.synergies.map((entry) => <p key={`${entry.id}-${entry.districtId}`}>{entry.measureIds.map((id) => measureNames.get(id)).join(' + ')} · {districtNames.get(entry.districtId)}: {Object.entries(entry.effects).map(([id, value]) => `${indicatorNames.get(id as IndicatorId)} ${signed(value ?? 0)}`).join(', ')}</p>)}</div>}{simulation.ledger.indicators.length > 0 && <><h3>Итог по изменённым показателям</h3><div className={styles.tableWrap}><table><thead><tr><th scope="col">Район · показатель</th><th scope="col">Меры</th><th scope="col">Синергия</th><th scope="col">После ограничения 0–100</th></tr></thead><tbody>{simulation.ledger.indicators.map((entry) => <tr key={`${entry.districtId}-${entry.indicatorId}`}><th scope="row">{districtNames.get(entry.districtId)} · {indicatorNames.get(entry.indicatorId)}</th><td>{signed(entry.measureEffect)}</td><td>{signed(entry.synergyEffect)}</td><td>{number(entry.after)} ({signed(entry.delta)})</td></tr>)}</tbody></table></div></>}</section>
 
-    <section className={styles.section} aria-live="polite"><h2>AI-анализ результата</h2>{currentAnalysis ? <div className={styles.analysis}><p>{currentAnalysis.analysis.summary.text}</p><FactRefs ids={currentAnalysis.analysis.summary.factIds} facts={facts} /><AnalysisGroup title="Сильные стороны" statements={currentAnalysis.analysis.strengths} facts={facts} /><AnalysisGroup title="Риски" statements={currentAnalysis.analysis.risks} facts={facts} /><AnalysisGroup title="Последствия" statements={currentAnalysis.analysis.consequences} facts={facts} /><h3>Совет</h3><p>{currentAnalysis.analysis.recommendation.text}</p><FactRefs ids={currentAnalysis.analysis.recommendation.factIds} facts={facts} /></div> : <><p>Объяснение будет построено по рассчитанным числам этого сценария.</p>{analysisLoading ? <p role="status">Анализируем сценарий…</p> : analysisError ? <><p role="alert">{analysisError.error.message}</p><button type="button" onClick={onRetryAnalysis}>Повторить AI-анализ</button></> : <button type="button" onClick={onAnalyze}>Получить AI-анализ</button>}</>}</section>
+    <section className={styles.section} aria-label="AI-анализ результата" aria-live="polite"><h2>AI-анализ результата</h2>{currentAnalysis ? <div className={styles.analysis}><p>{currentAnalysis.analysis.summary.text}</p><FactRefs ids={currentAnalysis.analysis.summary.factIds} facts={facts} /><AnalysisGroup title="Сильные стороны" statements={currentAnalysis.analysis.strengths} facts={facts} /><AnalysisGroup title="Риски" statements={currentAnalysis.analysis.risks} facts={facts} /><AnalysisGroup title="Последствия" statements={currentAnalysis.analysis.consequences} facts={facts} /><h3>Совет</h3><p>{currentAnalysis.analysis.recommendation.text}</p><FactRefs ids={currentAnalysis.analysis.recommendation.factIds} facts={facts} /></div> : <><p>Объяснение будет построено по рассчитанным числам этого сценария.</p>{analysisLoading ? <p role="status">Анализируем сценарий…</p> : analysisError ? <><p role="alert">{analysisError.error.message}</p><button type="button" onClick={onRetryAnalysis}>Повторить AI-анализ</button></> : <button type="button" onClick={onAnalyze}>Получить AI-анализ</button>}</>}</section>
   </main>;
 }
 

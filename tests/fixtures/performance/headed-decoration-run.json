@@ -1,0 +1,145 @@
+{
+  "startedAt": "2026-09-23T10:45:38.089Z",
+  "initial": {
+    "innerWidth": 1920,
+    "innerHeight": 1080,
+    "screenWidth": 1920,
+    "screenHeight": 1080,
+    "devicePixelRatio": 1,
+    "visibilityState": "visible",
+    "focused": true,
+    "reducedMotion": false,
+    "decorationToggle": "true",
+    "canvasWidth": 1920,
+    "canvasHeight": 1012
+  },
+  "ownProcesses": [
+    {
+      "pid": 23440,
+      "parent": 3220,
+      "type": "browser"
+    },
+    {
+      "pid": 31464,
+      "parent": 23440,
+      "type": "crashpad-handler"
+    },
+    {
+      "pid": 4084,
+      "parent": 23440,
+      "type": "gpu-process"
+    },
+    {
+      "pid": 26932,
+      "parent": 23440,
+      "type": "utility"
+    },
+    {
+      "pid": 29104,
+      "parent": 23440,
+      "type": "utility"
+    },
+    {
+      "pid": 16620,
+      "parent": 23440,
+      "type": "renderer"
+    },
+    {
+      "pid": 23548,
+      "parent": 23440,
+      "type": "renderer"
+    },
+    {
+      "pid": 32532,
+      "parent": 23440,
+      "type": "renderer"
+    }
+  ],
+  "steps": [
+    {
+      "name": "3D центр",
+      "at": 1790160340864
+    },
+    {
+      "name": "Весь город",
+      "at": 1790160342920
+    },
+    {
+      "name": "3D центр",
+      "at": 1790160344986
+    },
+    {
+      "name": "Весь город",
+      "at": 1790160347053
+    },
+    {
+      "name": "3D центр",
+      "at": 1790160349137
+    },
+    {
+      "name": "Весь город",
+      "at": 1790160351380
+    },
+    {
+      "name": "3D центр",
+      "at": 1790160353449
+    },
+    {
+      "name": "Весь город",
+      "at": 1790160355548
+    },
+    {
+      "name": "3D центр",
+      "at": 1790160357594
+    },
+    {
+      "name": "Весь город",
+      "at": 1790160359764
+    },
+    {
+      "name": "3D центр",
+      "at": 1790160361814
+    },
+    {
+      "name": "Весь город",
+      "at": 1790160363972
+    },
+    {
+      "name": "3D центр",
+      "at": 1790160366013,
+      "stationary": true
+    }
+  ],
+  "stationaryStart": {
+    "innerWidth": 1920,
+    "innerHeight": 1079,
+    "screenWidth": 1920,
+    "screenHeight": 1080,
+    "devicePixelRatio": 1,
+    "visibilityState": "visible",
+    "focused": true,
+    "reducedMotion": false,
+    "decorationToggle": "true",
+    "canvasWidth": 1920,
+    "canvasHeight": 1011
+  },
+  "stationaryImage1": "f581bd21a68a2570acf58aa3332afb662a184d4e18952c286d3e232e6bd81fbe",
+  "stationaryImage2": "4b417b672e4a1f38f34fc180c0eb40ce0d1ecd293a425a51880771ff837fc37f",
+  "stationaryImagesDiffer": true,
+  "final": {
+    "innerWidth": 1920,
+    "innerHeight": 1079,
+    "screenWidth": 1920,
+    "screenHeight": 1080,
+    "devicePixelRatio": 1,
+    "visibilityState": "visible",
+    "focused": true,
+    "reducedMotion": false,
+    "decorationToggle": "true",
+    "canvasWidth": 1920,
+    "canvasHeight": 1011
+  },
+  "presentMonExitCode": 0,
+  "presentMonStderr": "warning: PresentMon requires elevated privilege in order to query processes that are\r\n         short-running or started on another account.  Without it, those processes will\r\n         be listed as '<unknown>' and they can't be targeted by --process_name nor trigger\r\n         --terminate_on_proc_exit.\r\n",
+  "finishedAt": "2026-09-23T10:46:12.578Z"
+}

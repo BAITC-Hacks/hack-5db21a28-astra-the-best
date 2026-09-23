@@ -50,3 +50,8 @@
 .nav{position:sticky}
 .mode{position:absolute;left:50%;transform:translateX(-50%)}
 .planToggle{margin-left:auto}
+.decorationControl{position:absolute;z-index:6;top:84px;right:68px;display:grid;justify-items:center;gap:4px;color:var(--ink);background:rgba(250,251,252,.96);padding:6px 9px;border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-card)}
+.decorationControl button{padding:7px 13px;border:1px solid #bdc5cf;border-radius:999px;background:var(--surface-soft);color:var(--ink);font-weight:700;cursor:pointer}
+.decorationControl button[aria-pressed=true]{color:#fff;background:var(--metal-face) padding-box,var(--metal-border) border-box;border:2px solid transparent;box-shadow:inset 0 1px 1px #ffffff65,0 3px 8px #151a222b}
+.decorationControl small{font-size:.67rem;color:var(--ink-muted);white-space:nowrap}
+@media(max-width:700px){.decorationControl{top:10px;right:58px;padding:4px 6px;border-radius:12px}.decorationControl button{font-size:.75rem;padding:6px 9px}.decorationControl small{font-size:.6rem}}

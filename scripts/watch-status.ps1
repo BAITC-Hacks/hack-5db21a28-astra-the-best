@@ -5,14 +5,13 @@ $ErrorActionPreference = 'Stop'
 $OutputEncoding = [Console]::OutputEncoding
 $root = 'D:\HackAlem'
 $claims = Join-Path $root 'coordination\claims'
-$taskNames = @{}
-foreach ($line in Get-Content (Join-Path $root 'PLAN.md') -Encoding UTF8) {
-    if ($line -match '^\| (P\d{2}|O\d{2}) \| ([^|]+) \|') {
-        $taskNames[$Matches[1]] = $Matches[2].Trim()
-    }
-}
-
 while ($true) {
+    $taskNames = @{}
+    foreach ($line in Get-Content (Join-Path $root 'PLAN.md') -Encoding UTF8) {
+        if ($line -match '^\| (P\d{2}|O\d{2}) \| ([^|]+) \|') {
+            $taskNames[$Matches[1]] = $Matches[2].Trim()
+        }
+    }
     Clear-Host
     Write-Host ('HackAlem — статус плана   {0:yyyy-MM-dd HH:mm:ss}' -f (Get-Date)) -ForegroundColor Cyan
     Write-Host 'Источник: D:\HackAlem\coordination\claims' -ForegroundColor DarkGray
@@ -22,7 +21,7 @@ while ($true) {
         $path = Join-Path $claims "$id.json"
         $claim = $null
         if (Test-Path $path) {
-            try { $claim = Get-Content $path -Raw | ConvertFrom-Json }
+            try { $claim = Get-Content $path -Raw -Encoding UTF8 | ConvertFrom-Json }
             catch { }
         }
         [pscustomobject]@{

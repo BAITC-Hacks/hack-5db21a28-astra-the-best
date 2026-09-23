@@ -1,0 +1,23 @@
+{
+  "task": "P19",
+  "status": "review",
+  "agent": "Codex",
+  "session": "codex-20260923-01a0cdcf-remove-map-card",
+  "claimed_at": "2026-09-23T15:30:03.277062+05:00",
+  "updated_at": "2026-09-23T15:35:11.3122210+05:00",
+  "signature": "Codex / codex-20260923-01a0cdcf-remove-map-card accepts task P19",
+  "artifacts": [
+    "src/features/city-map/CityMap.tsx",
+    "src/features/city-map/CityMap.module.css",
+    "PLAN.md",
+    "scripts/claim-task.ps1"
+  ],
+  "checks": [
+    "npm.cmd run lint: passed",
+    "npm.cmd run typecheck: passed",
+    "npm.cmd test: 63 passed",
+    "Playwright Chrome 390px and 1280px: title absent, controls visible, no horizontal overflow",
+    "git diff --check on P19 files: passed"
+  ],
+  "notes": "Card removed. P18 remains in_progress and owns tests/e2e/onboarding.spec.ts; its heading assertion must be updated after P18 releases that file. P19 awaiting that final check."
+}
