@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { formatBudget, budgetDisclaimer } from '@/lib/budget';
-import type { AnalysisState, Decision, DistrictId, ScenarioResponse } from '@/contracts';
+import type { AnalysisState, Decision, DistrictId, IndicatorId, MeasureId, ScenarioResponse, SimulationResponse } from '@/contracts';
 import { validateDecisions } from '@/domain/validation';
 import { Spotlight, type TourTarget } from './Spotlight';
 import styles from './MayorGuide.module.css';
@@ -68,7 +68,7 @@ export function MayorWelcome({ guide, scenario }: { guide: Controller; scenario:
       <div><strong>{scenario.rules.requiredDecisions}</strong><span>решений в плане</span></div>
       <div><strong>{scenario.horizonQuarters / 4} года</strong><span>горизонт последствий</span></div>
     </div>
-    <p className={styles.promise}>Пройдём путь вместе: <strong>район → решение → результат.</strong> Подсказки будут меняться по мере ваших действий.</p>
+    <p className={styles.promise}>Сначала прямо на карте изучим <strong>все десять показателей районов</strong> и научимся их сравнивать. Затем составим план и разберём отчёт. Стрелки покажут, куда смотреть и что нажимать.</p>
     <div className={styles.welcomeActions}><button type="button" className={styles.primary} onClick={guide.start}>Вступить в должность</button><button type="button" className={styles.secondary} onClick={() => guide.dismiss()}>Освоюсь самостоятельно</button></div>
     <p className={styles.footnote}>Это учебная модель с синтетическими показателями, а не прогноз. Обучение можно снова открыть в верхнем меню. Ваш текущий план сохранится.</p>
   </dialog>;
@@ -83,23 +83,43 @@ interface GuideProps {
   analysis: AnalysisState;
   plannerOpen: boolean;
   mode: 'city' | 'report';
+  indicatorId?: IndicatorId | null;
+  simulation?: SimulationResponse | null;
+  comparison?: 'before' | 'after';
 }
 
-interface Lesson { key: string; phase: number; title: string; text: string; hint: string; target: TourTarget; next?: string; advance?: () => void }
+interface Lesson { key: string; phase: number; title: string; text: string; hint: string; target: TourTarget; next?: string; advance?: () => void; previous?: () => void }
 
-export function MayorGuide({ guide, scenario, selectedDistrictId, decisions, hasResult, analysis, plannerOpen, mode }: GuideProps) {
-  const [districtRead, setDistrictRead] = useState(false);
+const metricExamples: Record<IndicatorId, { measureId: MeasureId; why: string }> = {
+  T1: { measureId: 'M1', why: 'Меньше заторов — лучше. Этот балл уже учитывает направление шкалы: переворачивать его не нужно.' },
+  T2: { measureId: 'M1', why: 'Важны доступность остановок и частота транспорта. Это отдельная задача от разгрузки дорог.' },
+  E1: { measureId: 'M4', why: 'Показатель описывает обеспеченность зеленью. Баллы — не количество деревьев.' },
+  E2: { measureId: 'M5', why: 'Чище воздух — выше балл. Это не само значение AQI, у которого шкала устроена иначе.' },
+  S1: { measureId: 'M7', why: 'Смотрите на доступность мест в школах и детсадах, а не только на число зданий.' },
+  S2: { measureId: 'M8', why: 'Показывает обеспеченность первичной медицинской помощью. Школа этот показатель не улучшает.' },
+  B1: { measureId: 'M10', why: 'Освещение и камеры влияют на безопасность улиц; дорожная безопасность считается отдельно.' },
+  B2: { measureId: 'M11', why: 'Безопасные переходы помогают снизить дорожные риски, но одновременно немного ухудшают разгрузку дорог.' },
+  C1: { measureId: 'M13', why: 'Это надёжность тепла и воды: меньше аварий — выше качество жизни.' },
+  C2: { measureId: 'M12', why: 'Оперативность ответа жителям важна отдельно от состояния сетей. Городская платформа помогает всем районам.' },
+};
+const number = (value: number) => value.toLocaleString('ru-RU', { maximumFractionDigits: 2 });
+
+export function MayorGuide({ guide, scenario, selectedDistrictId, decisions, hasResult, analysis, plannerOpen, mode, indicatorId, simulation, comparison = 'before' }: GuideProps) {
+  const [cityRead, setCityRead] = useState(false);
+  const [metricStep, setMetricStep] = useState(-1);
   const [budgetRead, setBudgetRead] = useState(false);
   const [scoreRead, setScoreRead] = useState(false);
   const active = guide.state === 'active';
   useEffect(() => {
     if (!active) return;
-    const escape = (event: KeyboardEvent) => { if (event.key === 'Escape') { event.preventDefault(); guide.dismiss(); } };
+    const escape = (event: KeyboardEvent) => { if (event.key === 'Escape' && !event.defaultPrevented) { event.preventDefault(); guide.dismiss(); } };
     window.addEventListener('keydown', escape);
     return () => window.removeEventListener('keydown', escape);
   }, [active, guide]);
   if (!active) return null;
   const district = scenario.districts.find((item) => item.id === selectedDistrictId);
+  const after = comparison === 'after' && simulation?.datasetVersion === scenario.datasetVersion ? simulation.result : null;
+  const valuesFor = (id: DistrictId) => after?.districts.find((item) => item.districtId === id)?.indicators ?? scenario.districts.find((item) => item.id === id)!.indicators;
   const required = scenario.rules.requiredDecisions;
   const planButton: TourTarget = { selector: 'nav button', text: `План · ${decisions.length}/5` };
   const reportButton: TourTarget = { selector: 'nav button', text: 'Отчёт' };
@@ -114,7 +134,34 @@ export function MayorGuide({ guide, scenario, selectedDistrictId, decisions, has
     return validateDecisions([...decisions, decision], { mode: 'draft', scenario }).valid;
   });
   let lesson: Lesson;
-  if (hasResult && mode !== 'report') {
+  if (!cityRead && mode !== 'city') {
+    lesson = { key: 'back-city', phase: 1, title: 'Начнём с показателей города', text: 'Сначала разберём, как живут районы и что означают их показатели. Затем перейдём к плану и отчёту.', hint: 'Нажмите «Город»', target: { selector: 'nav button', text: 'Город' } };
+  } else if (!cityRead && plannerOpen) {
+    lesson = { key: 'close-plan', phase: 1, title: 'Сначала изучим город', text: 'Закройте панель плана, чтобы увидеть показатели на карте. Ваши решения сохранятся.', hint: 'Нажмите «Скрыть план»', target: { selector: 'nav button', text: 'Скрыть план' } };
+  } else if (!cityRead && !district && metricStep < scenario.indicators.length) {
+    lesson = { key: 'district', phase: 1, title: 'Начнём с жителей Нуры', text: 'Нажмите «Нура». Откроется карточка района, и мы последовательно разберём все десять показателей. Можно выбрать и другой район.', hint: 'Нажмите на название района', target: { selector: '[data-guide-zone="nura"]' } };
+  } else if (!cityRead && district && metricStep < 0) {
+    const critical = scenario.indicators.filter((item) => valuesFor(district.id)[item.id] < scenario.rules.criticalThreshold);
+    lesson = { key: `district-facts-${district.id}`, phase: 1, title: `${district.name}: узнайте потребности`, text: `Здесь десять показателей по пяти направлениям, каждый от 0 до 100. Больше — всегда лучше. Сейчас ${critical.length ? `ниже 40: ${critical.map((item) => item.name.toLowerCase()).join(', ')}` : 'нет показателей ниже 40'}. За каждый показатель строго ниже 40 общий Score теряет один балл.`, hint: after ? 'Показаны значения после ваших решений' : 'Показаны исходные значения района', target: { selector: '[aria-label^="Показатели района"] h2' }, next: 'Изучить показатели', advance: () => setMetricStep(0) };
+  } else if (!cityRead && district && metricStep < scenario.indicators.length) {
+    const indicator = scenario.indicators[metricStep];
+    const value = valuesFor(district.id)[indicator.id];
+    const example = metricExamples[indicator.id];
+    const measure = scenario.measures.find((item) => item.id === example.measureId)!;
+    const full = measure.effects[indicator.id] ?? 0;
+    const realized = full * (scenario.horizonQuarters - measure.lagQuarters) / scenario.horizonQuarters;
+    const status = value < scenario.rules.criticalThreshold ? 'Это критическое значение: ниже 40.' : value === scenario.rules.criticalThreshold ? 'Ровно 40 — граница, штрафа за этот показатель нет.' : 'Штрафа нет, но показатель ещё можно улучшать.';
+    lesson = { key: `metric-${district.id}-${indicator.id}`, phase: 1, title: indicator.name, text: `${district.name}: ${number(value)} из 100. ${indicator.description} ${status} ${example.why} Например, «${measure.name}»: полный эффект +${number(full)}, с задержкой ${measure.lagQuarters} кв. учитывается +${number(realized)} за два года (до ограничения шкалой 100).`, hint: `Показатель ${metricStep + 1} из ${scenario.indicators.length} · ${scenario.directions.find((item) => item.id === indicator.directionId)!.name}`, target: { selector: `[data-guide-indicator="${indicator.id}"]` }, next: metricStep === scenario.indicators.length - 1 ? 'Сравнить районы' : 'Следующий показатель', advance: () => setMetricStep((step) => step + 1), previous: () => setMetricStep((step) => step - 1) };
+  } else if (!cityRead && district) {
+    lesson = { key: 'close-district-card', phase: 1, title: 'Теперь посмотрим на весь город', text: 'Вы изучили показатели района. Закройте его карточку, чтобы открыть список слоёв и сравнить районы. Ваш план и рассчитанные результаты сохранятся.', hint: 'Нажмите «Закрыть» в карточке района', target: { selector: '[aria-label^="Показатели района"] header button' }, previous: () => setMetricStep(scenario.indicators.length - 1) };
+  } else if (!cityRead && indicatorId !== 'S1') {
+    lesson = { key: 'select-map-layer', phase: 1, title: 'Включите слой школ и детсадов', text: 'Откройте «Слой показателей» и выберите «Школы и детсады». Карта окрасит районы по этому показателю, а рядом с названиями появятся точные значения.', hint: 'Выберите «Школы и детсады» в списке', target: { selector: '[aria-label="Игровые зоны"] [role="combobox"]' }, previous: () => setMetricStep(scenario.indicators.length - 1) };
+  } else if (!cityRead) {
+    const ranked = [...scenario.districts].sort((a, b) => valuesFor(a.id).S1 - valuesFor(b.id).S1);
+    const weakest = ranked[0];
+    const strongest = ranked.at(-1)!;
+    lesson = { key: `compare-map-layer-${district?.id}`, phase: 1, title: 'Сравните районы по одному показателю', text: `Школы и детсады: ${weakest.name} — ${number(valuesFor(weakest.id).S1)}, ${strongest.name} — ${number(valuesFor(strongest.id).S1)}. Цвет помогает найти проблему, цифры показывают её масштаб. Score учитывает и средний результат города (70%), и самый слабый район (30%), а также штрафы за значения ниже 40. Теперь выберем, кому и чем помочь.`, hint: 'Сравнивайте один и тот же показатель во всех районах', target: { selector: `[data-guide-zone="${weakest.id}"] strong` }, next: 'Понятно, составим план', advance: () => setCityRead(true), previous: () => setMetricStep(scenario.indicators.length - 1) };
+  } else if (hasResult && mode !== 'report') {
     lesson = { key: 'open-report', phase: 5, title: 'Откройте результат ваших решений', text: 'Нажмите «Отчёт» в верхнем меню. Ваш план и положение карты сохранятся.', hint: 'Нажмите подсвеченную кнопку', target: reportButton };
   } else if (hasResult && !scoreRead) {
     lesson = { key: 'score', phase: 5, title: 'Вот результат вашей работы', text: 'Score — общий балл качества жизни. Под ним показано, насколько он изменился относительно исходного города. Чем выше балл, тем лучше.', hint: 'Сравните итоговый балл и изменение под ним', target: { selector: '[aria-label^="Итоговый Score"] strong' }, next: 'А кому стало лучше?', advance: () => setScoreRead(true) };
@@ -129,11 +176,9 @@ export function MayorGuide({ guide, scenario, selectedDistrictId, decisions, has
   } else if (mode !== 'city') {
     lesson = { key: 'back-city', phase: 1, title: 'Сначала подготовим ваш план', text: 'Нажмите «Город». Отчёт появится после выбора пяти решений и расчёта.', hint: 'Нажмите подсвеченную кнопку', target: { selector: 'nav button', text: 'Город' } };
   } else if (!district && !plannerOpen) {
-    lesson = { key: 'district', phase: 1, title: 'Начнём с жителей Нуры', text: 'Нажмите «Нура». Откроются показатели района. В учебном примере начнём с его потребностей; вы можете выбрать и другой район.', hint: 'Нажмите сюда — на название района', target: { selector: '[aria-label="Игровые зоны"] button', text: 'Нура' } };
+    lesson = { key: 'district', phase: 1, title: 'Начнём с жителей Нуры', text: 'Нажмите «Нура». Откроются показатели района. В учебном примере начнём с его потребностей; вы можете выбрать и другой район.', hint: 'Нажмите сюда — на название района', target: { selector: '[data-guide-zone="nura"]' } };
   } else if (!district && plannerOpen) {
     lesson = { key: 'planner-district', phase: 1, title: 'Укажите, какому району помочь', text: 'Откройте этот список и выберите район. Городские меры будут действовать сразу во всех районах.', hint: 'Выберите район в подсвеченном списке', target: { selector: '[aria-label="Редактор городских решений"] [role="combobox"]' } };
-  } else if (!districtRead && !plannerOpen && decisions.length === 0) {
-    lesson = { key: 'district-facts', phase: 1, title: `${district?.name}: узнайте потребности`, text: 'В карточке района — условия жизни по десяти показателям. Чем выше число, тем лучше. Ниже 40 — критичная проблема. «Слой показателей» позволяет сравнивать районы на карте.', hint: 'Посмотрите показатели под названием района', target: { selector: '[aria-label="3D-карта Астаны"] h2' }, next: 'Понятно, составим план', advance: () => setDistrictRead(true) };
   } else if (!plannerOpen) {
     lesson = { key: 'open-plan', phase: 2, title: 'Теперь откройте вашу панель решений', text: 'Нажмите «План» справа вверху. Здесь вы распределяете бюджет и выбираете мероприятия.', hint: 'Нажмите подсвеченную кнопку в меню', target: planButton };
   } else if (decisions.length > 0 && !budgetRead) {
@@ -150,6 +195,6 @@ export function MayorGuide({ guide, scenario, selectedDistrictId, decisions, has
     <h2 aria-live="polite">{lesson.title}</h2>
     <p id="mayor-tour-description">{lesson.text}</p>
     <div className={styles.clickHint}><span aria-hidden="true">↗</span>{lesson.hint}</div>
-    <div className={styles.tourFooter}><button type="button" className={styles.skip} onClick={() => guide.dismiss()}>Пропустить обучение</button>{lesson.next && <button type="button" className={styles.primary} onClick={lesson.advance}>{lesson.next}</button>}</div>
+    <div className={styles.tourFooter}><button type="button" className={styles.skip} onClick={() => guide.dismiss()}>Пропустить обучение</button>{lesson.previous && <button type="button" className={styles.secondary} onClick={lesson.previous}>Назад</button>}{lesson.next && <button type="button" className={styles.primary} onClick={lesson.advance}>{lesson.next}</button>}</div>
   </Spotlight>;
 }

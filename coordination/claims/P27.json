@@ -1,0 +1,23 @@
+{
+  "task": "P27",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-01a0ce07-sliding-mode",
+  "claimed_at": "2026-09-23T16:34:36.4580169+05:00",
+  "updated_at": "2026-09-23T16:37:05.0097768+05:00",
+  "signature": "Codex / codex-20260923-01a0ce07-sliding-mode accepts task P27",
+  "artifacts": [
+    "src/app/AppShell.module.css",
+    "PLAN.md",
+    "scripts/claim-task.ps1"
+  ],
+  "checks": [
+    "2026-09-23: Chrome headless on running Next dev server: widths 1280, 700, 390, 320; pill matches selected button x/y/width/height within 0.2px, nav centered, both buttons transparent; PASS",
+    "2026-09-23: Both directions and intermediate animation positions verified; rapid mid-flight reversal stays between endpoints and reverses smoothly; PASS",
+    "2026-09-23: Report empty state visible after click; keyboard Enter selects report, focus-visible solid outline retained; PASS",
+    "2026-09-23: prefers-reduced-motion reduce gives transition-property none and immediate correct capsule position; PASS",
+    "2026-09-23: Visually inspected tmp/p27/city.png and report.png; glass rim and raised dark capsule retained",
+    "2026-09-23: git diff --check for edited CSS/registration: PASS"
+  ],
+  "notes": "Completed CSS-only sliding capsule in shared D:\\HackAlem. P24 explicitly handed off .mode CSS (P24 claim); P26 handed off PLAN/script registration. Single pseudo-element, .42s eased transform, equal responsive columns, visible keyboard focus and reduced motion. No TSX/business-state edits. Existing glass styling and other agents changes preserved. Runtime CSS compiled by Next dev; no separate production build to avoid shared build output contention. PLAN/script handed onward to P28 owner task01a0ce09 after P27 registration. Ready for integration; no commit/push performed."
+}

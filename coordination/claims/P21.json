@@ -1,0 +1,35 @@
+{
+  "task": "P21",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-01a0cdcf-tenge",
+  "claimed_at": "2026-09-23T15:52:31.8221863+05:00",
+  "updated_at": "2026-09-23T16:04:57.4617212+05:00",
+  "signature": "Codex / codex-20260923-01a0cdcf-tenge accepts task P21",
+  "artifacts": [
+    "src/lib/budget.ts",
+    "src/domain/validation.ts",
+    "src/features/planner/Planner.tsx",
+    "src/features/results/ReportView.tsx",
+    "src/features/onboarding/MayorGuide.tsx",
+    "src/features/comparison/ComparisonPanel.tsx",
+    "src/features/export/report.ts",
+    "src/features/export/report.test.ts",
+    "tests/ui/results.test.tsx",
+    "tests/ui/planner.test.tsx",
+    "tests/e2e/scenario.spec.ts",
+    "docs/BUDGET.md",
+    "PLAN.md",
+    "scripts/claim-task.ps1"
+  ],
+  "checks": [
+    "Targeted Vitest UI/search/domain/data/export: 63 passed",
+    "Playwright onboarding5 + main scenario1: 6 passed (34.2s), output tmp/p21-results",
+    "npm.cmd run typecheck and scoped ESLint: passed",
+    "Mobile390 browser: documentWidth=390, no budget text overflow; welcome/planner screenshots inspected",
+    "Scoped git diff --check: passed",
+    "Shared P21/P22 live POST /api/analyze: HTTP200, gpt-6-luna, 18966ms, 67 facts; budget10/spent9.5/left0.5 billion KZT; all5 selected costs match catalogue",
+    "Post-P22 export regression: 5 tests passed, including exact KZT amounts and unchanged canonical simulation"
+  ],
+  "notes": "Completed tenge presentation: 100,000,000 KZT per canonical unit, total10bn, control9.5bn, remaining500m; all14 costs/scopes documented. Core prices/budget/Score unchanged. AI integration owned by P22 and validated through live shared call. P23 now owns Planner/ReportView/ComparisonPanel TSX/CSS readability and PLAN/script registration; preserve P21 monetary conversion in those files. Root handles combined commit/push and README link; P21 has not pushed."
+}

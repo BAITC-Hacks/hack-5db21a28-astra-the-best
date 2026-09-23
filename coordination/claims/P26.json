@@ -1,0 +1,33 @@
+{
+  "task": "P26",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-01a0cdbe-marker-spacing",
+  "claimed_at": "2026-09-23T16:32:49.5577107+05:00",
+  "updated_at": "2026-09-23T16:48:10.4112962+05:00",
+  "signature": "Codex / codex-20260923-01a0cdbe-marker-spacing accepts task P26",
+  "artifacts": [
+    "src/features/city-effects/positions.ts",
+    "src/features/city-effects/layout.ts",
+    "src/features/city-effects/model.ts",
+    "src/features/city-effects/CityEffects.tsx",
+    "src/features/city-effects/CityEffects.module.css",
+    "tests/city-effects/placement.test.ts",
+    "tests/city-effects/lifecycle.test.tsx",
+    "src/features/city-map/CityMap.tsx",
+    "src/features/city-map/CityMap.module.css",
+    "src/app/AppShell.tsx (only forceLegendExpanded prop, P24 handoff)",
+    "PLAN.md (P26 registration)",
+    "scripts/claim-task.ps1 (P26 ID support)"
+  ],
+  "checks": [
+    "npx.cmd vitest run tests/city-effects: 3 files / 13 tests passed; all70 sites inside districts and >1.4km apart; dense22 badges, stability, obstacles and cleanup",
+    "npx.cmd tsc --noEmit: passed",
+    "npx.cmd eslint src/features/city-effects tests/city-effects src/features/city-map/CityMap.tsx src/app/AppShell.tsx: passed",
+    "npx.cmd playwright test tests/e2e/marker-spacing.spec.ts --workers=1 --output=tmp/p26-marker-final: 3 passed;1280x800,390x844,390x360 realMapLibreDOM overview/zoom/compass/resize/reset/click. Test owned by P12",
+    "npx.cmd playwright test tests/e2e/onboarding.spec.ts --grep mayor journey 390x360 --workers=1 --output=tmp/p26-guide-check: 1 passed",
+    "node tmp/p26-visible.mjs: all21 real badge centers unobstructed at1280x800,390x844,390x360 before/after zoom; compact legend toggle+score scale+repeat tutorial10indicators+layer passed",
+    "git diff --check (changed code/test files): passed"
+  ],
+  "notes": "Done; stable geographic positions plus screen offsets/leader lines. P14/P23 handoff confirmed by main owner. P28 explicitly transferred compact legend changes in CityMap; P24 explicitly transferred CityMap forceLegendExpanded prop and ONLY matching AppShell call-site prop. PLAN P26 extension recorded by P29 owner. All prior P23/P24/P28 changes preserved. Initial compact browser failure due legend was fixed and rerun passes. Real WebGL/GeoJSON/DOM browser tests use local style fixture because external tile network is restricted. Code stable for selective integration by main task; AppShell/CityMap contain other owners changes requiring coordinated commit. No domain math/scenario data changed."
+}

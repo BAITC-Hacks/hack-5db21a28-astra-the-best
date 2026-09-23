@@ -1,6 +1,33 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page, type TestInfo } from '@playwright/test';
 
 test.use({ channel: 'chrome' });
+
+async function openCityPractice(page: Page) {
+  await page.goto('/');
+}
+
+async function learnCityIndicators(page: Page, testInfo?: TestInfo) {
+  const guide = page.getByRole('complementary', { name: 'Помощник градоначальника' });
+  await guide.getByRole('button', { name: 'Изучить показатели', exact: true }).click();
+  for (let index = 0; index < 10; index++) {
+    await test.step(`City indicator ${index + 1} of 10`, async () => {
+      await checkSpotlight(page);
+      if (index === 4 && testInfo) await page.screenshot({ path: testInfo.outputPath('city-school-indicator.png') });
+      await guide.getByRole('button', { name: index === 9 ? 'Сравнить районы' : 'Следующий показатель', exact: true }).click();
+    });
+  }
+  await checkSpotlight(page);
+  await expect(guide.getByRole('heading', { name: 'Теперь посмотрим на весь город', exact: true })).toBeVisible();
+  await page.getByRole('region', { name: 'Показатели района Нура', exact: true }).getByRole('button', { name: 'Закрыть', exact: true }).click();
+  await checkSpotlight(page);
+  await page.getByRole('combobox', { name: 'Слой показателей', exact: true }).click();
+  await page.getByRole('option', { name: 'Школы и детсады', exact: true }).click();
+  await expect(guide.getByRole('heading', { name: 'Сравните районы по одному показателю', exact: true })).toBeVisible();
+  await checkSpotlight(page);
+  if (testInfo) await page.screenshot({ path: testInfo.outputPath('city-indicator-comparison.png') });
+  await guide.getByRole('button', { name: 'Понятно, составим план', exact: true }).click();
+  await page.locator('[data-guide-zone="nura"]').click();
+}
 
 async function checkSpotlight(page: Page) {
   await expect(page.locator('[data-tour-spotlight]')).toBeVisible();
@@ -17,6 +44,10 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 
   test(`onboarding: mayor journey ${viewport.width}x${viewport.height}`, async ({ page }, testInfo) => {
     await page.setViewportSize(viewport);
     let aiRequests = 0;
+    let simulationRequests = 0;
+    page.on('request', (request) => {
+      if (request.method() === 'POST' && new URL(request.url()).pathname === '/api/simulate') simulationRequests++;
+    });
     await page.route('**/api/analyze', async (route) => {
       aiRequests++;
       if (aiRequests > 1) {
@@ -27,7 +58,7 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 
       }
       await route.fulfill({ status: 503, json: { error: { code: 'AI_UNAVAILABLE', message: 'Тестовая ошибка ИИ', issues: [] } } });
     });
-    await page.goto('/');
+    await openCityPractice(page);
     const welcome = page.getByRole('dialog');
     await expect(welcome).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath('welcome.png') });
@@ -43,7 +74,9 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 
     await page.getByRole('button', { name: 'Нура', exact: true }).click();
     await expect(guide.getByRole('heading', { name: /Нура: узнайте/ })).toBeVisible();
     await checkSpotlight(page);
-    await guide.getByRole('button', { name: 'Понятно, составим план' }).click();
+    await learnCityIndicators(page, testInfo);
+    expect(aiRequests).toBe(0);
+    expect(simulationRequests).toBe(0);
     await checkSpotlight(page);
     await page.getByRole('button', { name: 'План · 0/5' }).click();
     for (const id of ['M7', 'M8', 'M10', 'M12', 'M5']) {
@@ -62,6 +95,7 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 
     await checkSpotlight(page);
     await page.getByRole('button', { name: 'Рассчитать сценарий' }).click();
     await expect(guide.getByRole('heading', { name: 'Вот результат вашей работы' })).toBeVisible();
+    expect(simulationRequests).toBe(1);
     await checkSpotlight(page);
     expect(aiRequests).toBe(0);
     await guide.getByRole('button', { name: 'А кому стало лучше?' }).click();
@@ -83,7 +117,7 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 
     await expect(guide).toHaveCount(0);
     await page.getByRole('button', { name: /Обучение/ }).click();
     await welcome.getByRole('button', { name: 'Вступить в должность' }).click();
-    await expect(guide.getByRole('heading', { name: 'Вот результат вашей работы' })).toBeVisible();
+    await expect(guide.getByRole('heading', { name: /Нура: узнайте/ })).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(guide).toHaveCount(0);
     await page.getByRole('button', { name: 'План · 5/5' }).click();
@@ -94,7 +128,7 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 
 }
 
 test('onboarding: skip persists, replay works and Escape dismisses', async ({ page }) => {
-  await page.goto('/');
+  await openCityPractice(page);
   await page.getByRole('button', { name: 'Освоюсь самостоятельно' }).click();
   await page.reload();
   await expect(page.getByRole('region', { name: '3D-карта Астаны' })).toBeVisible();
@@ -108,12 +142,12 @@ test('onboarding: skip persists, replay works and Escape dismisses', async ({ pa
 
 test('onboarding: unavailable map still lets the mayor select a district and open the plan', async ({ page }) => {
   await page.route('https://tiles.openfreemap.org/**', (route) => route.abort());
-  await page.goto('/');
+  await openCityPractice(page);
   await page.getByRole('button', { name: 'Вступить в должность' }).click();
   await expect(page.getByRole('alert').filter({ hasText: 'Не удалось загрузить карту' })).toBeVisible();
   await checkSpotlight(page);
   await page.getByRole('button', { name: 'Нура', exact: true }).click();
-  await page.getByRole('button', { name: 'Понятно, составим план' }).click();
+  await learnCityIndicators(page);
   await page.getByRole('button', { name: 'План · 0/5' }).click();
   await expect(page.getByRole('heading', { name: 'Добавьте ваше первое решение' })).toBeVisible();
   await page.keyboard.press('Escape');

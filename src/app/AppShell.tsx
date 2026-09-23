@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Map as MapLibreMap } from 'maplibre-gl';
-import type { AnalysisState, Decision, DistrictId, ErrorResponse, MeasureId, ScenarioResponse, SimulationResponse } from '@/contracts';
+import type { AnalysisState, Decision, DistrictId, ErrorResponse, IndicatorId, MeasureId, ScenarioResponse, SimulationResponse } from '@/contracts';
 import { CityMap } from '@/features/city-map/CityMap';
 import { CityEffects } from '@/features/city-effects/CityEffects';
 import { CityDecoration } from '@/features/city-decoration/CityDecoration';
@@ -24,11 +24,11 @@ export function AppShell() {
   const [analysis, setAnalysis] = useState<AnalysisState>({ status: 'idle' });
   const [comparison, setComparison] = useState<'before' | 'after'>('after');
   const [mode, setMode] = useState<Mode>('city');
+  const [indicatorId, setIndicatorId] = useState<IndicatorId | null>(null);
   const [plannerOpen, setPlannerOpen] = useState(false);
   const [calculating, setCalculating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [map, setMap] = useState<MapLibreMap | null>(null);
-  const [cityLifeEnabled, setCityLifeEnabled] = useState(true);
   const mapStageRef = useRef<HTMLDivElement>(null);
   const generation = useRef(0);
   const simulateAbort = useRef<AbortController | null>(null);
@@ -128,16 +128,19 @@ export function AppShell() {
   })() : null;
 
   return <div className={styles.app}>
-    <nav className={styles.nav} aria-label="Режим отображения"><div className={styles.mode}><button type="button" aria-pressed={mode === 'city'} onClick={() => setMode('city')}>Город</button><button type="button" aria-pressed={mode === 'report'} onClick={() => setMode('report')}>Отчёт</button></div><GuideHelp onClick={guide.restart} /><button type="button" className={styles.planToggle} onClick={() => { setMode('city'); setPlannerOpen((open) => !open); }}>{plannerOpen ? 'Скрыть план' : `План · ${decisions.length}/5`}</button></nav>
+    <nav className={styles.nav} aria-label="Режим отображения">
+      <div className={styles.mode}><button type="button" aria-pressed={mode === 'city'} onClick={() => setMode('city')}>Город</button><button type="button" aria-pressed={mode === 'report'} onClick={() => setMode('report')}>Отчёт</button></div>
+      <GuideHelp onClick={() => { setMode('city'); setPlannerOpen(false); guide.restart(); }} />
+      <button type="button" className={styles.planToggle} onClick={() => { setMode('city'); setPlannerOpen((open) => mode === 'city' ? !open : true); }}>{plannerOpen && mode === 'city' ? 'Скрыть план' : `План · ${decisions.length}/5`}</button>
+    </nav>
     {error && <div className={styles.error} role="alert">{error}<button type="button" onClick={() => setError(null)}>Закрыть</button></div>}
     <div className={mode === 'city' ? styles.cityVisible : styles.cityHidden} style={guide.state === 'active' ? { minHeight: 560 } : undefined}>
-      {scenario ? <div ref={mapStageRef} className={styles.mapStage} aria-hidden={plannerOpen}><CityMap scenario={scenario} result={result} comparison={comparison} selectedDistrictId={selectedDistrictId} onDistrictSelect={setSelectedDistrictId} onMapReady={setMap} /><CityEffects map={map} scenario={scenario} decisions={decisions} preview={preview} result={result} comparison={comparison} /><CityDecoration map={map} active={mode === 'city' && !plannerOpen} enabled={cityLifeEnabled} /></div> : <div className={styles.loading}>{scenarioLoading ? 'Загружаем город…' : <>{scenarioError}<button type="button" onClick={() => { setScenarioLoading(true); void loadScenario(); }}>Повторить</button></>}</div>}
-      {scenario && !plannerOpen && guide.state !== 'active' && <div className={styles.decorationControl}><button type="button" aria-label="Декоративное движение" aria-pressed={cityLifeEnabled} onClick={() => setCityLifeEnabled((enabled) => !enabled)}>Движение · {cityLifeEnabled ? 'вкл' : 'выкл'}</button><small>Декор · приблизьте карту</small></div>}
+      {scenario ? <div ref={mapStageRef} className={styles.mapStage} aria-hidden={plannerOpen}><CityMap scenario={scenario} result={result} comparison={comparison} selectedDistrictId={selectedDistrictId} onDistrictSelect={setSelectedDistrictId} onMapReady={setMap} indicatorId={indicatorId} onIndicatorChange={setIndicatorId} forceLegendExpanded={guide.state === 'active'} /><CityEffects map={map} scenario={scenario} decisions={decisions} preview={preview} result={result} comparison={comparison} /><CityDecoration map={map} active={mode === 'city' && !plannerOpen} enabled /></div> : <div className={styles.loading}>{scenarioLoading ? 'Загружаем город…' : <>{scenarioError}<button type="button" onClick={() => { setScenarioLoading(true); void loadScenario(); }}>Повторить</button></>}</div>}
       {result && !plannerOpen && <div className={styles.compare} aria-label="Сравнение карты"><button type="button" aria-pressed={comparison === 'before'} onClick={() => setComparison('before')}>До</button><button type="button" aria-pressed={comparison === 'after'} onClick={() => setComparison('after')}>После</button></div>}
       {plannerOpen && <div className={styles.planner}><Planner scenario={scenario} decisions={decisions} selectedDistrictId={selectedDistrictId} onDistrictSelect={setSelectedDistrictId} onDecisionsChange={changeDecisions} onCalculate={() => void calculate()} onMeasureSelect={setSelectedMeasureId} loading={scenarioLoading} error={scenarioError} onRetry={() => void loadScenario()} calculating={calculating} /></div>}
     </div>
     {mode === 'report' && (scenario ? <div data-guide-report><ReportView scenario={scenario} simulation={result} analysis={analysis} onAnalyze={() => void analyze()} onRetryAnalysis={() => void analyze()} onLoadDecisions={(next) => { changeDecisions(next); setSelectedMeasureId(null); setSelectedDistrictId(next.find((item) => item.districtId)?.districtId ?? null); setMode('city'); setPlannerOpen(true); }} /></div> : <div className={styles.loading}>{scenarioLoading ? 'Загружаем отчёт…' : scenarioError}</div>)}
     {scenario && <MayorWelcome guide={guide} scenario={scenario} />}
-    {scenario && guide.state === 'active' && <MayorGuide guide={guide} scenario={scenario} selectedDistrictId={selectedDistrictId} decisions={decisions} hasResult={Boolean(result)} analysis={analysis} plannerOpen={plannerOpen} mode={mode} />}
+    {scenario && guide.state === 'active' && <MayorGuide guide={guide} scenario={scenario} selectedDistrictId={selectedDistrictId} decisions={decisions} hasResult={Boolean(result)} simulation={result} comparison={comparison} indicatorId={indicatorId} analysis={analysis} plannerOpen={plannerOpen} mode={mode} />}
   </div>;
 }

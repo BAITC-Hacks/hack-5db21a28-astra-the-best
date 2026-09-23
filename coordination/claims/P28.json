@@ -1,0 +1,25 @@
+{
+  "task": "P28",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-01a0ce09-score-scale",
+  "claimed_at": "2026-09-23T16:36:50.5113391+05:00",
+  "updated_at": "2026-09-23T16:42:48.6888235+05:00",
+  "signature": "Codex / codex-20260923-01a0ce09-score-scale accepts task P28",
+  "artifacts": [
+    "src/features/city-map/CityMap.tsx",
+    "src/features/city-map/CityMap.module.css",
+    "src/features/city-map/score-colors.ts",
+    "PLAN.md",
+    "scripts/claim-task.ps1"
+  ],
+  "checks": [
+    "npm.cmd run typecheck: PASS after final palette adjustment",
+    "npx.cmd eslint src/features/city-map/CityMap.tsx src/features/city-map/score-colors.ts: PASS",
+    "node tmp/p28-browser.mjs: PASS1280x800,390x844,390x360; all10 layers and5 numbers,0/25/50/75/100ticks,12px gradient,no horizontal overflow/no page errors; actual simulation updates number/color and before restores baseline; external basemap style fixture, real MapLibre/local GeoJSON, AI mocked",
+    "Visual inspection of final desktop legend and mobile screenshot: PASS; vibrant five-stop gradient with darker matching text tones",
+    "npx.cmd playwright test tests/e2e/onboarding.spec.ts --grep mayor journey390x360 --workers=1 --output=tmp/p28-onboarding:1passed15.5s (exact grep used mayor journey 390x360)",
+    "Scoped git diff --check: PASS"
+  ],
+  "notes": "P27 explicitly handed off PLAN/script; released back to P27 owner for P29+ registration after P28. P23 explicitly handed off legend and palette portions of CityMap TSX/CSS; P24 released CityMap and anchors. Continuous scale uses shared stops0/25/50/75/100, vivid fill tones and darker matching text tones for readable numbers. Map fill and legend share interpolation, district ID swatches unchanged. Preserved all P23/P24 edits, controls, thresholds, ru-RU values and training anchors. New helper score-colors.ts must be included with CityMap when integrating. Artifacts available in shared workspace; no commit/push requested. Post-completion handoff: P26 owner01a0cdbe may modify only adaptive legend wrapper/collapse in CityMap.tsx/.module.css to make dense markers accessible on390x360. Preserve P28 scale/helper and P24 training anchors; P26 owns any added verification and must coordinate training visibility with P24. P28 remains complete."
+}

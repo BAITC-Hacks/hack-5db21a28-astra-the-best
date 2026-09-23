@@ -72,7 +72,7 @@ test('server rejects incomplete, duplicate, over-budget, direction and conflict 
 test('user can build the 95-unit plan and read the report', async ({ page }) => {
   await buildControlPlan(page);
   await expect(page.getByRole('heading', { name: 'План для Астаны' })).toBeVisible();
-  await expect(page.getByText('5 / 100')).toBeVisible();
+  await expect(page.getByText('500 млн ₸ / 10 млрд ₸')).toBeVisible();
   await page.getByRole('button', { name: 'Рассчитать сценарий' }).click();
   await expect(page.getByRole('heading', { name: 'Итог городских решений' })).toBeVisible();
   await expect(page.getByText('56,54', { exact: true }).first()).toBeVisible();

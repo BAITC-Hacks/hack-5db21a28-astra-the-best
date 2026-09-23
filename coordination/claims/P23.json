@@ -1,0 +1,65 @@
+{
+  "task": "P23",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-01a0cdbe-readability",
+  "claimed_at": "2026-09-23T16:00:04.3636382+05:00",
+  "updated_at": "2026-09-23T16:28:18.0098193+05:00",
+  "signature": "Codex / codex-20260923-01a0cdbe-readability accepts task P23",
+  "artifacts": [
+    "src/components/SelectMenu.module.css",
+    "src/features/planner/Planner.tsx",
+    "src/features/planner/Planner.module.css",
+    "src/features/results/ReportView.tsx",
+    "src/features/results/ReportView.module.css",
+    "src/features/city-map/CityMap.tsx",
+    "src/features/city-map/CityMap.module.css",
+    "src/features/comparison/ComparisonPanel.tsx",
+    "src/features/comparison/ComparisonPanel.module.css",
+    "src/features/city-effects/CityEffects.tsx",
+    "src/features/city-effects/CityEffects.module.css",
+    "src/features/city-effects/model.ts",
+    "src/features/export/report.ts",
+    "tests/city-effects/model.test.ts",
+    "PLAN.md",
+    "scripts/claim-task.ps1"
+  ],
+  "checks": [
+    {
+      "command": "npx.cmd vitest run tests/ui/planner.test.tsx tests/ui/results.test.tsx tests/ui/select-menu.test.tsx tests/city-effects src/features/export/report.test.ts",
+      "result": "6 files, 21 tests passed",
+      "at": "2026-09-23T16:26:44.3185743+05:00"
+    },
+    {
+      "command": "Targeted ESLint for seven changed TS/TSX files",
+      "result": "passed",
+      "at": "2026-09-23T16:26:44.3185743+05:00"
+    },
+    {
+      "command": "npx.cmd playwright test tests/e2e/layout.spec.ts --grep layout audit --workers=1",
+      "result": "3 passed (390x360,390x844,1280x800), no document overflow; external map tiles network restricted",
+      "at": "2026-09-23T16:26:44.3185743+05:00"
+    },
+    {
+      "command": "node tmp/p23-browser.mjs (size passes across runs)",
+      "result": "390x360,390x844,720x800,1280x800 pass; all10 district indicators,3 mobile numeric cells fit; popup checked using local map-style fixture",
+      "at": "2026-09-23T16:26:44.3185743+05:00"
+    },
+    {
+      "command": "Browser HTML export at390px",
+      "result": "width390px,table font15px,2 tables accessible with scroll",
+      "at": "2026-09-23T16:26:44.3185743+05:00"
+    },
+    {
+      "command": "git diff --check (P23 files)",
+      "result": "passed",
+      "at": "2026-09-23T16:26:44.3185743+05:00"
+    },
+    {
+      "command": "npx.cmd tsc --noEmit (after P24 props integration)",
+      "result": "passed",
+      "at": "2026-09-23T16:28:18.0204361+05:00"
+    }
+  ],
+  "notes": "P23 complete. P21/P19/P14 owners agreed handoff. Key labels >=14px, separate cost/start/full/realized explanations, all mobile indicators visible, responsive report rows, readable popups and export. 21 targeted tests and lint passed; final shared typecheck passed after P24 optional props were added. Browser checks cover390x360/844,720x800,1280x800. P24 owns its new controlled indicator props/data-guide anchors in CityMap.tsx; P23 edits stable and ready for selective integration."
+}

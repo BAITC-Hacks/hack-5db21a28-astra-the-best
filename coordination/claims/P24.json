@@ -1,0 +1,25 @@
+{
+  "task": "P24",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-01a0cdef-learning",
+  "claimed_at": "2026-09-23T16:06:22.5212771+05:00",
+  "updated_at": "2026-09-23T16:35:49.7050280+05:00",
+  "signature": "Codex / codex-20260923-01a0cdef-learning accepts task P24",
+  "artifacts": [
+    "src/app/AppShell.tsx",
+    "src/app/AppShell.module.css",
+    "src/features/onboarding/MayorGuide.tsx",
+    "src/features/city-map/CityMap.tsx",
+    "docs/LEARNING.md"
+  ],
+  "checks": [
+    "2026-09-23: npm.cmd run build PASS (final city-guide source, TypeScript and static generation)",
+    "2026-09-23: scoped eslint AppShell/MayorGuide/CityMap/city-guide/onboarding tests PASS",
+    "2026-09-23: npx.cmd vitest run --maxWorkers=2:121passed before final close-card step; final focused city-guide+onboarding tests5/5 passed after step",
+    "2026-09-23 P25: onboarding E2E5/5 passed28.7s;1280x800,390x844,390x360,skip/replay/Escape,offline map; actual clicks, all10 metric spotlight geometry, report mockedAI success/error",
+    "Visual inspection: final desktop school metric,390x844school,390x360comparison screenshots PASS",
+    "P25 broader scenario11/13: unrelated current marker M7name/M1availability failures forwarded to P23/P26, not claimed as all-E2E pass"
+  ],
+  "notes": "User explicitly corrected scope: no separate learning tab/course. Removed P24 standalone learning source; restored City/Report navigation, original city welcome and onboarding flag. Expanded existing Spotlight:10actual metric rows with definitions/current values/thresholds/full and lag-adjusted measure examples, real S1 layer selection and cross-district comparison before planner/report. Replay starts city even with result. P23 explicitly transferred only CityMap controlled indicator props and data-guide row/zone anchors; all P23 content/styles preserved. Parallel-user glass nav and removal of floating movement control retained. P25 rewrites tests; previous standalone-course verification is obsolete. Explicit handoff: .mode rules in AppShell.module.css transferred to task01a0ce07 for user-requested sliding active pill; P24 will not edit CSS further. PLAN/script released to P23 owner01a0cdbe to register P26 marker spacing; coordinate P27 pill registration there. Final user-corrected delivery complete: two navigation modes, original welcome, extended city Spotlight; explicit close-card action frees mobile legend before real layer selection. Standalone course/source/tests fully removed. CityMap anchors/props released for P28 legend color scale; preserve data-guide-zone/data-guide-indicator. Final artifacts available in shared workspace; root integrator handles Git."
+}

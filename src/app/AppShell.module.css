@@ -50,8 +50,38 @@
 .nav{position:sticky}
 .mode{position:absolute;left:50%;transform:translateX(-50%)}
 .planToggle{margin-left:auto}
-.decorationControl{position:absolute;z-index:6;top:84px;right:68px;display:grid;justify-items:center;gap:4px;color:var(--ink);background:rgba(250,251,252,.96);padding:6px 9px;border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-card)}
-.decorationControl button{padding:7px 13px;border:1px solid #bdc5cf;border-radius:999px;background:var(--surface-soft);color:var(--ink);font-weight:700;cursor:pointer}
-.decorationControl button[aria-pressed=true]{color:#fff;background:var(--metal-face) padding-box,var(--metal-border) border-box;border:2px solid transparent;box-shadow:inset 0 1px 1px #ffffff65,0 3px 8px #151a222b}
-.decorationControl small{font-size:.67rem;color:var(--ink-muted);white-space:nowrap}
-@media(max-width:700px){.decorationControl{top:10px;right:58px;padding:4px 6px;border-radius:12px}.decorationControl button{font-size:.75rem;padding:6px 9px}.decorationControl small{font-size:.6rem}}
+/* One dark surface slides beneath both labels inside the glass capsule. */
+.mode{
+  --mode-padding:5px;
+  --mode-gap:3px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  isolation:isolate;
+  gap:var(--mode-gap);
+  padding:var(--mode-padding);
+  border:1px solid #fff;
+  background:linear-gradient(160deg,#ffffffdb,#d9dfe8b0);
+  box-shadow:inset 0 2px 4px #ffffff,inset 0 -2px 5px #737e9030,0 5px 16px #26304416;
+  backdrop-filter:blur(16px);
+}
+.mode::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  top:var(--mode-padding);
+  bottom:var(--mode-padding);
+  left:var(--mode-padding);
+  width:calc((100% - 2 * var(--mode-padding) - var(--mode-gap)) / 2);
+  border-radius:999px;
+  background:linear-gradient(165deg,#4b5360,#252d39 52%,#1b2330);
+  box-shadow:inset 0 1px 2px #ffffff60,inset 0 -2px 4px #0b112070,0 4px 8px #17223340;
+  pointer-events:none;
+  transform:translateX(0);
+  transition:transform .42s cubic-bezier(.22,1,.36,1);
+}
+.mode:has(>button:last-child[aria-pressed=true])::before{transform:translateX(calc(100% + var(--mode-gap)))}
+.mode button{position:relative;z-index:1;padding:10px 19px;font-size:14px;letter-spacing:-.02em;color:#596373;transition:color .2s ease,text-shadow .2s ease}
+.mode button:hover{transform:none}
+.mode button[aria-pressed=true]{background:transparent;color:#fff;box-shadow:none;text-shadow:0 1px 2px #0006}
+@media(max-width:700px){.mode{--mode-padding:3px;--mode-gap:1px}.mode button{padding:8px 10px;font-size:13px}}
+@media(prefers-reduced-motion:reduce){.mode::before,.mode button{transition:none}}

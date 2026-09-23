@@ -18,13 +18,14 @@ async function markerGeometry(page: Page) {
       .filter((button) => /^M\d+:/.test(button.getAttribute('aria-label') ?? ''))
       .map((button) => {
         const rect = button.getBoundingClientRect();
-        return { id: button.getAttribute('aria-label'), left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom, width: rect.width, height: rect.height };
+        const hit = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        return { id: button.getAttribute('aria-label'), left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom, width: rect.width, height: rect.height, covered: !hit || !button.contains(hit) };
       });
     const visible = all.filter((box) => box.width > 0 && box.height > 0 && box.right > canvas.left && box.left < canvas.right && box.bottom > canvas.top && box.top < canvas.bottom);
     const overlaps = visible.flatMap((a, i) => visible.slice(i + 1).filter((b) =>
       Math.min(a.right, b.right) - Math.max(a.left, b.left) > 1 && Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 1,
     ).map((b) => `${a.id} / ${b.id}`));
-    return { count: all.length, visible: visible.length, overlaps, positions: JSON.stringify(all.map((box) => [Math.round(box.left), Math.round(box.top)])) };
+    return { count: all.length, visible: visible.length, overlaps, covered: visible.filter(box => box.covered).map(box => box.id), positions: JSON.stringify(all.map((box) => [Math.round(box.left), Math.round(box.top)])) };
   });
 }
 
@@ -56,6 +57,7 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 
     // A district detail sheet intentionally covers the map on compact screens.
     await page.getByRole('region', { name: 'Показатели района Нура' }).getByRole('button', { name: 'Закрыть', exact: true }).click();
     await expectSeparated(page, 21);
+    await expect.poll(async () => (await markerGeometry(page)).covered).toEqual([]);
     await page.screenshot({ path: testInfo.outputPath('dense-overview.png') });
 
     await page.locator('.maplibregl-ctrl-zoom-out').click();

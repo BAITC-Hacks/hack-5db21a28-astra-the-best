@@ -1,5 +1,5 @@
-import { MEASURE_IDS } from '@/contracts';
 import type { Decision, DistrictId, IndicatorId, MeasureId, ScenarioResponse, SimulationResponse } from '@/contracts';
+import { effectCoordinates } from './positions';
 
 export const EFFECT_ICONS: Record<MeasureId, string> = {
   M1: '⇢', M2: '◉', M3: '═', M4: '♣', M5: '♨', M6: '✿', M7: '▣', M8: '✚', M9: '●', M10: '✦', M11: '▥', M12: '✉', M13: '≈', M14: '⚑',
@@ -56,11 +56,7 @@ export function deriveEffectMarkers({ scenario, decisions, preview, result, comp
     for (const districtId of targets) {
       const districtName = districtNames.get(districtId);
       if (!districtName) continue;
-      const order = MEASURE_IDS.indexOf(measure.id);
-      const angle = order * 2.399963;
-      const radius = 0.0025 + Math.floor(order / 5) * 0.0025;
-      const anchor = DISTRICT_ANCHORS[districtId];
-      const coordinates: readonly [number, number] = [anchor[0] + Math.cos(angle) * radius, anchor[1] + Math.sin(angle) * radius * 0.62];
+      const coordinates = effectCoordinates(districtId, measure.id);
       const fullEffects = Object.entries(measure.effects).map(([id, value]) => ({ indicatorId: id as IndicatorId, name: indicators.get(id as IndicatorId) ?? id, value: value ?? 0 }));
       const realizedEffects = current?.ledger.measures.filter((entry) => entry.measureId === measure.id && entry.districtId === districtId).map((entry) => ({ indicatorId: entry.indicatorId, name: indicators.get(entry.indicatorId) ?? entry.indicatorId, value: entry.realizedEffect })) ?? [];
       const synergies = current?.ledger.synergies.filter((entry) => entry.districtId === districtId && entry.measureIds.includes(measure.id)).map((entry) => ({ name: entry.measureIds.map((id) => measures.get(id)?.name ?? id).join(' + '), effects: Object.entries(entry.effects).map(([id, value]) => `${indicators.get(id as IndicatorId) ?? id} ${signed(value ?? 0)} балла`).join(', ') })) ?? [];

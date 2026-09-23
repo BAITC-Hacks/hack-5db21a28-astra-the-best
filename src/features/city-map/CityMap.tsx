@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Map as MapLibreMap } from 'maplibre-gl';
 import type { DistrictId, IndicatorId, ScenarioResponse, SimulationResponse } from '@/contracts';
 import { SelectMenu } from '@/components/SelectMenu';
+import { SCORE_COLOR_STOPS, SCORE_GRADIENT, scoreColor } from './score-colors';
 import styles from './CityMap.module.css';
 
 const CITY_BOUNDS: [[number, number], [number, number]] = [[71.217973, 50.857608], [71.785191, 51.35111]];
@@ -16,6 +17,7 @@ const ZONES = [
 ] as const;
 
 type ZoneId = DistrictId;
+const number = (value: number) => value.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 export interface CityMapProps {
   scenario: ScenarioResponse;
@@ -24,9 +26,12 @@ export interface CityMapProps {
   selectedDistrictId?: DistrictId | null;
   onDistrictSelect?: (districtId: DistrictId | null) => void;
   onMapReady?: (map: MapLibreMap) => void;
+  indicatorId?: IndicatorId | null;
+  onIndicatorChange?: (indicatorId: IndicatorId | null) => void;
+  forceLegendExpanded?: boolean;
 }
 
-export function CityMap({ scenario, result, comparison = 'before', selectedDistrictId, onDistrictSelect, onMapReady }: CityMapProps) {
+export function CityMap({ scenario, result, comparison = 'before', selectedDistrictId, onDistrictSelect, onMapReady, indicatorId: controlledIndicatorId, onIndicatorChange, forceLegendExpanded = false }: CityMapProps) {
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const callbacks = useRef({ onDistrictSelect, onMapReady });
@@ -34,10 +39,27 @@ export function CityMap({ scenario, result, comparison = 'before', selectedDistr
   const [internalSelected, setInternalSelected] = useState<ZoneId | null>(null);
   const selected = selectedDistrictId === undefined ? internalSelected : selectedDistrictId;
   const selectDistrict = (id: DistrictId | null) => { setInternalSelected(id); callbacks.current.onDistrictSelect?.(id); };
-  const [indicatorId, setIndicatorId] = useState<IndicatorId | null>(null);
+  const [internalIndicatorId, setInternalIndicatorId] = useState<IndicatorId | null>(null);
+  const indicatorId = controlledIndicatorId === undefined ? internalIndicatorId : controlledIndicatorId;
+  const setIndicatorId = (id: IndicatorId | null) => { setInternalIndicatorId(id); onIndicatorChange?.(id); };
   const [state, setState] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [compactLegend, setCompactLegend] = useState(false);
+  const [legendOpen, setLegendOpen] = useState(false);
+  const legendCollapsed = compactLegend && !legendOpen && !forceLegendExpanded;
   const after = comparison === 'after' && result?.datasetVersion === scenario.datasetVersion ? result.result : null;
   const valuesFor = useCallback((districtId: DistrictId) => after?.districts.find((district) => district.districtId === districtId)?.indicators ?? scenario.districts.find((district) => district.id === districtId)!.indicators, [after, scenario]);
+
+  useEffect(() => {
+    const element = container.current;
+    if (!element) return;
+    // Use the actual map height: the guided tour expands the map to 560px,
+    // keeping every highlighted district, value and layer control available.
+    const update = () => setCompactLegend(element.clientHeight < 440);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!container.current) return;
@@ -105,7 +127,7 @@ export function CityMap({ scenario, result, comparison = 'before', selectedDistr
       return;
     }
     const values = Object.fromEntries(scenario.districts.map((district) => [district.id, valuesFor(district.id)[indicatorId]])) as Record<ZoneId, number>;
-    map.setPaintProperty('game-zones-fill', 'fill-color', ['interpolate', ['linear'], ['match', ['get', 'id'], 'esil', values.esil, 'almaty', values.almaty, 'saryarka', values.saryarka, 'baikonur', values.baikonur, 'nura', values.nura, 0], 30, '#d46d60', 50, '#ecc47f', 70, '#91c9a8', 90, '#55b6a9']);
+    map.setPaintProperty('game-zones-fill', 'fill-color', ['match', ['get', 'id'], 'esil', scoreColor(values.esil), 'almaty', scoreColor(values.almaty), 'saryarka', scoreColor(values.saryarka), 'baikonur', scoreColor(values.baikonur), 'nura', scoreColor(values.nura), scoreColor(0)]);
     map.setPaintProperty('game-zones-fill', 'fill-opacity', ['case', ['boolean', ['feature-state', 'selected'], false], 0.68, 0.45]);
   }, [indicatorId, scenario, state, valuesFor]);
 
@@ -119,8 +141,25 @@ export function CityMap({ scenario, result, comparison = 'before', selectedDistr
   return <section className={styles.shell} aria-label="3D-карта Астаны">
     <div ref={container} className={styles.map} />
     <div className={styles.controls}><button type="button" onClick={resetView}>Весь город</button><button type="button" onClick={showCityCenter}>3D центр</button></div>
-    <div className={styles.legend} aria-label="Игровые зоны"><strong>Игровые зоны</strong><SelectMenu label="Слой показателей" value={indicatorId ?? ''} onChange={(id) => setIndicatorId(id ? id as IndicatorId : null)} options={[{ value: '', label: 'Обзор зон' }, ...scenario.indicators.map((indicator) => ({ value: indicator.id, label: indicator.name }))]} />{ZONES.map((zone) => <button key={zone.id} type="button" aria-pressed={selected === zone.id} onClick={() => selectDistrict(zone.id)}><span style={{ background: zone.color }} />{zone.name}{indicatorId && <strong>{valuesFor(zone.id)[indicatorId].toFixed(2)}</strong>}</button>)}{activeIndicator && <p className={styles.scale}>Ниже 40 — критично · выше 70 — хорошо. Значения в баллах.</p>}<small>Границы адаптированы для модели из 5 районов. Это не официальное деление.</small></div>
-    {selectedZone && selectedDistrict && selectedValues && <div className={styles.zoneCard}><span>ВЫБРАНА ЗОНА · {after ? 'ПОСЛЕ' : 'ДО'}</span><h2>{selectedZone.name}</h2><p>{selectedDistrict.profile}</p><dl>{scenario.indicators.map((indicator) => <div key={indicator.id}><dt>{indicator.name}</dt><dd className={selectedValues[indicator.id] < scenario.rules.criticalThreshold ? styles.critical : undefined}>{selectedValues[indicator.id].toFixed(2)} / 100</dd></div>)}</dl><button type="button" onClick={() => selectDistrict(null)}>Закрыть</button></div>}
+    <div className={`${styles.legend} ${legendCollapsed ? styles.legendCollapsed : ''}`} aria-label="Игровые зоны">
+      <div className={styles.legendHeader}><strong>Игровые зоны</strong>{compactLegend && !forceLegendExpanded && <button type="button" aria-label={legendCollapsed ? 'Развернуть легенду' : 'Свернуть легенду'} aria-expanded={!legendCollapsed} onClick={() => setLegendOpen(open => !open)}>{legendCollapsed ? '⌃' : '⌄'}</button>}</div>
+      <SelectMenu label="Слой показателей" value={indicatorId ?? ''} onChange={(id) => setIndicatorId(id ? id as IndicatorId : null)} options={[{ value: '', label: 'Обзор зон' }, ...scenario.indicators.map((indicator) => ({ value: indicator.id, label: indicator.name }))]} />
+      {ZONES.map((zone) => <button key={zone.id} data-guide-zone={zone.id} type="button" aria-pressed={selected === zone.id} onClick={() => selectDistrict(zone.id)}>
+        <span style={{ background: zone.color }} />{zone.name}
+        {indicatorId && <strong className={styles.scoreValue} style={{ color: scoreColor(valuesFor(zone.id)[indicatorId], 'text') }}>{number(valuesFor(zone.id)[indicatorId])}</strong>}
+      </button>)}
+      {activeIndicator && <div className={styles.scoreScale} role="img" aria-label="Цветовая шкала от 0 до 100 баллов: красный, оранжевый, жёлтый, зелёный, тёмно-зелёный. Выше — лучше.">
+        <div className={styles.scoreScaleBar} style={{ background: SCORE_GRADIENT }} aria-hidden="true" />
+        <div className={styles.scoreScaleTicks} aria-hidden="true">{SCORE_COLOR_STOPS.map(({ value }) => <span key={value}>{value}</span>)}</div>
+      </div>}
+      {activeIndicator && <p className={styles.scale}>Шкала 0–100 баллов. Выше — лучше. Ниже {scenario.rules.criticalThreshold} — критично.</p>}
+      <small>Границы адаптированы для модели из 5 районов. Это не официальное деление.</small>
+    </div>
+    {selectedZone && selectedDistrict && selectedValues && <section className={styles.zoneCard} aria-label={`Показатели района ${selectedZone.name}`} tabIndex={0}>
+      <header className={styles.zoneCardHeader}><div><span>{after ? 'После решений' : 'До решений'}</span><h2>{selectedZone.name}</h2></div><button type="button" onClick={() => selectDistrict(null)}>Закрыть</button></header>
+      <p>{selectedDistrict.profile}</p><p className={styles.scale}>Все показатели — от 0 до 100 баллов. Чем выше, тем лучше.</p>
+      <dl>{scenario.indicators.map((indicator) => <div key={indicator.id} data-guide-indicator={indicator.id}><dt>{indicator.name}</dt><dd className={selectedValues[indicator.id] < scenario.rules.criticalThreshold ? styles.critical : undefined}>{number(selectedValues[indicator.id])}{selectedValues[indicator.id] < scenario.rules.criticalThreshold && <small>критично</small>}</dd></div>)}</dl>
+    </section>}
     {state === 'loading' && <div className={styles.status} role="status">Загружаем карту Астаны…</div>}
     {state === 'error' && <div className={styles.status} role="alert">Не удалось загрузить карту или её геоданные. Проверьте подключение к сети.</div>}
     <div className={styles.credit}>© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap contributors · ODbL</a> · <a href="https://openfreemap.org/" target="_blank" rel="noreferrer">OpenFreeMap</a></div>
