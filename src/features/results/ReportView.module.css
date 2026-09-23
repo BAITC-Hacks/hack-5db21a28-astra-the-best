@@ -24,3 +24,10 @@
 .factRefs { line-height:1.5; }
 @media(max-width:700px){.hero{padding:23px;border-radius:23px}.score{border-radius:20px}.district{padding:13px}.tableWrap th,.tableWrap td{padding:10px 11px}}
 
+.tradeoff { display:grid; grid-template-columns:minmax(0,1fr) minmax(260px,.8fr); align-items:center; gap:24px; margin:22px 0; padding:22px 26px; border:1px solid #bcded4; border-radius:22px; background:linear-gradient(110deg,#eaf8f2,#f7fcfa); color:#173e3b; }
+.tradeoff h2 { margin:5px 0 8px; font-size:1.2rem; line-height:1.25; letter-spacing:-.025em; }
+.tradeoff p { margin:0; line-height:1.55; }
+.tradeoff>p { padding:15px 0 15px 20px; border-left:1px solid #bcded4; }
+.tradeoff strong { color:#0f5b55; font-variant-numeric:tabular-nums; }
+@media(max-width:700px){.tradeoff{grid-template-columns:1fr;gap:12px;padding:19px}.tradeoff>p{padding:12px 0 0;border-left:0;border-top:1px solid #bcded4}}
+

@@ -27,6 +27,14 @@ export function ReportView({ scenario, simulation, analysis, onAnalyze, onRetryA
   const analysisLoading = analysis.status === 'loading' && analysis.scenarioId === simulation.scenarioId;
   const analysisError = analysis.status === 'error' && analysis.scenarioId === simulation.scenarioId ? analysis.error : null;
   const facts = new Map(currentAnalysis?.facts.map((fact) => [fact.id, fact]) ?? []);
+  const tradeoffDecision = [...simulation.decisions].filter((decision) => decision.districtId).sort((left, right) => {
+    const cost = (id: typeof left.measureId) => scenario.measures.find((measure) => measure.id === id)?.cost ?? 0;
+    return cost(right.measureId) - cost(left.measureId);
+  })[0] ?? simulation.decisions[0];
+  const tradeoffMeasure = scenario.measures.find((measure) => measure.id === tradeoffDecision.measureId);
+  const tradeoffEffect = simulation.ledger.measures
+    .filter((entry) => entry.measureId === tradeoffDecision.measureId && (!tradeoffDecision.districtId || entry.districtId === tradeoffDecision.districtId))
+    .sort((left, right) => Math.abs(right.realizedEffect) - Math.abs(left.realizedEffect))[0];
 
   return <main className={styles.report}>
     <header className={styles.hero}>
@@ -41,6 +49,11 @@ export function ReportView({ scenario, simulation, analysis, onAnalyze, onRetryA
       <Metric label="Слабейший район" value={number(simulation.result.minimumDistrictScore)} unit="балла" />
       <Metric label="Критических показателей" value={String(simulation.result.criticalCount)} unit={`ниже ${scenario.rules.criticalThreshold} баллов`} />
     </section>
+
+    {tradeoffMeasure && tradeoffEffect && <section className={styles.tradeoff} aria-label="Проверяемый компромисс решения">
+      <div><span className={styles.eyebrow}>Цена и время решения</span><h2>{tradeoffMeasure.name}</h2><p>Район: <strong>{districtNames.get(tradeoffEffect.districtId)}</strong>. Мера стоит <strong>{number(tradeoffMeasure.cost)} ед.</strong> бюджета и начинает действовать через <strong>{tradeoffMeasure.lagQuarters} кв.</strong></p></div>
+      <p>За горизонт модели учтено <strong>{number(tradeoffEffect.realizedFraction * 100)}%</strong> полного эффекта на показатель «{indicatorNames.get(tradeoffEffect.indicatorId)}»: <strong>{signed(tradeoffEffect.realizedEffect)} балла</strong>. Это расчётный эффект выбранной меры, а не прогноз реального города.</p>
+    </section>}
 
     <section className={styles.section}><h2>Пять решений</h2><div className={styles.cards}>{simulation.decisions.map((decision, index) => {
       const measure = scenario.measures.find((item) => item.id === decision.measureId);

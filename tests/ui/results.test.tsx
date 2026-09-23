@@ -1,8 +1,10 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { scenario } from '@/data';
+import { simulate } from '@/domain/simulation';
 import type { AnalysisState, SimulationResponse } from '@/contracts';
 import { ReportView } from '@/features/results/ReportView';
+import { controlRequest } from '../data/source-fixture';
 
 const baselineDistricts = scenario.districts.map((district) => ({ districtId: district.id, indicators: district.indicators, score: 50 }));
 const baseline = {
@@ -35,6 +37,15 @@ describe('ReportView', () => {
     for (const district of scenario.districts) expect(html).toContain(district.name);
     expect(html).toContain('Критические значения');
     expect(html).toContain('Учтено за 8 кв.');
+  });
+
+  it('shows a computed cost-and-lag tradeoff for the control scenario', () => {
+    const html = render({ status: 'idle' }, simulate(controlRequest));
+    expect(html).toContain('Проверяемый компромисс решения');
+    expect(html).toContain('Перевод частного сектора на чистое топливо');
+    expect(html).toContain('Сарыарка');
+    expect(html).toContain('62,50%');
+    expect(html).toContain('+8,75 балла');
   });
 
   it('keeps numerical results visible when AI fails', () => {
