@@ -59,11 +59,16 @@ test('report downloads contain the exact current scenario without invented AI', 
       expect(report.simulation.cost).toBe(95);
       expect(report.simulation.result.score).toBeCloseTo(56.54307, 5);
       expect(report.simulation.decisions).toHaveLength(5);
+      expect(report.money).toEqual({ currency: 'KZT', tengePerBudgetUnit: 100_000_000, budgetTenge: 10_000_000_000, spentTenge: 9_500_000_000, remainingTenge: 500_000_000 });
+      expect(report.decisions.reduce((sum: number, decision: { costTenge: number }) => sum + decision.costTenge, 0)).toBe(report.money.spentTenge);
+      expect(report.analysis).toBeNull();
     } else {
       const exactScore = content.match(/Точное значение Score без округления: ([\d.]+)/)?.[1];
       expect(Number(exactScore)).toBeCloseTo(56.54307, 5);
       expect(content).toContain('AI-анализ для этого сценария отсутствует');
       expect(content).toContain('Сохранить как PDF');
+      expect(content).toContain('9,5 млрд ₸');
+      expect(content).toContain('500 млн ₸');
     }
   }
 });
