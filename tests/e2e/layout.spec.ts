@@ -1,5 +1,9 @@
 import { expect, test } from '@playwright/test';
 
+test.beforeEach(async ({ context }) => {
+  await context.addInitScript(() => localStorage.setItem('hackalem:onboarding:v1', 'dismissed'));
+});
+
 test.use({ channel: 'chrome' });
 
 for (const viewport of [{ width: 390, height: 360 }, { width: 390, height: 844 }, { width: 1280, height: 800 }]) {

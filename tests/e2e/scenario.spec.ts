@@ -1,5 +1,9 @@
 import { expect, test } from '@playwright/test';
 
+test.beforeEach(async ({ context }) => {
+  await context.addInitScript(() => localStorage.setItem('hackalem:onboarding:v1', 'dismissed'));
+});
+
 test.use({ channel: 'chrome' });
 
 const control = [

@@ -1,0 +1,28 @@
+{
+  "task": "P18",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-01a0cdba-onboarding",
+  "claimed_at": "2026-09-23T15:22:10.4924977+05:00",
+  "updated_at": "2026-09-23T15:46:53.8825057+05:00",
+  "signature": "Codex / codex-20260923-01a0cdba-onboarding accepts task P18",
+  "artifacts": [
+    "src/features/onboarding/MayorGuide.tsx",
+    "src/features/onboarding/MayorGuide.module.css",
+    "src/features/onboarding/Spotlight.tsx",
+    "src/app/AppShell.tsx",
+    "tests/ui/onboarding.test.tsx",
+    "tests/e2e/onboarding.spec.ts",
+    "tests/e2e/scenario.spec.ts",
+    "tests/e2e/layout.spec.ts",
+    "tests/e2e/performance.spec.ts"
+  ],
+  "checks": [
+    "npx.cmd eslint src/features/onboarding src/app/AppShell.tsx tests/ui/onboarding.test.tsx tests/e2e/onboarding.spec.ts: PASS",
+    "npx.cmd tsc --noEmit: PASS",
+    "npx.cmd vitest run tests/ui/onboarding.test.tsx tests/ui/planner.test.tsx tests/ui/results.test.tsx: 11 passed",
+    "npx.cmd playwright test tests/e2e/onboarding.spec.ts --workers=1 --reporter=list --output=tmp/p18-results: 5 passed (25.8s); 1280x800, 390x844, 390x360; geometry/no overlap each step, focus trap, skip/replay/Escape, existing plan preserved, AI success/error mocked, map unavailable",
+    "Visual inspection: desktop measure spotlight, mobile arrow, 390x360 compact card: PASS; no paid AI calls"
+  ],
+  "notes": "User rejected text-only guide; implemented action-driven spotlight + arrow. Native welcome, real control clicks, contextual budget/score facts, AI only explicit click. Persistent dismissed/completed flag; Escape/skip/replay; keyboard described-by. Existing E2E onboarding suppression coordinated with P10 owner. AppShell transferred back to root P09/P17 for O01/O02 integration; shared PLAN/script/AppShell are integrated by root. Shared working directory; no worktree/cherry-pick needed. Use dedicated Playwright output to avoid parallel runner artifact collisions. Final product production build belongs to root integration."
+}

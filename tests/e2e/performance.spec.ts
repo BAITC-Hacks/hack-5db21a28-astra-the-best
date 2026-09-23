@@ -6,6 +6,7 @@ test.describe.configure({ mode: 'serial' });
 test('1920×1080 map timing and 30-second frame sample', async ({ browser }) => {
   test.setTimeout(90_000);
   const context = await browser.newContext({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
+  await context.addInitScript(() => localStorage.setItem('hackalem:onboarding:v1', 'dismissed'));
   const page = await context.newPage();
   try {
     await page.goto('/');
@@ -54,6 +55,7 @@ test('WebGL failure keeps plan and report accessible', async () => {
   test.setTimeout(60_000);
   const browser = await chromium.launch({ channel: 'chrome', args: ['--disable-webgl', '--disable-webgl2', '--disable-software-rasterizer'] });
   const context = await browser.newContext();
+  await context.addInitScript(() => localStorage.setItem('hackalem:onboarding:v1', 'dismissed'));
   const page = await context.newPage();
   try {
     await page.goto('/');
