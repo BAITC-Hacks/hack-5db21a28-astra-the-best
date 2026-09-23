@@ -1,0 +1,28 @@
+.panel { width: min(1180px, 100%); margin: 24px auto; padding: clamp(18px, 3vw, 30px); background: var(--surface, #fff); color: var(--ink, #20252c); border: 1px solid var(--border, #cfd4da); border-radius: var(--radius-card, 22px); box-shadow: var(--shadow-card); overflow-wrap: anywhere; }
+.panel h2 { margin: 4px 0 12px; font-size: clamp(22px, 3vw, 28px); }
+.panel h3 { margin: 0 0 10px; font-size: 20px; }
+.panel p { line-height: 1.6; }
+.eyebrow { margin: 0; color: var(--ink-muted, #555e69); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; font-weight: 700; }
+.saveRow { display: flex; gap: 12px; align-items: end; flex-wrap: wrap; margin: 22px 0; }
+.saveRow label { display: grid; gap: 7px; flex: 1 1 240px; font-weight: 650; }
+.saveRow input { min-width: 0; width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-soft, #f5f6f8); color: var(--ink); }
+.panel button { border: 1px solid #69727d; border-radius: 999px; background: var(--metal-face, #262b33); color: #fff; padding: 11px 17px; min-height: 44px; cursor: pointer; font-weight: 650; }
+.panel button:hover { filter: brightness(1.2); }
+.tableScroll { overflow-x: auto; max-width: 100%; border: 1px solid var(--border); border-radius: 14px; }
+.tableScroll table { border-collapse: collapse; width: 100%; min-width: 650px; text-align: left; font-size: 14px; }
+.tableScroll caption { text-align: left; padding: 12px; color: var(--ink-muted); }
+.tableScroll td, .tableScroll th { vertical-align: top; padding: 14px 12px; border-top: 1px solid var(--border); line-height: 1.5; }
+.tableScroll th:first-child { min-width: 180px; max-width: 320px; }
+.tableScroll thead, .current { background: var(--surface-soft); }
+.tableScroll details { margin-top: 8px; font-size: 13px; font-weight: 400; }
+.tableScroll summary { cursor: pointer; }
+.tableScroll ul { padding-left: 18px; }
+.tableScroll li + li { margin-top: 5px; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.improvement { margin-top: 26px; padding-top: 24px; border-top: 1px solid var(--border); }
+.improvement dl { display: grid; grid-template-columns: 110px 1fr; gap: 8px 12px; line-height: 1.5; }
+.improvement dt { font-weight: 700; }
+.improvement dd { margin: 0; }
+.gain { font-size: 20px; font-variant-numeric: tabular-nums; }
+@media (max-width: 480px) { .saveRow button { width: 100%; } .improvement dl { grid-template-columns: 1fr; } }
+@media print { .saveRow, .actions, .improvement button { display: none; } .panel { box-shadow: none; } .tableScroll { overflow: visible; } }

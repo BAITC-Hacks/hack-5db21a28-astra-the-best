@@ -1,0 +1,25 @@
+{
+  "task": "O01",
+  "status": "done",
+  "agent": "CodexSubagent-Sol",
+  "session": "codex-o01-20260923-comparison",
+  "claimed_at": "2026-09-23T15:34:20.7159824+05:00",
+  "updated_at": "2026-09-23T15:43:12.1697629+05:00",
+  "signature": "CodexSubagent-Sol / codex-o01-20260923-comparison accepts task O01",
+  "artifacts": [
+    "src/domain/search/improve.ts",
+    "src/features/comparison/storage.ts",
+    "src/features/comparison/ComparisonPanel.tsx",
+    "src/features/comparison/ComparisonPanel.module.css",
+    "tests/search/comparison.test.ts",
+    "tests/search/comparison-ui.test.tsx"
+  ],
+  "checks": [
+    "npm.cmd test -- --run tests/search: 10 tests passed (2026-09-23)",
+    "npm.cmd run typecheck: passed (2026-09-23)",
+    "npx.cmd eslint src/features/comparison src/domain/search tests/search: passed (2026-09-23)",
+    "Root integration verification: tests/e2e/optional-features.spec.ts 3/3 passed in 18.7s; save control95, reload, restore from empty report, recalculate, search better candidate, load draft clears old result/AI, server recompute Score > 56.54307 with 5 decisions and cost <=100 (2026-09-23)",
+    "Root full npm test: 80 passed; mobile viewport 390px has no page overflow (2026-09-23)"
+  ],
+  "notes": "Completed and integrated by root in ReportView/AppShell. Browser acceptance confirms persistence/reload, restoration without a current result, verified improvement transfer into draft, stale result/AI clearing, and final server recomputation. Stores only validated requests with datasetVersion/hash; max 6 entries, recalculates comparison, handles denied/corrupt storage. Search exhausts one-decision replacements/reassignments only, validates every candidate, computes Score in canonical domain, deterministic tie break, no paid API calls. Root owns Git commit/push."
+}
