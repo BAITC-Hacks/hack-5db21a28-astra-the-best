@@ -4,7 +4,7 @@
   "agent": "CodexDesktop",
   "session": "codex-desktop-20260923-delivery",
   "claimed_at": "2026-09-23T15:34:20.8032055+05:00",
-  "updated_at": "2026-09-23T16:34:06.9504551+05:00",
+  "updated_at": "2026-09-23T16:42:57.8151850+05:00",
   "signature": "CodexDesktop / codex-desktop-20260923-delivery accepts task P12",
   "artifacts": [
     "docs/DELIVERY.md",
@@ -12,7 +12,8 @@
     "scripts/watch-status.ps1",
     "ca5b5b97b2a9148e531db26d9258dbabc26e4402",
     "docs/DEMO.md",
-    "00c29ae"
+    "00c29ae",
+    "tests/e2e/marker-spacing.spec.ts"
   ],
   "checks": [
     "Root npm run lint/typecheck/build passed",
@@ -22,7 +23,10 @@
     "Git origin verified BAITC-Hacks/hack-5db21a28-astra-the-best; ca5b5b9 pushed successfully",
     "Local .env.local is not tracked",
     "2026-09-23 root optional-features E2E: 3/3 passed in 14.5s. Actual HTML/JSON downloads agree on 9.5bn KZT spent/500m left; JSON preserves exact model and sum of 5 decision costs. Save/reload/improve and 390px layout pass. No paid AI calls.",
-    "Root scoped ESLint and git diff --check for delivery changes passed; 00c29ae pushed to origin/main."
+    "Root scoped ESLint and git diff --check for delivery changes passed; 00c29ae pushed to origin/main.",
+    "2026-09-23 root marker-spacing browser regression:3/3 passed22.1s at1280x800,390x844,390x360. Dense valid21sign scenario has no badge-to-badge DOM overlap after overview/zoomout/compass/resize/reset; M4opens. Local style fixture isolates WebGL/markers from external tile availability. ESLint passed.",
+    "Marker test limitation: district detail sheet is closed to expose map; other panels can occlude some badges on very short screens. It verifies badge-to-badge overlap, not complete absence of panel occlusion. P26 owner informed with screenshot.",
+    "Extended camera regression includes keyboard pan:3/3 passed22.2s; output tmp/root-marker-spacing-pan. P26 continues its own final compact checks before source handoff."
   ],
-  "notes": "P12 release package prepared and code pushed; submission still requires exact platform URL and confirmation, so status remains review. Root independently updated tenge demo/submission text and added/ran actual export integration checks. Prior full validation belongs to ca5b5b9; latest P21/P22/P23 scoped checks are distinguished in docs/DELIVERY.md. Other active user-owned tasks are not covered by an asserted final full acceptance run."
+  "notes": "P12 release package prepared and code pushed; submission still requires exact platform URL and confirmation, so status remains review. Root independently updated tenge demo/submission text and added/ran actual export integration checks. Prior full validation belongs to ca5b5b9; latest P21/P22/P23 scoped checks are distinguished in docs/DELIVERY.md. Other active user-owned tasks are not covered by an asserted final full acceptance run. User reported overlapping map badges; root independently owns browser regression tests/e2e/marker-spacing.spec.ts. P26 is actively implementing marker placement; source files left to its owner. Test scope checks real DOM overlap on dense valid plan and camera/viewport changes."
 }
