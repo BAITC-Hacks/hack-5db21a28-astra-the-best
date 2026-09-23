@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { scenario as defaultScenario } from '@/data';
+import { formatBudget } from '@/lib/budget';
 import type { ApiIssue, Decision, ErrorResponse, ScenarioRequest, ScenarioResponse, ValidationResult } from '@/contracts';
 
 const requestSchema = z.strictObject({
@@ -38,7 +39,7 @@ export function validateDecisions(decisions: readonly Decision[], { mode, scenar
     if (measure.scope === 'city' && decision.districtId) issues.push({ code: 'DISTRICT_FORBIDDEN', message: `Городской мере ${decision.measureId} район не нужен.`, measureIds: [decision.measureId], districtId: decision.districtId });
     if (decision.districtId && !districts.has(decision.districtId)) issues.push({ code: 'UNKNOWN_DISTRICT', message: `Неизвестный район ${decision.districtId}.`, measureIds: [decision.measureId], districtId: decision.districtId });
   }
-  if (cost > scenario.budget) issues.push({ code: 'BUDGET_EXCEEDED', message: `Бюджет превышен на ${cost - scenario.budget} единиц.` });
+  if (cost > scenario.budget) issues.push({ code: 'BUDGET_EXCEEDED', message: `Бюджет превышен на ${formatBudget(cost - scenario.budget)}.` });
   for (const direction of scenario.directions) if (counts[direction.id] > scenario.rules.maxPerDirection) issues.push({ code: 'DIRECTION_LIMIT', message: `Не более ${scenario.rules.maxPerDirection} мер направления «${direction.name}».` });
   for (const conflict of scenario.rules.conflicts) {
     const first = decisions.find((decision) => decision.measureId === conflict.measureIds[0]);

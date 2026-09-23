@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { formatBudget, budgetDisclaimer } from '@/lib/budget';
 import type { AnalysisState, Decision, DistrictId, ScenarioResponse } from '@/contracts';
 import { validateDecisions } from '@/domain/validation';
 import { Spotlight, type TourTarget } from './Spotlight';
@@ -61,9 +62,9 @@ export function MayorWelcome({ guide, scenario }: { guide: Controller; scenario:
     <div className={styles.welcomeTop}><span className={styles.eyebrow}>Ваш первый день · Астана</span><button type="button" className={styles.close} aria-label="Закрыть обучение" onClick={() => guide.dismiss()}>×</button></div>
     <div className={styles.seal} aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><path d="M10 52h44M16 52V28h12v24m8 0V16h12v36M22 28V18m20-2V8M20 35h4m-4 7h4m16-19h4m-4 9h4m-4 9h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg></div>
     <h1 id="mayor-welcome-title">Градоначальник,<br />город в ваших руках.</h1>
-    <p className={styles.intro}>Вы решаете, что улучшить в Астане. Изучите потребности районов, распределите бюджет и узнайте, как ваши решения повлияют на жизнь горожан.</p>
+    <p className={styles.intro}>Вы решаете, что улучшить в Астане. {budgetDisclaimer} Изучите потребности районов, распределите бюджет и узнайте, как ваши решения повлияют на жизнь горожан.</p>
     <div className={styles.brief}>
-      <div><strong>{scenario.budget}</strong><span>единиц бюджета</span></div>
+      <div><strong>{formatBudget(scenario.budget).replace(' ₸', '')}</strong><span>₸ · виртуальный бюджет</span></div>
       <div><strong>{scenario.rules.requiredDecisions}</strong><span>решений в плане</span></div>
       <div><strong>{scenario.horizonQuarters / 4} года</strong><span>горизонт последствий</span></div>
     </div>
@@ -136,11 +137,11 @@ export function MayorGuide({ guide, scenario, selectedDistrictId, decisions, has
   } else if (!plannerOpen) {
     lesson = { key: 'open-plan', phase: 2, title: 'Теперь откройте вашу панель решений', text: 'Нажмите «План» справа вверху. Здесь вы распределяете бюджет и выбираете мероприятия.', hint: 'Нажмите подсвеченную кнопку в меню', target: planButton };
   } else if (decisions.length > 0 && !budgetRead) {
-    lesson = { key: 'budget', phase: 3, title: 'Первое решение уже в плане', text: `Здесь видно, сколько из ${scenario.budget} единиц уже потрачено. Нужно ровно ${required} решений: не более двух на направление и минимум три направления. Все деньги тратить необязательно.`, hint: 'Бюджет проверяется при каждом добавлении', target: { selector: '[aria-label="Использованный бюджет"]' }, next: 'Добавить следующее решение', advance: () => setBudgetRead(true) };
+    lesson = { key: 'budget', phase: 3, title: 'Первое решение уже в плане', text: `Здесь видно, сколько из ${formatBudget(scenario.budget)} уже потрачено. Нужно ровно ${required} решений: не более двух на направление и минимум три направления. Все деньги тратить необязательно.`, hint: 'Бюджет проверяется при каждом добавлении', target: { selector: '[aria-label="Использованный бюджет"]' }, next: 'Добавить следующее решение', advance: () => setBudgetRead(true) };
   } else if (decisions.length >= required) {
     lesson = { key: 'calculate', phase: 4, title: 'Узнайте, что изменится в городе', text: 'Нажмите «Рассчитать сценарий». Вы увидите последствия за два условных года, изменение качества жизни и результат по районам.', hint: 'Нажмите подсвеченную кнопку', target: { selector: '[aria-label="Редактор городских решений"] footer button' } };
   } else if (suggested) {
-    lesson = { key: `measure-${suggested.id}-${decisions.length}`, phase: decisions.length ? 3 : 2, title: decisions.length ? `Решение ${decisions.length + 1} из ${required}` : 'Добавьте ваше первое решение', text: `Для знакомства предлагаем «${suggested.name}»: ${suggested.cost} ед., эффект через ${suggested.lagQuarters} кв. Квартал — три месяца. Плюсы и минусы видны в карточке. Можно выбрать другую доступную меру.`, hint: 'Нажмите «Добавить в план» в этой карточке', target: { selector: '[aria-label="Каталог мероприятий"] article button', measureId: suggested.id } };
+    lesson = { key: `measure-${suggested.id}-${decisions.length}`, phase: decisions.length ? 3 : 2, title: decisions.length ? `Решение ${decisions.length + 1} из ${required}` : 'Добавьте ваше первое решение', text: `Для знакомства предлагаем «${suggested.name}»: ${formatBudget(suggested.cost)}, эффект через ${suggested.lagQuarters} кв. Квартал — три месяца. Плюсы и минусы видны в карточке. Можно выбрать другую доступную меру.`, hint: 'Нажмите «Добавить в план» в этой карточке', target: { selector: '[aria-label="Каталог мероприятий"] article button', measureId: suggested.id } };
   } else {
     lesson = { key: 'revise', phase: 3, title: 'Освободите место для следующего решения', text: 'Сейчас добавить меру мешают бюджет или ограничения. Удалите либо замените одну из выбранных мер. Причины запрета указаны под карточками.', hint: 'Пересмотрите одно из решений', target: { selector: '[aria-label="Редактор городских решений"] button[aria-label^="Удалить "]' } };
   }

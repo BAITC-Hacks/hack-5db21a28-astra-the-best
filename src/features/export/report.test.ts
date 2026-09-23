@@ -16,6 +16,10 @@ describe('portable report', () => {
     const json = JSON.parse(buildReportJson(input));
     expect(json.simulation.result.score).toBeCloseTo(56.54307, 8);
     expect(json.simulation.cost).toBe(95);
+    expect(json.money).toEqual({ currency: 'KZT', tengePerBudgetUnit: 100_000_000, budgetTenge: 10_000_000_000, spentTenge: 9_500_000_000, remainingTenge: 500_000_000 });
+    expect(json.decisions.find((item: { measureId: string }) => item.measureId === 'M7').costTenge).toBe(2_400_000_000);
+    expect(buildReportHtml(input)).toContain('9,5 млрд ₸ / 10 млрд ₸');
+    expect(buildReportHtml(input)).toContain('500 млн ₸');
     expect(json.decisions).toHaveLength(5);
     expect(json.simulation.result.districts).toHaveLength(5);
     expect(json.simulation).toEqual(simulation);
