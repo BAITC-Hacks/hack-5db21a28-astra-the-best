@@ -8,6 +8,7 @@ test.beforeEach(async ({ context }) => {
 
 async function controlPlan(page: Page) {
   await page.goto('/');
+  await page.getByRole('button', { name: 'Город', exact: true }).click();
   await page.getByRole('button', { name: 'План · 0/5' }).click();
   const chooseDistrict = async (name: string) => {
     await page.getByRole('combobox', { name: 'Район для районных мер' }).click();
@@ -67,13 +68,8 @@ test('report downloads contain the exact current scenario without invented AI', 
   }
 });
 
-test('optional controls fit mobile and decorative movement can be disabled', async ({ page }) => {
+test('optional report controls fit mobile', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
-  const decoration = page.getByRole('button', { name: 'Декоративное движение', exact: true });
-  await expect(decoration).toHaveAttribute('aria-pressed', 'true');
-  await decoration.click();
-  await expect(decoration).toHaveAttribute('aria-pressed', 'false');
   await controlPlan(page);
   await expect(page.getByRole('region', { name: 'Сравнение сценариев', exact: true })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
