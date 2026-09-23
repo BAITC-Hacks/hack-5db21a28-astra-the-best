@@ -4,7 +4,7 @@
   "agent": "CodexDesktop",
   "session": "codex-desktop-20260923-01a0cd54-p17",
   "claimed_at": "2026-09-23T15:18:30.7031033+05:00",
-  "updated_at": "2026-09-23T15:24:08.7876723+05:00",
+  "updated_at": "2026-09-23T15:32:19.3561042+05:00",
   "signature": "CodexDesktop / codex-desktop-20260923-01a0cd54-p17 accepts task P17",
   "artifacts": [
     "src/app/AppShell.tsx",
@@ -20,7 +20,8 @@
     "npm test: 61 passed",
     "npm run build: passed",
     "npm run test:e2e -- --reporter=line --workers=2: 21 passed",
-    "Chrome screenshots 390x844 city/planner/report and 1280x800 city visually inspected; no nav title, readable neutral surfaces and metallic buttons"
+    "Chrome screenshots 390x844 city/planner/report and 1280x800 city visually inspected; no nav title, readable neutral surfaces and metallic buttons",
+    "Nav geometry in Chrome at widths 320/360/390/700/1280: City/Report center exactly viewport center, no overlap with help or plan"
   ],
-  "notes": "Neutral graphite/silver theme with CSS liquid-metal edges avoids extra WebGL load. P16 owner agreed to color-only edits in CityMap/Planner CSS after e4cd6bf. No behavior or simulation changes."
+  "notes": "Neutral graphite/silver theme with CSS liquid-metal edges avoids extra WebGL load. P16 owner agreed to color-only edits in CityMap/Planner CSS after e4cd6bf. No behavior or simulation changes. Follow-up: centered mode switch with absolute positioning while help stays left and plan right."
 }

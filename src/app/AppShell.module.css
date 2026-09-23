@@ -45,3 +45,8 @@
 .compare button{color:#3c444e}
 .error{background:#fff7ee;border-color:#d5aa85;color:#4c3020}
 @media(prefers-reduced-motion:reduce){.planToggle,.loading button{transition:none}.planToggle:hover,.loading button:hover{transform:none}}
+
+/* Keep the City/Report switch centered regardless of the side actions' widths. */
+.nav{position:sticky}
+.mode{position:absolute;left:50%;transform:translateX(-50%)}
+.planToggle{margin-left:auto}
