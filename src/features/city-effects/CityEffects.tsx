@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import type { Map as MapLibreMap, Marker, Popup } from 'maplibre-gl';
 import type { Decision, ScenarioResponse, SimulationResponse } from '@/contracts';
 import { deriveEffectMarkers, signed, type EffectMarker } from './model';
-import { layoutEffectMarkers, type ScreenPoint, type ScreenRect } from './layout';
+import { createImpactHighlight } from './impact';
 import styles from './CityEffects.module.css';
 
 export interface CityEffectsProps {
@@ -25,6 +25,23 @@ function detail(marker: EffectMarker): HTMLElement {
   const scope = document.createElement('p');
   scope.textContent = `${marker.districtName} · ${marker.status === 'preview' ? 'Черновик' : marker.status === 'applied' ? 'После расчёта' : 'Запланировано'}`;
   root.append(scope);
+  const area = document.createElement('p');
+  area.className = styles.scope;
+  area.textContent = `Область действия: ${marker.scope === 'city' ? 'все пять игровых районов' : marker.districtName}. Выделена фиолетовым на карте.`;
+  root.append(area);
+  const location = document.createElement('p');
+  location.className = styles.location;
+  if (marker.landmark) {
+    const link = document.createElement('a');
+    link.href = `https://www.openstreetmap.org/${marker.landmark.osmType}/${marker.landmark.osmId}`;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = marker.landmark.name;
+    location.append('Геоориентир: ', link, '. Координаты объекта из OpenStreetMap.');
+  } else {
+    location.textContent = 'Условная точка внутри района. Точный объект для этой меры не привязан.';
+  }
+  root.append(location);
   const lag = document.createElement('p');
   lag.textContent = `${marker.lagQuarters === 0 ? 'Действует сразу.' : `Начало действия: через ${marker.lagQuarters * 3} мес.`} За два года учитывается ${(marker.realizedFraction * 100).toLocaleString('ru-RU')}% полного эффекта.`;
   root.append(lag);
@@ -58,7 +75,7 @@ function detail(marker: EffectMarker): HTMLElement {
     root.append(critical);
   }
   const disclaimer = document.createElement('small');
-  disclaimer.textContent = 'Точка иллюстративная; место строительства не определено.';
+  disclaimer.textContent = 'Метка показывает проект симулятора. Геоориентир не означает утверждённый участок строительства; эффект считается по области действия.';
   root.append(disclaimer);
   return root;
 }
@@ -71,59 +88,24 @@ export function CityEffects({ map, scenario, decisions, preview, result, compari
     const markers: Marker[] = [];
     const popups: Popup[] = [];
     const scene = deriveEffectMarkers({ scenario, decisions, preview, result, comparison });
-    const container = map.getContainer();
-    const svgNS = 'http://www.w3.org/2000/svg';
-    const leaders = document.createElementNS(svgNS, 'svg');
-    leaders.classList.add(styles.leaders);
-    leaders.setAttribute('aria-hidden', 'true');
-    // Markers also live in canvasContainer: insert leaders first so their lines
-    // stay below the opaque badges, without raising badges above map panels.
-    map.getCanvasContainer().append(leaders);
-    const lines: SVGLineElement[] = [];
-    const dots: SVGCircleElement[] = [];
-    const buttons: HTMLButtonElement[] = [];
-    let positions = new Map<string, ScreenPoint>();
-    let frame = 0;
-    const panelRoots = [container.parentElement, container.parentElement?.parentElement?.parentElement].filter((el): el is HTMLElement => Boolean(el));
-    const layout = () => {
-      frame = 0;
-      if (cancelled || markers.length !== scene.length) return;
-      const bounds = container.getBoundingClientRect();
-      // Avoid map controls and sibling panels (legend / selected district).
-      // Read their real size so responsive layouts and tutorial panels still fit.
-      const panels = [...panelRoots.flatMap(root => [...root.children]), ...container.querySelectorAll('.maplibregl-ctrl')].filter(el => !el.contains(container));
-      const obstacles: ScreenRect[] = panels.map(el => {
-        observer.observe(el);
-        const rect = el.getBoundingClientRect();
-        return { left: rect.left - bounds.left, right: rect.right - bounds.left, top: rect.top - bounds.top, bottom: rect.bottom - bounds.top };
-      }).filter(r => r.right > r.left && r.bottom > r.top);
-      const projected = scene.map(item => ({ ...map.project([...item.coordinates]), key: item.key, preview: item.status === 'preview' }));
-      positions = layoutEffectMarkers(projected, container.clientWidth, container.clientHeight, obstacles);
-      scene.forEach((item, index) => {
-        const origin = projected[index];
-        const position = positions.get(item.key)!;
-        const dx = position.x - origin.x;
-        const dy = position.y - origin.y;
-        markers[index].setOffset([dx, dy]);
-        // Do not leave a clipped half-badge overlapping an in-view project.
-        buttons[index].style.visibility = origin.x >= 0 && origin.x <= container.clientWidth && origin.y >= 0 && origin.y <= container.clientHeight ? '' : 'hidden';
-        const moved = Math.hypot(dx, dy) > 8;
-        lines[index].style.display = dots[index].style.display = moved ? '' : 'none';
-        lines[index].setAttribute('x1', String(origin.x));
-        lines[index].setAttribute('y1', String(origin.y));
-        lines[index].setAttribute('x2', String(position.x));
-        lines[index].setAttribute('y2', String(position.y));
-        dots[index].setAttribute('cx', String(origin.x));
-        dots[index].setAttribute('cy', String(origin.y));
-      });
+    const buttons = new Map<string, HTMLButtonElement>();
+    const highlight = createImpactHighlight(map);
+    let hovered: EffectMarker | null = null;
+    let selected: EffectMarker | null = null;
+    const syncHighlight = () => {
+      if (cancelled) return;
+      const active = hovered ?? selected ?? scene.find(item => item.status === 'preview') ?? null;
+      const targets = active ? scene.filter(item => item.measureId === active.measureId && item.status === active.status) : [];
+      highlight.show(targets);
+      for (const item of scene) {
+        const isActive = targets.some(target => target.key === item.key);
+        buttons.get(item.key)?.classList.toggle(styles.selected, isActive);
+        buttons.get(item.key)?.setAttribute('aria-pressed', String(selected?.key === item.key));
+      }
     };
-    const scheduleLayout = () => { if (!frame && !cancelled) frame = requestAnimationFrame(layout); };
-    map.on('move', scheduleLayout);
-    map.on('resize', scheduleLayout);
-    const observer = new ResizeObserver(scheduleLayout);
-    observer.observe(container);
-    const panelObserver = new MutationObserver(scheduleLayout);
-    for (const root of panelRoots) panelObserver.observe(root, { childList: true });
+    const dismiss = () => { selected = null; hovered = null; for (const popup of popups) popup.remove(); syncHighlight(); };
+    const keydown = (event: KeyboardEvent) => { if (event.key === 'Escape') dismiss(); };
+    map.getContainer().addEventListener('keydown', keydown);
     import('maplibre-gl').then(({ Marker: MapMarker, Popup: MapPopup }) => {
       if (cancelled) return;
       for (const item of scene) {
@@ -139,35 +121,40 @@ export function CityEffects({ map, scenario, decisions, preview, result, compari
         id.className = styles.id;
         id.textContent = item.measureId;
         button.append(icon, id);
-        buttons.push(button);
+        buttons.set(item.key, button);
+        button.dataset.measure = item.measureId;
+        button.dataset.district = item.districtId;
+        button.dataset.longitude = String(item.coordinates[0]);
+        button.dataset.latitude = String(item.coordinates[1]);
+        button.addEventListener('mouseenter', () => { hovered = item; syncHighlight(); });
+        button.addEventListener('mouseleave', () => { hovered = null; syncHighlight(); });
+        button.addEventListener('focus', () => { hovered = item; syncHighlight(); });
+        button.addEventListener('blur', () => { hovered = null; syncHighlight(); });
         button.addEventListener('click', (event) => {
           event.stopPropagation();
           for (const popup of popups) popup.remove();
-          const position = positions.get(item.key);
-          const popupAnchor = position ? map.unproject([position.x, position.y]) : [...item.coordinates] as [number, number];
-          const popup = new MapPopup({ offset: 26, closeOnMove: true, className: styles.popup, maxWidth: 'min(360px, calc(100vw - 32px))' }).setLngLat(popupAnchor).setDOMContent(detail(item)).addTo(map);
+          selected = item;
+          const content = detail(item);
+          // Leave room for a popup above or below a central pin. Mobile uses
+          // its own bottom sheet; desktop content scrolls inside the map.
+          content.style.setProperty('--popup-max-height', `${Math.max(100, map.getContainer().clientHeight / 2 - 100)}px`);
+          const popup = new MapPopup({ offset: 48, closeOnMove: false, className: styles.popup, maxWidth: 'min(360px, calc(100vw - 32px))' }).setLngLat([...item.coordinates]).setDOMContent(content).addTo(map);
+          popup.on('close', () => { if (selected?.key === item.key) { selected = null; hovered = null; syncHighlight(); } });
           popups.push(popup);
+          syncHighlight();
         });
-        const line = document.createElementNS(svgNS, 'line');
-        const dot = document.createElementNS(svgNS, 'circle');
-        dot.setAttribute('r', '3');
-        leaders.append(line, dot);
-        lines.push(line);
-        dots.push(dot);
-        markers.push(new MapMarker({ element: button, anchor: 'center' }).setLngLat([...item.coordinates]).addTo(map));
+        // The bottom of the pin always follows its geographic coordinate. No
+        // screen-space offsets, repacking or camera-dependent site selection.
+        markers.push(new MapMarker({ element: button, anchor: 'bottom' }).setLngLat([...item.coordinates]).addTo(map));
       }
-      layout();
+      syncHighlight();
     });
     return () => {
       cancelled = true;
-      cancelAnimationFrame(frame);
-      map.off('move', scheduleLayout);
-      map.off('resize', scheduleLayout);
-      observer.disconnect();
-      panelObserver.disconnect();
-      leaders.remove();
+      map.getContainer().removeEventListener('keydown', keydown);
       for (const popup of popups) popup.remove();
       for (const marker of markers) marker.remove();
+      highlight.remove();
     };
   }, [map, scenario, decisions, preview, result, comparison]);
   return null;

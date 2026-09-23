@@ -1,82 +1,78 @@
 import { expect, test, type Page } from '@playwright/test';
 
 test.use({ channel: 'chrome' });
-
 test.beforeEach(async ({ context, page }) => {
   await context.addInitScript(() => localStorage.setItem('hackalem:onboarding:v1', 'dismissed'));
-  // Exercise real WebGL projection and HTML markers without external tile availability.
-  await page.route('https://tiles.openfreemap.org/styles/liberty*', (route) => route.fulfill({
-    contentType: 'application/json',
-    body: JSON.stringify({ version: 8, sources: {}, layers: [{ id: 'background', type: 'background', paint: { 'background-color': '#eef2ec' } }] }),
+  // Real MapLibre projection and our district geometry, independent of tile outages.
+  await page.route('https://tiles.openfreemap.org/styles/liberty*', route => route.fulfill({
+    contentType: 'application/json', body: JSON.stringify({ version: 8, sources: {}, layers: [{ id: 'background', type: 'background', paint: { 'background-color': '#eef2ec' } }] }),
   }));
 });
-
-async function markerGeometry(page: Page) {
-  return page.evaluate(() => {
-    const canvas = document.querySelector('.maplibregl-canvas')!.getBoundingClientRect();
-    const all = [...document.querySelectorAll<HTMLButtonElement>('button[aria-label]')]
-      .filter((button) => /^M\d+:/.test(button.getAttribute('aria-label') ?? ''))
-      .map((button) => {
-        const rect = button.getBoundingClientRect();
-        const hit = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
-        return { id: button.getAttribute('aria-label'), left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom, width: rect.width, height: rect.height, covered: !hit || !button.contains(hit) };
-      });
-    const visible = all.filter((box) => box.width > 0 && box.height > 0 && box.right > canvas.left && box.left < canvas.right && box.bottom > canvas.top && box.top < canvas.bottom);
-    const overlaps = visible.flatMap((a, i) => visible.slice(i + 1).filter((b) =>
-      Math.min(a.right, b.right) - Math.max(a.left, b.left) > 1 && Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 1,
-    ).map((b) => `${a.id} / ${b.id}`));
-    return { count: all.length, visible: visible.length, overlaps, covered: visible.filter(box => box.covered).map(box => box.id), positions: JSON.stringify(all.map((box) => [Math.round(box.left), Math.round(box.top)])) };
-  });
+async function pins(page: Page) {
+  return page.locator('button[data-measure]').evaluateAll(buttons => buttons.map(button => {
+    const element = button as HTMLElement;
+    const rect = element.getBoundingClientRect();
+    return { key: `${element.dataset.measure}-${element.dataset.district}`, longitude: element.dataset.longitude, latitude: element.dataset.latitude, x: Math.round(rect.left + rect.width / 2), y: Math.round(rect.bottom) };
+  }));
 }
-
-async function expectSeparated(page: Page, minimumVisible: number) {
-  let lastPositions = '';
-  let stableSince = Date.now();
+async function settle(page: Page, count: number) {
+  let previous = '', since = Date.now();
   await expect.poll(async () => {
-    const geometry = await markerGeometry(page);
-    if (geometry.positions !== lastPositions) { lastPositions = geometry.positions; stableSince = Date.now(); }
-    return geometry.count === 21 && geometry.overlaps.length === 0 && Date.now() - stableSince >= 250;
-  }, { message: 'All 21 badges must settle without overlapping', intervals: [100], timeout: 10_000 }).toBe(true);
-  expect((await markerGeometry(page)).visible).toBeGreaterThanOrEqual(minimumVisible);
+    const current = await pins(page), signature = JSON.stringify(current);
+    if (signature !== previous) { previous = signature; since = Date.now(); }
+    return current.length === count && Date.now() - since > 250;
+  }, { intervals: [100], timeout: 10_000 }).toBe(true);
 }
-
 for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 }, { width: 390, height: 360 }]) {
-  test(`dense plan badges stay separate through camera and viewport changes ${viewport.width}x${viewport.height}`, async ({ page }, testInfo) => {
+  test(`fixed geographic pins and selected measure area ${viewport.width}x${viewport.height}`, async ({ page }, info) => {
     await page.setViewportSize(viewport);
     await page.goto('/');
-    await expect(page.getByRole('status').filter({ hasText: 'Загружаем карту Астаны' })).toBeHidden();
     await page.getByRole('button', { name: 'План · 0/5' }).click();
     await page.getByRole('combobox', { name: 'Район для районных мер' }).click();
     await page.getByRole('option', { name: 'Нура', exact: true }).click();
-    // Four city-wide measures (20 signs) plus a park in Nura: budget 87, valid directions.
-    for (const id of ['M2', 'M6', 'M12', 'M14', 'M4']) {
-      await page.locator('article').filter({ hasText: new RegExp(`^${id} ·`) }).getByRole('button', { name: 'Добавить в план' }).click();
-    }
-    await expect(page.getByRole('button', { name: 'Рассчитать сценарий' })).toBeEnabled();
+    for (const id of ['M2', 'M6', 'M12', 'M14', 'M4']) await page.locator('article').filter({ hasText: new RegExp(`^${id} ·`) }).getByRole('button', { name: 'Добавить в план' }).click();
     await page.getByRole('button', { name: 'Скрыть план' }).click();
-    // A district detail sheet intentionally covers the map on compact screens.
     await page.getByRole('region', { name: 'Показатели района Нура' }).getByRole('button', { name: 'Закрыть', exact: true }).click();
-    await expectSeparated(page, 21);
-    await expect.poll(async () => (await markerGeometry(page)).covered).toEqual([]);
-    await page.screenshot({ path: testInfo.outputPath('dense-overview.png') });
-
+    await settle(page, 21);
+    const original = await pins(page);
+    await expect(page.locator('[class*="CityEffects"][class*="leaders"]')).toHaveCount(0);
+    await page.screenshot({ path: info.outputPath('fixed-pins.png') });
+    // Removing neighbours must not repack or move the remaining signs.
+    await page.getByRole('button', { name: 'План · 5/5' }).click();
+    await page.getByRole('button', { name: 'Удалить Городская программа озеленения и ветрозащитных полос', exact: true }).click();
+    await page.getByRole('button', { name: 'Скрыть план' }).click();
+    await settle(page, 16);
+    for (const pin of await pins(page)) expect(pin).toEqual(original.find(other => other.key === pin.key));
+    const coordinates = (await pins(page)).map(({ key, longitude, latitude }) => ({ key, longitude, latitude }));
     await page.locator('.maplibregl-ctrl-zoom-out').click();
-    await expectSeparated(page, 21);
-    await page.screenshot({ path: testInfo.outputPath('dense-zoomed-out.png') });
-
-    await page.locator('.maplibregl-ctrl-compass').click();
-    await expectSeparated(page, 21);
-    await page.setViewportSize({ width: viewport.width + 80, height: viewport.height + 40 });
-    await expectSeparated(page, 21);
-
+    await settle(page, 16);
     await page.locator('.maplibregl-canvas').press('ArrowRight');
-    await expectSeparated(page, 1);
-
+    await settle(page, 16);
+    await page.locator('.maplibregl-ctrl-compass').click();
+    await settle(page, 16);
+    await page.setViewportSize({ width: viewport.width + 40, height: viewport.height + 20 });
+    await settle(page, 16);
+    expect((await pins(page)).map(({ key, longitude, latitude }) => ({ key, longitude, latitude }))).toEqual(coordinates);
     await page.getByRole('button', { name: 'Весь город', exact: true }).click();
-    await expectSeparated(page, 21);
-    // Each sign remains individually clickable, including the park from the reported stack.
-    const park = page.locator('button[aria-label^="M4:"]');
-    await park.click();
-    await expect(page.locator('.maplibregl-popup').getByRole('heading', { name: /Парк/ })).toBeVisible();
+    await settle(page, 16);
+    const park = page.locator('button[data-measure="M4"]');
+    await park.press('Enter');
+    await expect(park).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('.maplibregl-popup')).toContainText('Область действия: Нура');
+    await expect(page.locator('.maplibregl-popup a[href^="https://www.openstreetmap.org/"]')).toBeVisible();
+    const popupBox = await page.locator('.maplibregl-popup').boundingBox();
+    expect(popupBox!.y).toBeGreaterThanOrEqual(0);
+    expect(popupBox!.y + popupBox!.height).toBeLessThanOrEqual(viewport.height + 20);
+    await page.screenshot({ path: info.outputPath('district-impact.png') });
+    await page.locator('.maplibregl-popup-close-button').click();
+    await expect(park).toHaveAttribute('aria-pressed', 'false');
+    const city = page.locator('button[data-measure="M12"][data-district="nura"]');
+    await city.press('Enter');
+    await expect(page.locator('button[data-measure="M12"][class*="selected"]')).toHaveCount(5);
+    await expect(page.locator('.maplibregl-popup')).toContainText('Область действия: все пять игровых районов');
+    await page.screenshot({ path: info.outputPath('city-impact.png') });
+    await city.press('Escape');
+    await expect(page.locator('.maplibregl-popup')).toHaveCount(0);
+    await expect(page.locator('button[data-measure][class*="selected"]')).toHaveCount(0);
   });
 }

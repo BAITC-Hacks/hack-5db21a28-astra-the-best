@@ -1,0 +1,212 @@
+{
+  "esil": {
+    "M4": {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 1456208624,
+      "name": "Бейбітшілік пен Келісім аллеясы",
+      "coordinates": [
+        71.417871,
+        51.0938897
+      ]
+    },
+    "M7": {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1510503902,
+      "name": "Қадыр Мырза Әлі атындағы №88 мектеп-лицей",
+      "coordinates": [
+        71.4375201,
+        51.0729929
+      ]
+    },
+    "M8": {
+      "category": "hospital",
+      "osmType": "node",
+      "osmId": 11901465870,
+      "name": "RAVIL",
+      "coordinates": [
+        71.4361617,
+        51.1122999
+      ]
+    },
+    "M9": {
+      "category": "sports_centre",
+      "osmType": "node",
+      "osmId": 11920102369,
+      "name": "WORKOUT FITNESS & GYM",
+      "coordinates": [
+        71.4341744,
+        51.1248605
+      ]
+    }
+  },
+  "almaty": {
+    "M4": {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 258173901,
+      "name": "Парк Афганской войне",
+      "coordinates": [
+        71.4768208,
+        51.1575694
+      ]
+    },
+    "M7": {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1430229102,
+      "name": "№113 жалпы орта білім беретін мектеп",
+      "coordinates": [
+        71.5054896,
+        51.1103792
+      ]
+    },
+    "M8": {
+      "category": "hospital",
+      "osmType": "node",
+      "osmId": 4890275076,
+      "name": "№1 көпбейінді қалалық аурухана",
+      "coordinates": [
+        71.4552371,
+        51.149015
+      ]
+    },
+    "M9": {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 688298538,
+      "name": "Спортивная школа \"SportPlanet\"",
+      "coordinates": [
+        71.5231803,
+        51.1486661
+      ]
+    },
+    "M6": {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 556574284,
+      "name": "Сад \"Чистый ручей\"",
+      "coordinates": [
+        71.4656648,
+        51.1351501
+      ]
+    }
+  },
+  "saryarka": {
+    "M7": {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1513435671,
+      "name": "№1 арнайы мектеп-интернаты",
+      "coordinates": [
+        71.3251774,
+        51.1804444
+      ]
+    },
+    "M8": {
+      "category": "hospital",
+      "osmType": "node",
+      "osmId": 4938764788,
+      "name": "Городская поликлиника №14",
+      "coordinates": [
+        71.4064899,
+        51.1896944
+      ]
+    },
+    "M6": {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 262166875,
+      "name": "Сквер шахматистов",
+      "coordinates": [
+        71.4265269,
+        51.1649079
+      ]
+    }
+  },
+  "baikonur": {
+    "M4": {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 500056825,
+      "name": "Құтқарушылар саябағы",
+      "coordinates": [
+        71.4633182,
+        51.1589595
+      ]
+    },
+    "M7": {
+      "category": "school",
+      "osmType": "node",
+      "osmId": 4903360683,
+      "name": "Школа №49",
+      "coordinates": [
+        71.4009806,
+        51.2075119
+      ]
+    },
+    "M14": {
+      "category": "fire_station",
+      "osmType": "node",
+      "osmId": 6855175917,
+      "name": "Специализированная пожарная часть №2",
+      "coordinates": [
+        71.4305037,
+        51.170703
+      ]
+    },
+    "M1": {
+      "category": "bus_station",
+      "osmType": "node",
+      "osmId": 4903096258,
+      "name": "Автобусный парк №3",
+      "coordinates": [
+        71.4699483,
+        51.1965846
+      ]
+    },
+    "M6": {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 1460702136,
+      "name": "Ататүрік саябағы",
+      "coordinates": [
+        71.4313708,
+        51.151994
+      ]
+    }
+  },
+  "nura": {
+    "M4": {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 1467797207,
+      "name": "NU Park",
+      "coordinates": [
+        71.3992613,
+        51.0875249
+      ]
+    },
+    "M7": {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1295427391,
+      "name": "Ы. Алтынсарин атындағы Binom school",
+      "coordinates": [
+        71.3948628,
+        51.1203518
+      ]
+    },
+    "M9": {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 916153705,
+      "name": "Dopșý Arena",
+      "coordinates": [
+        71.3697068,
+        51.1302899
+      ]
+    }
+  }
+}

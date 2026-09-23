@@ -1,0 +1,30 @@
+{
+  "task": "P32",
+  "status": "done",
+  "agent": "CodexDesktop",
+  "session": "codex-desktop-20260923-fixed-geo-p32",
+  "claimed_at": "2026-09-23T16:52:11.0185228+05:00",
+  "updated_at": "2026-09-23T17:19:07.1677164+05:00",
+  "signature": "CodexDesktop / codex-desktop-20260923-fixed-geo-p32 accepts task P32",
+  "artifacts": [
+    "src/features/city-effects/CityEffects.tsx",
+    "src/features/city-effects/CityEffects.module.css",
+    "src/features/city-effects/impact.ts",
+    "src/features/city-effects/positions.ts",
+    "src/features/city-effects/model.ts",
+    "src/features/city-effects/sites.json",
+    "src/features/city-effects/landmarks.json",
+    "scripts/build-effect-landmarks.mjs",
+    "docs/sources/effect-landmarks-osm.json",
+    "docs/MAP_SOURCES.md",
+    "tests/city-effects",
+    "tests/e2e/marker-spacing.spec.ts"
+  ],
+  "checks": [
+    "2026-09-23: npx vitest run tests/city-effects --reporter=dot PASS: 9 tests / 4 files; geometry, OSM source identity, stable placement, layer scope/order and lifecycle.",
+    "2026-09-23: Typecheck and scoped ESLint PASS; npm run build PASS.",
+    "2026-09-23: npx playwright test tests/e2e/marker-spacing.spec.ts --workers=1 --output D:/HackAlem/tmp/p32/final PASS: 3/3 (1280x800, 390x844, 390x360). Stable coordinates during zoom/pan/resize and removal, district/city highlight selection, popup bounds and Escape.",
+    "2026-09-23: Offline node scripts/build-effect-landmarks.mjs generated 20 OSM references from 133 saved candidates; all 70 sites remain inside the correct district and over 1.4 km apart within each district. No runtime geocoding or paid AI calls."
+  ],
+  "notes": "P32 replaces P26 screen repacking per direct user request. Pins now use fixed geographic coordinates and bottom anchors; no screen offsets, leader lines or camera listeners. Natural overlap at distant zoom is accepted. Twenty sites use checked OSM landmarks; fifty remain explicitly illustrative. Purple district/city impact layers are above base layers on hover/focus/click, with source links and actual scope in bounded popups. Browser and production checks passed. CityMap/onboarding/other agent tasks were not changed by P32. Root source work is complete; P38 may take popup/model/CSS for numeric palette after this commit."
+}

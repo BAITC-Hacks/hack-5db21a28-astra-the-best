@@ -1,0 +1,1345 @@
+{
+  "source": "https://nominatim.openstreetmap.org/search",
+  "date": "2026-09-23",
+  "license": "ODbL-1.0",
+  "attribution": "OpenStreetMap contributors",
+  "bbox": [
+    71.217973,
+    50.857608,
+    71.785191,
+    51.35111
+  ],
+  "query": "[category], bounded=1, limit=40; one request per category, no runtime requests",
+  "features": [
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 1467797207,
+      "name": "NU Park",
+      "coordinates": [
+        71.3992613,
+        51.0875249
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 112177946,
+      "name": "Президент саябағы",
+      "coordinates": [
+        71.4603008,
+        51.1248954
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 508761726,
+      "name": "",
+      "coordinates": [
+        71.4752494,
+        51.1061332
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 1363058986,
+      "name": "Триатлон саябағы",
+      "coordinates": [
+        71.4500015,
+        51.1360431
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 37883865,
+      "name": "Отан қорғаушылар алаңы",
+      "coordinates": [
+        71.4615673,
+        51.1542121
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 262491203,
+      "name": "",
+      "coordinates": [
+        71.4375163,
+        51.1468995
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 258147836,
+      "name": "",
+      "coordinates": [
+        71.4716261,
+        51.1628325
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 1456208624,
+      "name": "Бейбітшілік пен Келісім аллеясы",
+      "coordinates": [
+        71.417871,
+        51.0938897
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 243041609,
+      "name": "Арай саябағы",
+      "coordinates": [
+        71.4429838,
+        51.1340712
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 1424109192,
+      "name": "Самал саябағы",
+      "coordinates": [
+        71.4458491,
+        51.102058
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 68678495,
+      "name": "",
+      "coordinates": [
+        71.443127,
+        51.1438917
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 1460702136,
+      "name": "Ататүрік саябағы",
+      "coordinates": [
+        71.4313708,
+        51.151994
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 258173901,
+      "name": "Парк Афганской войне",
+      "coordinates": [
+        71.4768208,
+        51.1575694
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 1180591110,
+      "name": "",
+      "coordinates": [
+        71.559819,
+        51.1478339
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 500056825,
+      "name": "Құтқарушылар саябағы",
+      "coordinates": [
+        71.4633182,
+        51.1589595
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 498773864,
+      "name": "",
+      "coordinates": [
+        71.3375087,
+        51.1803687
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 507913668,
+      "name": "",
+      "coordinates": [
+        71.6425351,
+        51.1178034
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 524180479,
+      "name": "",
+      "coordinates": [
+        71.4396562,
+        51.1552776
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 262166875,
+      "name": "Сквер шахматистов",
+      "coordinates": [
+        71.4265269,
+        51.1649079
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 243780989,
+      "name": "",
+      "coordinates": [
+        71.4072337,
+        51.1954149
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 556574284,
+      "name": "Сад \"Чистый ручей\"",
+      "coordinates": [
+        71.4656648,
+        51.1351501
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 502046662,
+      "name": "«Ататүрік» саябағы",
+      "coordinates": [
+        71.4315871,
+        51.1521024
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 1251595831,
+      "name": "",
+      "coordinates": [
+        71.3493659,
+        50.9718388
+      ]
+    },
+    {
+      "category": "park",
+      "osmType": "way",
+      "osmId": 318341480,
+      "name": "",
+      "coordinates": [
+        71.7514327,
+        51.0781188
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1295427391,
+      "name": "Ы. Алтынсарин атындағы Binom school",
+      "coordinates": [
+        71.3948628,
+        51.1203518
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1460675883,
+      "name": "Қадыр Мырза Әлі атындағы Binom School мектеп-лицейі",
+      "coordinates": [
+        71.4483351,
+        51.0997249
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1513435671,
+      "name": "№1 арнайы мектеп-интернаты",
+      "coordinates": [
+        71.3251774,
+        51.1804444
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1460675880,
+      "name": "№104 жалпы орта білім беретін мектеп",
+      "coordinates": [
+        71.4418294,
+        51.1044185
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1531630225,
+      "name": "Т. Кәкішұлы ат. №94 мектеп-лицей",
+      "coordinates": [
+        71.2902132,
+        51.1359904
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1513992059,
+      "name": "М. Шоқай ат. №51 мектеп-гимназия",
+      "coordinates": [
+        71.4810907,
+        51.1433259
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1513435687,
+      "name": "№22 мектеп-гимназия",
+      "coordinates": [
+        71.4755376,
+        51.1533353
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1531630216,
+      "name": "К. Ақышев ат. №69 мектеп-гимназия",
+      "coordinates": [
+        71.2546164,
+        51.1287727
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1547181710,
+      "name": "",
+      "coordinates": [
+        71.3466083,
+        51.1499248
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1475410932,
+      "name": "№ 45 жалпы орта білім беретін мектеп",
+      "coordinates": [
+        71.3849566,
+        51.0979555
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1510503902,
+      "name": "Қадыр Мырза Әлі атындағы №88 мектеп-лицей",
+      "coordinates": [
+        71.4375201,
+        51.0729929
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1513435676,
+      "name": "Т. Айбергенов ат. №16 жалпы орта білім беретін мектеп",
+      "coordinates": [
+        71.456641,
+        51.1659583
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1454112385,
+      "name": "№117 жалпы орта білім беретін мектеп",
+      "coordinates": [
+        71.3919418,
+        51.136228
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1512942775,
+      "name": "Ақселеу Сейдімбек атындағы №54 мектеп-лицей",
+      "coordinates": [
+        71.4378859,
+        51.1613081
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1513435703,
+      "name": "№114 жалпы орта білім беретін мектеп",
+      "coordinates": [
+        71.4805729,
+        51.1615403
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1519562357,
+      "name": "№119 жалпы орта білім беретін мектеп",
+      "coordinates": [
+        71.4493298,
+        51.1650292
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1547014763,
+      "name": "",
+      "coordinates": [
+        71.5649098,
+        51.1274275
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1512939111,
+      "name": "Шәкәрім атындағы №56 мектеп-лицей",
+      "coordinates": [
+        71.4066304,
+        51.1611797
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1531404935,
+      "name": "Б. Момышұлы ат. №53 мектеп-лицей",
+      "coordinates": [
+        71.4759382,
+        51.1376119
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1513435683,
+      "name": "Қ. Қайсенов ат. №27 мектеп-лицей",
+      "coordinates": [
+        71.4414147,
+        51.1553427
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1430229102,
+      "name": "№113 жалпы орта білім беретін мектеп",
+      "coordinates": [
+        71.5054896,
+        51.1103792
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1513435667,
+      "name": "С. Сейфуллин ат. №80 мектеп-гимназия",
+      "coordinates": [
+        71.3840045,
+        51.1675691
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1513435689,
+      "name": "№30 мектеп-гимназия",
+      "coordinates": [
+        71.4665859,
+        51.1501857
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1534637204,
+      "name": "",
+      "coordinates": [
+        71.3769523,
+        51.0798337
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1163895965,
+      "name": "№26 мектеп-гимназия",
+      "coordinates": [
+        71.3888231,
+        51.1985598
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1512942776,
+      "name": "Жұмабек Тәшенев атындағы №10 мектеп-гимназия",
+      "coordinates": [
+        71.4316275,
+        51.159692
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1531635583,
+      "name": "",
+      "coordinates": [
+        71.5254913,
+        51.1165476
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1512939125,
+      "name": "№3 мектеп-гимназия",
+      "coordinates": [
+        71.4246693,
+        51.1705267
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1512939139,
+      "name": "№46 балабақша-мектеп-гимназия",
+      "coordinates": [
+        71.4176753,
+        51.1871328
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1530014507,
+      "name": "№14 мектеп-гимназия",
+      "coordinates": [
+        71.4024022,
+        51.1813667
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1461758834,
+      "name": "Медицина мектебі",
+      "coordinates": [
+        71.4089935,
+        51.1180612
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "way",
+      "osmId": 1512939123,
+      "name": "№2 арнайы мектеп",
+      "coordinates": [
+        71.4165088,
+        51.1738354
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "node",
+      "osmId": 4897291361,
+      "name": "Казахско-Турецкий лицей-интернат для одаренных юношей",
+      "coordinates": [
+        71.448327,
+        51.1744077
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "node",
+      "osmId": 4986870862,
+      "name": "Школа №13",
+      "coordinates": [
+        71.5197569,
+        51.1233306
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "node",
+      "osmId": 4959651311,
+      "name": "Школа № 23",
+      "coordinates": [
+        71.4246833,
+        51.1982032
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "node",
+      "osmId": 4903360683,
+      "name": "Школа №49",
+      "coordinates": [
+        71.4009806,
+        51.2075119
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "node",
+      "osmId": 4464718992,
+      "name": "Школа №29",
+      "coordinates": [
+        71.5792591,
+        51.146958
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "node",
+      "osmId": 4908858029,
+      "name": "Школа №42",
+      "coordinates": [
+        71.6858661,
+        51.1084665
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "node",
+      "osmId": 5208021421,
+      "name": "",
+      "coordinates": [
+        71.3992067,
+        51.1928562
+      ]
+    },
+    {
+      "category": "school",
+      "osmType": "node",
+      "osmId": 453247472,
+      "name": "Мирас",
+      "coordinates": [
+        71.4878091,
+        51.1521854
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "node",
+      "osmId": 11901465870,
+      "name": "RAVIL",
+      "coordinates": [
+        71.4361617,
+        51.1122999
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "relation",
+      "osmId": 20682807,
+      "name": "№1 көпбейінді қалалық аурухана",
+      "coordinates": [
+        71.5295312,
+        51.1425878
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "relation",
+      "osmId": 20679172,
+      "name": "№3 көпбейінді қалалық аурухана",
+      "coordinates": [
+        71.4115713,
+        51.1848585
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 258781121,
+      "name": "Қазақстан Республикасы Президенті Іс Басқармасының Медициналық орталығы",
+      "coordinates": [
+        71.4240369,
+        51.0758266
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 1534637215,
+      "name": "",
+      "coordinates": [
+        71.3825912,
+        51.0820932
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 113104589,
+      "name": "Ұлттық ғылыми медициналық орталықтың",
+      "coordinates": [
+        71.4952445,
+        51.1480154
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 258797368,
+      "name": "Ана мен бала ұлттық ғылыми орталығы",
+      "coordinates": [
+        71.4067584,
+        51.1247575
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 1513435702,
+      "name": "Академик Н.Ж. Батпенов атындағы Ұлттық ғылыми травматология және ортопедия орталығы",
+      "coordinates": [
+        71.4784798,
+        51.1593548
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 1513435694,
+      "name": "№2 көпбейінді қалалық балалар ауруханасы",
+      "coordinates": [
+        71.5281976,
+        51.1406439
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 424894706,
+      "name": "Ұлттық ғылыми онкология орталығы",
+      "coordinates": [
+        71.4072422,
+        51.1186807
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 424894638,
+      "name": "№ 3 көпбейінді қалалық балалар ауруханасы",
+      "coordinates": [
+        71.4193863,
+        51.0828711
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 424894691,
+      "name": "Ұлттық ғылыми кардиохирургия орталығы",
+      "coordinates": [
+        71.4040199,
+        51.1185115
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 424894698,
+      "name": "Республикалық балаларды оңалту орталығы",
+      "coordinates": [
+        71.4049512,
+        51.1202154
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 424894649,
+      "name": "№2 көпбейінді қалалық аурухана",
+      "coordinates": [
+        71.4091546,
+        51.0841319
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 427773095,
+      "name": "Емханасы бар орталық госпиталь",
+      "coordinates": [
+        71.4029131,
+        51.0836421
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 424894690,
+      "name": "Ұлттық нейрохирургия орталығы",
+      "coordinates": [
+        71.4077014,
+        51.1217114
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 1455980749,
+      "name": "Қалалық психикалық денсаулық орталығы",
+      "coordinates": [
+        71.415216,
+        51.0816418
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 1529916154,
+      "name": "№2 көпбейінді облыстық ауруханасы",
+      "coordinates": [
+        71.496111,
+        51.1626678
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 1461478844,
+      "name": "№1 перинаталдық орталық",
+      "coordinates": [
+        71.4127819,
+        51.0836013
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 1455976036,
+      "name": "Қазақстан Республикасы Президентінің Іс Басқармасы Медициналық орталығының ауруханасы",
+      "coordinates": [
+        71.4293253,
+        51.0762807
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 1454343250,
+      "name": "Балалар кардиохирургиялық орталығы",
+      "coordinates": [
+        71.4120553,
+        51.1267361
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "node",
+      "osmId": 4601151592,
+      "name": "КДЛ Олимп",
+      "coordinates": [
+        71.4753905,
+        51.1576369
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "node",
+      "osmId": 2671197590,
+      "name": "Шипагер",
+      "coordinates": [
+        71.4135324,
+        51.0833588
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "node",
+      "osmId": 4914174855,
+      "name": "ҚР ҰҚК емханасы бар орталық әскери госпиталі",
+      "coordinates": [
+        71.4134756,
+        51.1838136
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "node",
+      "osmId": 13713634837,
+      "name": "Жанұя",
+      "coordinates": [
+        71.3980048,
+        51.120643
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "node",
+      "osmId": 4938764788,
+      "name": "Городская поликлиника №14",
+      "coordinates": [
+        71.4064899,
+        51.1896944
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "node",
+      "osmId": 11563338671,
+      "name": "Городской центр фтизиопульмонологии",
+      "coordinates": [
+        71.606352,
+        51.1605626
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "node",
+      "osmId": 1698389965,
+      "name": "МДС Сервис",
+      "coordinates": [
+        71.4365158,
+        51.1539104
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "node",
+      "osmId": 7543846886,
+      "name": "Медцентр \"Достык\"",
+      "coordinates": [
+        71.4803561,
+        51.1901909
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "node",
+      "osmId": 5768062596,
+      "name": "Противотуберкулезный диспансер",
+      "coordinates": [
+        71.606993,
+        51.1610419
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "node",
+      "osmId": 4890275076,
+      "name": "№1 көпбейінді қалалық аурухана",
+      "coordinates": [
+        71.4552371,
+        51.149015
+      ]
+    },
+    {
+      "category": "hospital",
+      "osmType": "way",
+      "osmId": 1251572144,
+      "name": "",
+      "coordinates": [
+        71.3685845,
+        50.9913636
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 166267459,
+      "name": "Алау мұзайдыны сарайы",
+      "coordinates": [
+        71.4051536,
+        51.1047086
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 166265821,
+      "name": "Сарыарқа",
+      "coordinates": [
+        71.4073308,
+        51.1100278
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 688298538,
+      "name": "Спортивная школа \"SportPlanet\"",
+      "coordinates": [
+        71.5231803,
+        51.1486661
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "node",
+      "osmId": 5776315441,
+      "name": "Life fitness",
+      "coordinates": [
+        71.4295982,
+        51.1199775
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "node",
+      "osmId": 11920102369,
+      "name": "WORKOUT FITNESS & GYM",
+      "coordinates": [
+        71.4341744,
+        51.1248605
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 1383011542,
+      "name": "Sana sports",
+      "coordinates": [
+        71.4632908,
+        51.1545118
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 425721187,
+      "name": "Athletic Center",
+      "coordinates": [
+        71.3948207,
+        51.0871666
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 916153705,
+      "name": "Dopșý Arena",
+      "coordinates": [
+        71.3697068,
+        51.1302899
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 1102228687,
+      "name": "Baqytbek Arena",
+      "coordinates": [
+        71.2564542,
+        51.1289349
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "node",
+      "osmId": 453247475,
+      "name": "Ice Club",
+      "coordinates": [
+        71.4745113,
+        51.1474114
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "node",
+      "osmId": 11345949790,
+      "name": "The Ring",
+      "coordinates": [
+        71.4297581,
+        51.1130535
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 1460088071,
+      "name": "Qazaqstan",
+      "coordinates": [
+        71.3925789,
+        51.1036165
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 217676871,
+      "name": "Алатау",
+      "coordinates": [
+        71.4512236,
+        51.1516681
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 425276242,
+      "name": "Жақсылық Үшкемпіров атындағы жекпе-жек сарайы",
+      "coordinates": [
+        71.4094095,
+        51.114414
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 499634341,
+      "name": "",
+      "coordinates": [
+        71.6522516,
+        51.1143759
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 1148721831,
+      "name": "",
+      "coordinates": [
+        71.3963509,
+        51.1269917
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 500360203,
+      "name": "",
+      "coordinates": [
+        71.4530289,
+        51.1508418
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 241241695,
+      "name": "№10 балалар мен жасөспірімдердің шайбалы хоккейден мамандандырылған спорт мектебі",
+      "coordinates": [
+        71.464981,
+        51.156875
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 1148721830,
+      "name": "",
+      "coordinates": [
+        71.3959939,
+        51.1269057
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 240485199,
+      "name": "Толқын",
+      "coordinates": [
+        71.4554897,
+        51.1539918
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 428784906,
+      "name": "Турлан",
+      "coordinates": [
+        71.4094526,
+        51.1517665
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 240921097,
+      "name": "Паралимпийский тренировочный центр",
+      "coordinates": [
+        71.3956582,
+        51.1489466
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 241053202,
+      "name": "Спорткомплекс ABYROY (Астана)",
+      "coordinates": [
+        71.4070363,
+        51.1696575
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 236534117,
+      "name": "Спорткомплекс Динамо",
+      "coordinates": [
+        71.4035278,
+        51.187433
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 1102541245,
+      "name": "",
+      "coordinates": [
+        71.5822381,
+        51.1444646
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 1452597421,
+      "name": "",
+      "coordinates": [
+        71.4155812,
+        51.0919679
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "node",
+      "osmId": 4904163499,
+      "name": "Гольф клуб",
+      "coordinates": [
+        71.5672874,
+        51.1099628
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "node",
+      "osmId": 5057961279,
+      "name": "",
+      "coordinates": [
+        71.4519936,
+        51.1502668
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "node",
+      "osmId": 3780590225,
+      "name": "Тренажерный зал",
+      "coordinates": [
+        71.4573247,
+        51.1589841
+      ]
+    },
+    {
+      "category": "sports_centre",
+      "osmType": "way",
+      "osmId": 1523427657,
+      "name": "Алан",
+      "coordinates": [
+        71.3725099,
+        51.0056881
+      ]
+    },
+    {
+      "category": "fire_station",
+      "osmType": "way",
+      "osmId": 1462116430,
+      "name": "Асқар Забикулин атындағы №6 мамандандырылған өрт сөндіру бөлімі",
+      "coordinates": [
+        71.4057499,
+        51.1160923
+      ]
+    },
+    {
+      "category": "fire_station",
+      "osmType": "way",
+      "osmId": 1455976035,
+      "name": "№4 мамандырылған өрт сөндіру бөлімі",
+      "coordinates": [
+        71.4304372,
+        51.0752111
+      ]
+    },
+    {
+      "category": "fire_station",
+      "osmType": "node",
+      "osmId": 6855175917,
+      "name": "Специализированная пожарная часть №2",
+      "coordinates": [
+        71.4305037,
+        51.170703
+      ]
+    },
+    {
+      "category": "fire_station",
+      "osmType": "way",
+      "osmId": 30614782,
+      "name": "Төтенше жағдайлар департаменті",
+      "coordinates": [
+        71.419898,
+        51.173383
+      ]
+    },
+    {
+      "category": "bus_station",
+      "osmType": "node",
+      "osmId": 4903096258,
+      "name": "Автобусный парк №3",
+      "coordinates": [
+        71.4699483,
+        51.1965846
+      ]
+    },
+    {
+      "category": "bus_station",
+      "osmType": "way",
+      "osmId": 24805340,
+      "name": "Сапаржай автовокзалы",
+      "coordinates": [
+        71.4116915,
+        51.1940332
+      ]
+    },
+    {
+      "category": "bus_station",
+      "osmType": "way",
+      "osmId": 459994431,
+      "name": "",
+      "coordinates": [
+        71.7305465,
+        51.0936016
+      ]
+    }
+  ]
+}
