@@ -24,7 +24,8 @@ describe('Planner', () => {
     for (const id of ['M7', 'M8', 'M10', 'M12']) await user.click(within(card(id)).getByRole('button', { name: 'Добавить в план' }));
     expect(screen.getByText('4 / 5 решений')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Рассчитать сценарий' }).hasAttribute('disabled')).toBe(true);
-    await user.selectOptions(screen.getByLabelText('Район для районных мер'), 'saryarka');
+    await user.click(screen.getByRole('combobox', { name: /Район для районных мер/ }));
+    await user.click(screen.getByRole('option', { name: 'Сарыарка' }));
     await user.click(within(card('M5')).getByRole('button', { name: 'Добавить в план' }));
     expect(screen.getByText('5 / 100')).toBeTruthy();
     await user.click(screen.getByRole('button', { name: 'Рассчитать сценарий' }));

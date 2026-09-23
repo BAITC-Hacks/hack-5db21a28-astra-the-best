@@ -30,7 +30,7 @@ for (const viewport of [{ width: 390, height: 360 }, { width: 390, height: 844 }
     await expect(page.getByRole('heading', { name: 'План для Астаны' })).toBeVisible();
     if (viewport.width === 1280) {
       await page.locator('[aria-hidden="true"] button').filter({ hasText: /^Нура$/ }).click();
-      await expect(page.getByLabel('Район для районных мер')).toHaveValue('nura');
+      await expect(page.getByRole('combobox', { name: /Район для районных мер/ })).toContainText('Нура');
     }
     await page.screenshot({ path: testInfo.outputPath('planner.png') });
     await page.getByText('Исходные показатели пяти районов').click();
@@ -49,9 +49,11 @@ for (const viewport of [{ width: 390, height: 360 }, { width: 390, height: 844 }
     expect(metrics.offscreen).toEqual([]);
 
     await page.getByText('Исходные показатели пяти районов').click();
-    await page.getByLabel('Район для районных мер').selectOption('nura');
+    await page.getByRole('combobox', { name: /Район для районных мер/ }).click();
+    await page.getByRole('option', { name: 'Нура', exact: true }).click();
     for (const id of ['M7', 'M8', 'M10', 'M12']) await page.locator('article').filter({ hasText: new RegExp(`^${id} ·`) }).getByRole('button', { name: 'Добавить в план' }).click();
-    await page.getByLabel('Район для районных мер').selectOption('saryarka');
+    await page.getByRole('combobox', { name: /Район для районных мер/ }).click();
+    await page.getByRole('option', { name: 'Сарыарка', exact: true }).click();
     await page.locator('article').filter({ hasText: /^M5 ·/ }).getByRole('button', { name: 'Добавить в план' }).click();
     await page.getByRole('button', { name: 'Рассчитать сценарий' }).click();
     await expect(page.getByRole('heading', { name: 'Итог городских решений' })).toBeVisible();

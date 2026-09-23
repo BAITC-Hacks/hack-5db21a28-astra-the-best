@@ -1,0 +1,76 @@
+{
+  "profile": "C:\\Users\\Magyr\\AppData\\Local\\Temp\\HackAlem-FPS-PresentMon\\chrome-profile",
+  "startedAt": "2026-09-23T10:10:28.638Z",
+  "initial": {
+    "innerWidth": 1920,
+    "innerHeight": 1080,
+    "outerWidth": 1920,
+    "outerHeight": 1080,
+    "visibilityState": "visible",
+    "focused": true,
+    "devicePixelRatio": 1,
+    "screenWidth": 1920,
+    "screenHeight": 1080,
+    "fullscreen": false
+  },
+  "steps": [
+    {
+      "name": "3D центр",
+      "at": 1790158230277
+    },
+    {
+      "name": "Весь город",
+      "at": 1790158232517
+    },
+    {
+      "name": "3D центр",
+      "at": 1790158234781
+    },
+    {
+      "name": "Весь город",
+      "at": 1790158237089
+    },
+    {
+      "name": "3D центр",
+      "at": 1790158239381
+    },
+    {
+      "name": "Весь город",
+      "at": 1790158241728
+    },
+    {
+      "name": "3D центр",
+      "at": 1790158243984
+    },
+    {
+      "name": "Весь город",
+      "at": 1790158246258
+    },
+    {
+      "name": "3D центр",
+      "at": 1790158248543
+    },
+    {
+      "name": "Весь город",
+      "at": 1790158250831
+    },
+    {
+      "name": "3D центр",
+      "at": 1790158253136
+    },
+    {
+      "name": "Весь город",
+      "at": 1790158255447
+    }
+  ],
+  "final": {
+    "innerWidth": 1920,
+    "innerHeight": 1079,
+    "visibilityState": "visible",
+    "focused": true,
+    "devicePixelRatio": 1
+  },
+  "presentMonExitCode": 0,
+  "presentMonStderr": "warning: PresentMon requires elevated privilege in order to query processes that are\r\n         short-running or started on another account.  Without it, those processes will\r\n         be listed as '<unknown>' and they can't be targeted by --process_name nor trigger\r\n         --terminate_on_proc_exit.\r\n",
+  "finishedAt": "2026-09-23T10:11:00.479Z"
+}

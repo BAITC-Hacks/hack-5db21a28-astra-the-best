@@ -1,26 +1,31 @@
 {
   "task": "P10",
-  "status": "review",
+  "status": "done",
   "agent": "CodexSubagent-Sol",
   "session": "codex-subagent-sol-20260923-p10-b83f1c",
   "claimed_at": "2026-09-23T14:31:26.2778229+05:00",
-  "updated_at": "2026-09-23T15:07:36.2352099+05:00",
+  "updated_at": "2026-09-23T15:18:44.6154349+05:00",
   "signature": "CodexSubagent-Sol / codex-subagent-sol-20260923-p10-b83f1c accepts task P10",
   "artifacts": [
     "tests/e2e/scenario.spec.ts",
     "tests/e2e/performance.spec.ts",
     "tests/e2e/layout.spec.ts",
+    "tests/fixtures/performance/chrome-30s-kiosk.zip",
+    "tests/fixtures/performance/headed-kiosk-run.json",
+    "tests/ui/planner.test.tsx",
     "docs/ACCEPTANCE.md"
   ],
   "checks": [
-    "npm.cmd run test:e2e -- --reporter=line --workers=2: 21 passed in 48.9s (2026-09-23)",
+    "npm.cmd run test:e2e -- --reporter=line --workers=2: 21 passed in 49.7s after P16 dropdown change (2026-09-23)",
+    "npm.cmd test -- --run tests/ui/planner.test.tsx: 4 passed (2026-09-23)",
     "npm.cmd run typecheck: passed (2026-09-23)",
-    "390x360, 390x844, 1280x800 Chrome: documentWidth=viewport; no offscreen planner controls or map control overlaps",
-    "First 12 Tab with planner open: no focus in aria-hidden map at all 3 sizes; pointer-click Nura updates planner on desktop",
+    "390x360, 390x844, 1280x800 Chrome: documentWidth=viewport, no offscreen planner controls or map control overlap; first 12 Tab skip aria-hidden map",
     "WebGL-disabled Chrome: error visible, planner and report accessible",
-    "1920x1080 Chrome headless: map 1903/2189/2180 ms; district reaction 9/15/9 ms; 30-second rAF median 163.9 callbacks/s is not actual GPU FPS",
-    "One live OpenAI call by P06/P09 owner: HTTP 200, gpt-4.1-mini, 29 facts; recommendation did not name alternative measure ID",
+    "1920x1080 headless Chrome: first controllable map 1903/2189/2180/1604 ms, district reaction 9/15/9/8 ms",
+    "1920x1080 headed Chrome kiosk/PresentMon, Intel UHD D3D11, PID 20100, swapchain 0x1C8B69568A0: 1678 valid displayed frames, median 54.5 displayed changes/s over 30 one-second bins including empty bins; source CSV ZIP SHA256 51B2DF8FDAFA1437F236882A947F106F03E9719EDF1510D831B23F95A3172062",
+    "Headed 12-click route: visible/focused, initial viewport 1920x1080, final 1920x1079; route JSON SHA256 14C08EF8AA2DCFEFE573A7ACE2F42D57F9221874856FDCA48432A1DA713F2CCD",
+    "Final live OpenAI check by P06/P09 owner after prompt fix: HTTP 200, gpt-4.1-mini, 29 facts, valid factIds; risks and recommendation reference M7/M8/M10 in Nura and M5 in Saryarka",
     "Tracked files and .next/static secret-pattern scan: no matches"
   ],
-  "notes": "P10 acceptance E2E and documentation complete; review only. Gaps: actual rendered GPU FPS >=30 at 1920x1080 on documented 30-second route requires headed fullscreen/PresentMon measurement; real AI response structure/facts passed, but specific alternative measure/district compromise in generated text was not confirmed. No repeat paid call. Keep review, not done."
+  "notes": "All P10 acceptance criteria confirmed on current worktree. Final AI prompt returned valid concrete tradeoff; headed PresentMon median 54.5 displayed changes/s exceeds 30 target. P16 custom dropdowns integrated into P10 E2E and P07 UI tests. FPS evidence stored as ZIP + route JSON in tests/fixtures/performance. Final commit validation/delivery belongs to P12."
 }

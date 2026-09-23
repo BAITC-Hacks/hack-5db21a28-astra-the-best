@@ -10,13 +10,18 @@ const control = [
   { measureId: 'M5', districtId: 'saryarka' },
 ];
 
+async function chooseMenu(page: import('@playwright/test').Page, label: string, option: string) {
+  await page.getByRole('combobox', { name: new RegExp(label) }).click();
+  await page.getByRole('option', { name: option, exact: true }).click();
+}
+
 async function buildControlPlan(page: import('@playwright/test').Page) {
   await page.goto('/');
   await page.getByRole('button', { name: 'План · 0/5' }).click();
-  await page.getByLabel('Район для районных мер').selectOption('nura');
+  await chooseMenu(page, 'Район для районных мер', 'Нура');
   for (const id of ['M7', 'M8', 'M10', 'M12']) await page.locator('article').filter({ hasText: new RegExp(`^${id} ·`) }).getByRole('button', { name: 'Добавить в план' }).click();
   await expect(page.getByRole('button', { name: 'Рассчитать сценарий' })).toBeDisabled();
-  await page.getByLabel('Район для районных мер').selectOption('saryarka');
+  await chooseMenu(page, 'Район для районных мер', 'Сарыарка');
   await page.locator('article').filter({ hasText: /^M5 ·/ }).getByRole('button', { name: 'Добавить в план' }).click();
 }
 
@@ -105,8 +110,8 @@ test('narrow screen keeps the plan and its primary action usable', async ({ page
   await page.getByRole('button', { name: 'План · 0/5' }).click();
   await expect(page.getByRole('heading', { name: 'План для Астаны' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Рассчитать сценарий' })).toBeVisible();
-  await page.getByLabel('Район для районных мер').focus();
-  await expect(page.getByLabel('Район для районных мер')).toBeFocused();
+  await page.getByRole('combobox', { name: /Район для районных мер/ }).focus();
+  await expect(page.getByRole('combobox', { name: /Район для районных мер/ })).toBeFocused();
 });
 
 test('all five zones and map effect states remain available across modes', async ({ page }) => {
@@ -150,7 +155,7 @@ test('an old simulation response cannot restore a changed plan', async ({ page }
 test('all 14 measures add and remove their map signs in the intended zones', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'План · 0/5' }).click();
-  await page.getByLabel('Район для районных мер').selectOption('nura');
+  await chooseMenu(page, 'Район для районных мер', 'Нура');
   const scenario = await (await page.request.get('/api/scenario')).json();
   for (const measure of scenario.measures as { id: string; name: string; scope: string }[]) {
     await page.locator('article').filter({ hasText: new RegExp(`^${measure.id} ·`) }).getByRole('button', { name: 'Добавить в план' }).click();
@@ -165,7 +170,7 @@ test('whole-city controls, indicator legend and map attribution are available', 
   await page.goto('/');
   await expect(page.getByRole('button', { name: 'Весь город' })).toBeVisible();
   await expect(page.getByRole('button', { name: '3D центр' })).toBeVisible();
-  await page.getByLabel('Слой показателей').selectOption('S1');
+  await chooseMenu(page, 'Слой показателей', 'Разгрузка дорог');
   await expect(page.getByText(/Ниже 40 — критично/)).toBeVisible();
   await expect(page.getByRole('link', { name: /OpenStreetMap contributors/ }).first()).toBeVisible();
   await expect(page.getByRole('link', { name: /OpenFreeMap/ }).first()).toBeVisible();
@@ -182,11 +187,12 @@ test('map style failure is explained while the decision list remains available',
 test('keyboard can choose a district and add a measure', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'План · 0/5' }).click();
-  const district = page.getByLabel('Район для районных мер');
+  const district = page.getByRole('combobox', { name: /Район для районных мер/ });
   await district.focus();
+  await district.press('ArrowDown');
   await district.press('End');
   await district.press('Enter');
-  await expect(district).toHaveValue('nura');
+  await expect(district).toContainText('Нура');
   const add = page.locator('article').filter({ hasText: /^M7 ·/ }).getByRole('button', { name: 'Добавить в план' });
   await add.focus();
   await add.press('Enter');
