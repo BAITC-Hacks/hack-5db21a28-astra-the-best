@@ -63,7 +63,7 @@
 .baseline dl div { display:flex; justify-content:space-between; gap:8px; font-size:.7rem; padding:3px 0; border-top:1px solid #edf3f2; }
 .baseline dt { color:#425e66; }
 .baseline dd { margin:0; text-align:right; white-space:nowrap; }
-.footer { position:sticky; bottom:0; background:#f7fbfa; border-top:1px solid #d4e4e3; display:flex; justify-content:space-between; align-items:center; gap:12px; padding-top:12px; margin-top:14px; }
+.footer { background:#f7fbfa; border-top:1px solid #d4e4e3; display:flex; justify-content:space-between; align-items:center; gap:12px; padding-top:12px; margin-top:14px; }
 .footer p { margin:0; color:#47636c; font-size:.78rem; }
 .footer button { background:#176f73; color:white; border-color:#176f73; white-space:nowrap; }
 .footer button:hover:not(:disabled) { background:#115a5e; }
