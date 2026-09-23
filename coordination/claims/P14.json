@@ -1,0 +1,23 @@
+{
+  "task": "P14",
+  "status": "done",
+  "agent": "CodexSubagent-Sol",
+  "session": "codex-subagent-sol-20260923-p14-29b6dc",
+  "claimed_at": "2026-09-23T14:24:04.9598243+05:00",
+  "updated_at": "2026-09-23T14:27:51.6913750+05:00",
+  "signature": "CodexSubagent-Sol / codex-subagent-sol-20260923-p14-29b6dc accepts task P14",
+  "artifacts": [
+    "src/features/city-effects/model.ts",
+    "src/features/city-effects/CityEffects.tsx",
+    "src/features/city-effects/CityEffects.module.css",
+    "tests/city-effects/model.test.ts",
+    "tests/city-effects/lifecycle.test.tsx"
+  ],
+  "checks": [
+    "npx.cmd vitest run tests/city-effects --reporter=dot: 5 passed",
+    "npm.cmd run typecheck: passed",
+    "npx.cmd eslint src/features/city-effects tests/city-effects: passed",
+    "npm.cmd run build: passed"
+  ],
+  "notes": "CityEffects API: map, scenario, decisions, preview?, result?, comparison. MapLibre Marker/Popup visual layer uses 14 unique glyphs, city-wide markers in all five zones, district markers in selected district, ledger values after calculation, lag, negative effects, synergies and critical values. DOM lifecycle cleanup tested. App composition/browser acceptance belongs to P09; pass CityMap onMapReady map into CityEffects. No external asset dependencies."
+}

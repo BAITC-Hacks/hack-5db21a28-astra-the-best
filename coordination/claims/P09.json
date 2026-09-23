@@ -1,0 +1,24 @@
+{
+  "task": "P09",
+  "status": "review",
+  "agent": "CodexDesktop",
+  "session": "codex-desktop-20260923-01a0cd54",
+  "claimed_at": "2026-09-23T14:27:12.165946+05:00",
+  "updated_at": "2026-09-23T14:37:31.9067120+05:00",
+  "signature": "CodexDesktop / codex-desktop-20260923-01a0cd54 accepts task P09",
+  "artifacts": [
+    "src/app/AppShell.tsx",
+    "src/app/AppShell.module.css",
+    "src/app/page.tsx",
+    "src/features/city-map/CityMap.tsx",
+    "eslint.config.mjs"
+  ],
+  "checks": [
+    "npm run lint: passed",
+    "npm run typecheck: passed",
+    "npm test: 58 passed",
+    "npm run build: passed",
+    "Browser: 5-decision control scenario, Score 56.54, City/Report state, before/after and markers verified"
+  ],
+  "notes": "Main path integrated. AI error state verified without key. Live AI call pending local AI_API_KEY; do not mark done until checked."
+}

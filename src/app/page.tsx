@@ -1,7 +1,6 @@
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { CityMap } from '@/features/city-map/CityMap';
-import { scenario } from '@/data';
+import { AppShell } from './AppShell';
 
 export default function Page() {
-  return <CityMap scenario={scenario} />;
+  return <AppShell />;
 }

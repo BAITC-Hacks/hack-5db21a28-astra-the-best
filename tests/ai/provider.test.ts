@@ -9,7 +9,8 @@ import { controlRequest } from '../data/source-fixture';
 
 const originalKey = process.env.AI_API_KEY;
 const originalModel = process.env.AI_MODEL;
-afterEach(() => { vi.unstubAllGlobals(); if (originalKey === undefined) delete process.env.AI_API_KEY; else process.env.AI_API_KEY = originalKey; if (originalModel === undefined) delete process.env.AI_MODEL; else process.env.AI_MODEL = originalModel; });
+const originalBase = process.env.AI_BASE_URL;
+afterEach(() => { vi.unstubAllGlobals(); if (originalKey === undefined) delete process.env.AI_API_KEY; else process.env.AI_API_KEY = originalKey; if (originalModel === undefined) delete process.env.AI_MODEL; else process.env.AI_MODEL = originalModel; if (originalBase === undefined) delete process.env.AI_BASE_URL; else process.env.AI_BASE_URL = originalBase; });
 
 const input = buildAnalysisInput(simulate(controlRequest), scenario);
 const statement = { text: 'Улучшились условия в выбранном районе.', factIds: ['score-delta'] };
@@ -48,5 +49,19 @@ describe('AI-анализ', () => {
     const invalid = { ...analysis, summary: { text: 'Score вырос на 7.', factIds: ['missing'] } };
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify({ choices: [{ message: { content: JSON.stringify(invalid) } }] }), { status: 200 })));
     await expect(analyzeWithProvider(input)).rejects.toMatchObject({ code: 'AI_INVALID_RESPONSE', status: 502 } satisfies Partial<AiError>);
+  });
+
+  it('использует NVIDIA chat endpoint без неподтверждённого JSON-mode поля', async () => {
+    process.env.AI_API_KEY = 'test-nvidia-key';
+    process.env.AI_BASE_URL = 'https://integrate.api.nvidia.com/v1';
+    process.env.AI_MODEL = 'meta/llama-3.3-70b-instruct';
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({ choices: [{ message: { content: JSON.stringify(analysis) } }] }), { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+    const result = await analyzeWithProvider(input);
+    expect(result.provider).toBe('integrate.api.nvidia.com');
+    expect(fetchMock.mock.calls[0][0]).toBe('https://integrate.api.nvidia.com/v1/chat/completions');
+    const sent = JSON.parse(fetchMock.mock.calls[0][1].body);
+    expect(sent.model).toBe('meta/llama-3.3-70b-instruct');
+    expect(sent.response_format).toBeUndefined();
   });
 });

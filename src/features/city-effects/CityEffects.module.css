@@ -1,0 +1,21 @@
+.marker { --tone:#377f83; appearance:none; border:2px solid #fff; background:var(--tone); color:#fff; border-radius:12px 12px 12px 2px; min-width:38px; min-height:43px; padding:3px 5px; display:flex; align-items:center; flex-direction:column; justify-content:center; cursor:pointer; box-shadow:0 3px 12px #102c3b77; transform:translateY(-3px); font:inherit; }
+.marker:hover,.marker:focus-visible { outline:3px solid #fff; outline-offset:2px; filter:brightness(1.14); z-index:10; }
+.icon { font-size:1.1rem; line-height:1; font-weight:900; }
+.id { font-size:.54rem; letter-spacing:.04em; font-weight:800; line-height:1.2; }
+.transport { --tone:#3882c2; }
+.ecology { --tone:#4b9f6b; }
+.social { --tone:#c27a63; }
+.safety { --tone:#a472a9; }
+.services { --tone:#dc9f4f; }
+.preview { opacity:.58; border-style:dashed; }
+.planned { opacity:.8; }
+.applied { opacity:1; }
+.detail { color:#173440; min-width:200px; max-width:270px; font:13px/1.4 Arial,sans-serif; }
+.detail h3 { margin:0 0 5px; font-size:1rem; }
+.detail p { margin:5px 0; }
+.detail ul { padding-left:18px; margin:7px 0; }
+.detail li { margin:2px 0; }
+.detail small { display:block; color:#667982; margin-top:8px; }
+.negative,.critical { color:#a83d35; }
+.synergy { color:#257a61; font-weight:700; }
+@media (prefers-reduced-motion: no-preference) { .applied { animation:appear .35s ease-out; } @keyframes appear { from { transform:translateY(6px) scale(.7); opacity:.2; } to { transform:translateY(-3px) scale(1); opacity:1; } } }
