@@ -111,16 +111,16 @@ test('narrow screen keeps the plan and its primary action usable', async ({ page
 
 test('all five zones and map effect states remain available across modes', async ({ page }) => {
   await buildControlPlan(page);
-  for (const zone of ['Есиль', 'Алматы + Сарайшык', 'Сарыарка', 'Байконур', 'Нура']) await expect(page.getByRole('button', { name: zone, exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: /M7: Школа и детсад, Нура, запланировано/ })).toBeAttached({ timeout: 15_000 });
+  for (const zone of ['Есиль', 'Алматы + Сарайшык', 'Сарыарка', 'Байконур', 'Нура']) await expect(page.locator('[aria-hidden="true"] button').filter({ has: page.getByText(zone, { exact: true }) })).toBeVisible();
+  await expect(page.locator('button[aria-label="M7: Школа и детсад, Нура, запланировано"]')).toBeAttached({ timeout: 15_000 });
   await page.getByRole('button', { name: 'Рассчитать сценарий' }).click();
   await expect(page.getByRole('heading', { name: 'Итог городских решений' })).toBeVisible();
   await page.getByRole('button', { name: 'Город', exact: true }).click();
-  await expect(page.getByRole('button', { name: /M7: Школа и детсад, Нура, после расчёта/ })).toBeAttached();
+  await expect(page.locator('button[aria-label="M7: Школа и детсад, Нура, после расчёта"]')).toBeAttached();
   await page.getByRole('button', { name: 'До', exact: true }).click();
-  await expect(page.getByRole('button', { name: /M7: Школа и детсад, Нура, запланировано/ })).toBeAttached();
+  await expect(page.locator('button[aria-label="M7: Школа и детсад, Нура, запланировано"]')).toBeAttached();
   await page.getByRole('button', { name: 'После', exact: true }).click();
-  await expect(page.getByRole('button', { name: /M7: Школа и детсад, Нура, после расчёта/ })).toBeAttached();
+  await expect(page.locator('button[aria-label="M7: Школа и детсад, Нура, после расчёта"]')).toBeAttached();
 });
 
 test('a timeout message leaves the numeric report available', async ({ page }) => {
