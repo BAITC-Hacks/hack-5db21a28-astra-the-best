@@ -4,7 +4,7 @@
   "agent": "CodexSubagent-Sol",
   "session": "codex-subagent-sol-20260923-p11-6a1d4e",
   "claimed_at": "2026-09-23T14:28:31.6379776+05:00",
-  "updated_at": "2026-09-23T14:47:40.2572306+05:00",
+  "updated_at": "2026-09-23T15:45:35.7664237+05:00",
   "signature": "CodexSubagent-Sol / codex-subagent-sol-20260923-p11-6a1d4e accepts task P11",
   "artifacts": [
     "README.md",
@@ -15,7 +15,9 @@
     "Clean copy: npm.cmd run typecheck passed; npm.cmd test 57 passed; npm.cmd run build passed",
     "Clean copy after P09 fixes: npm.cmd run lint passed",
     "Clean copy production start port 3100: HTTP page 200, 5 districts, control cost 95 and Score 56.54307",
-    "P09 done and live OpenAI call documented by P06/P09 owner"
+    "P09 done and live OpenAI call documented by P06/P09 owner",
+    "Root integrated optional E2E: 3/3 passed in 18.7s (O01 save/reload/load/improvement/server Score; O03 HTML+JSON downloads; O02 toggle and 390px no overflow)",
+    "Root npm test: 80 passed after optional integration"
   ],
-  "notes": "README.md and docs/DEMO.md complete. Commands reproduced in D:\\HackAlem-P11-verify-20260923-1431 without relying on main node_modules; production smoke passed. P09 and P06 are done. User path also covered by P10 Playwright; no deployed URL claimed."
+  "notes": "README/DEMO updated for delivered P16/P17 and integrated P18/O01/O02/O03 behavior. Original clean-copy install/typecheck/lint/build/production smoke passed; root integrated optional browser E2E 3/3 and npm test 80 passed. Chrome channel install requirement corrected. Documentation makes no claim about still-pending P18 390x360 or O02 FPS checks; those belong to their owners. No deployment URL claimed; P12 will supply one if deployed."
 }
