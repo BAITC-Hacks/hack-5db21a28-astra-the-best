@@ -152,4 +152,3 @@ export function MayorGuide({ guide, scenario, selectedDistrictId, decisions, has
     <div className={styles.tourFooter}><button type="button" className={styles.skip} onClick={() => guide.dismiss()}>Пропустить обучение</button>{lesson.next && <button type="button" className={styles.primary} onClick={lesson.advance}>{lesson.next}</button>}</div>
   </Spotlight>;
 }
-
