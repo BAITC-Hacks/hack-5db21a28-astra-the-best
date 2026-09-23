@@ -4,7 +4,7 @@
   "agent": "CodexDesktop",
   "session": "codex-desktop-20260923-01a0cd54",
   "claimed_at": "2026-09-23T14:27:12.165946+05:00",
-  "updated_at": "2026-09-23T15:04:34.7623854+05:00",
+  "updated_at": "2026-09-23T16:07:37.6948822+05:00",
   "signature": "CodexDesktop / codex-desktop-20260923-01a0cd54 accepts task P09",
   "artifacts": [
     "src/app/AppShell.tsx",
@@ -28,5 +28,5 @@
     "Live OpenAI /api/analyze: HTTP 200, gpt-4.1-mini, 29 facts, validated response",
     "P10 Chrome layout/keyboard/pointer audit: 3/3 viewport cases passed"
   ],
-  "notes": "Main path integrated. Keyboard-safe planner: map controls removed from Tab order while editor is open, pointer map selection remains. Responsive 390x360/844 and 1280x800 confirmed by P10."
+  "notes": "Main path integrated. Keyboard-safe planner: map controls removed from Tab order while editor is open, pointer map selection remains. Responsive 390x360/844 and 1280x800 confirmed by P10. AppShell.tsx and AppShell.module.css released to P24 owner session/thread 01a0cdef-1b6d-70d1-858d-13868842c043 for user-requested Learning-first mode. Root is not editing these files."
 }

@@ -4,7 +4,7 @@
   "agent": "CodexDesktop",
   "session": "codex-desktop-20260923-01a0cd54-p17",
   "claimed_at": "2026-09-23T15:18:30.7031033+05:00",
-  "updated_at": "2026-09-23T15:32:19.3561042+05:00",
+  "updated_at": "2026-09-23T16:07:37.7189470+05:00",
   "signature": "CodexDesktop / codex-desktop-20260923-01a0cd54-p17 accepts task P17",
   "artifacts": [
     "src/app/AppShell.tsx",
@@ -23,5 +23,5 @@
     "Chrome screenshots 390x844 city/planner/report and 1280x800 city visually inspected; no nav title, readable neutral surfaces and metallic buttons",
     "Nav geometry in Chrome at widths 320/360/390/700/1280: City/Report center exactly viewport center, no overlap with help or plan"
   ],
-  "notes": "Neutral graphite/silver theme with CSS liquid-metal edges avoids extra WebGL load. P16 owner agreed to color-only edits in CityMap/Planner CSS after e4cd6bf. No behavior or simulation changes. Follow-up: centered mode switch with absolute positioning while help stays left and plan right."
+  "notes": "Neutral graphite/silver theme with CSS liquid-metal edges avoids extra WebGL load. P16 owner agreed to color-only edits in CityMap/Planner CSS after e4cd6bf. No behavior or simulation changes. Follow-up: centered mode switch with absolute positioning while help stays left and plan right. AppShell.tsx and AppShell.module.css released to P24 owner session/thread 01a0cdef-1b6d-70d1-858d-13868842c043 for user-requested Learning-first mode. Root is not editing these files."
 }
