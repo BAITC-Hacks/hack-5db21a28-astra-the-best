@@ -1,0 +1,25 @@
+{
+  "task": "P20",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-01a0cdcf-luna",
+  "claimed_at": "2026-09-23T15:42:06.1678611+05:00",
+  "updated_at": "2026-09-23T15:44:00.6997562+05:00",
+  "signature": "Codex / codex-20260923-01a0cdcf-luna accepts task P20",
+  "artifacts": [
+    "src/server/ai/provider.ts",
+    "tests/ai/provider.test.ts",
+    ".env.example",
+    "README.md",
+    "PLAN.md",
+    "scripts/claim-task.ps1"
+  ],
+  "checks": [
+    "npm.cmd test -- --run tests/ai/provider.test.ts: 5 passed",
+    "npm.cmd run typecheck: passed",
+    "npx.cmd eslint src/server/ai/provider.ts tests/ai/provider.test.ts: passed",
+    "Live POST http://127.0.0.1:3000/api/analyze: HTTP 200, model gpt-6-luna, 29 facts, 7360ms",
+    "Scoped git diff --check: passed"
+  ],
+  "notes": "User requested Luna. Default and local AI_MODEL changed to gpt-6-luna; reasoning_effort none, max_completion_tokens 2500, temperature omitted for Luna. Existing structured output validation retained. NVIDIA parameters preserved. Local .env.local updated without exposing secret. Live application request confirmed new model; no server restart needed."
+}

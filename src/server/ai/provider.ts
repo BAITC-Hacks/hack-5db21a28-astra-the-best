@@ -13,12 +13,15 @@ export class AiError extends Error { constructor(public code: ErrorCode, message
 
 export async function analyzeWithProvider(input: AnalysisInput): Promise<{ provider: string; model: string; analysis: AnalysisContent }> {
   const apiKey = process.env.AI_API_KEY;
-  const model = process.env.AI_MODEL || 'gpt-4.1-mini';
+  const model = process.env.AI_MODEL || 'gpt-6-luna';
   if (!apiKey) throw new AiError('AI_NOT_CONFIGURED', 'AI-анализ пока не настроен.', 503);
   const base = process.env.AI_BASE_URL || 'https://api.openai.com/v1';
   const timeout = Number(process.env.AI_TIMEOUT_MS || 30000);
   const url = `${base.replace(/\/$/, '')}/chat/completions`;
   const nvidia = new URL(base).hostname === 'integrate.api.nvidia.com';
+  const generationOptions = model === 'gpt-6-luna' && !nvidia
+    ? { reasoning_effort: 'none', max_completion_tokens: 2500 }
+    : { temperature: 0.2 };
   const system = [
     'Ты аналитик учебного симулятора Астаны. Пиши по-русски.',
     'Верни только JSON с полями summary, strengths, risks, consequences, recommendation.',
@@ -32,7 +35,7 @@ export async function analyzeWithProvider(input: AnalysisInput): Promise<{ provi
   const factsOnly = { facts: input.facts, selectedMeasures: input.selectedMeasures.map((measure) => ({ id: measure.id, name: measure.name, cost: measure.cost, lagQuarters: measure.lagQuarters })), disclaimer: input.disclaimer };
   let response: Response;
   try {
-    response = await fetch(url, { method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model, temperature: 0.2, ...(nvidia ? {} : { response_format: openAiResponseFormat(input.facts.map((fact) => fact.id)) }), messages: [{ role: 'system', content: system }, { role: 'user', content: JSON.stringify(factsOnly) }] }), signal: AbortSignal.timeout(Number.isFinite(timeout) ? Math.min(Math.max(timeout, 1000), 60000) : 30000) });
+    response = await fetch(url, { method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model, ...generationOptions, ...(nvidia ? {} : { response_format: openAiResponseFormat(input.facts.map((fact) => fact.id)) }), messages: [{ role: 'system', content: system }, { role: 'user', content: JSON.stringify(factsOnly) }] }), signal: AbortSignal.timeout(Number.isFinite(timeout) ? Math.min(Math.max(timeout, 1000), 60000) : 30000) });
   } catch (cause) {
     if (cause instanceof Error && (cause.name === 'TimeoutError' || cause.name === 'AbortError')) throw new AiError('AI_TIMEOUT', 'Время ожидания AI истекло.', 504);
     throw new AiError('AI_UNAVAILABLE', 'AI-сервис недоступен.', 503);

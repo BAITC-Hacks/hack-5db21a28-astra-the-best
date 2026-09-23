@@ -34,12 +34,18 @@ describe('AI-анализ', () => {
 
   it('принимает структурированный ответ и ссылки только на переданные факты', async () => {
     process.env.AI_API_KEY = 'test-key';
+    delete process.env.AI_MODEL;
+    delete process.env.AI_BASE_URL;
     const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({ choices: [{ message: { content: JSON.stringify(analysis) } }] }), { status: 200 }));
     vi.stubGlobal('fetch', fetchMock);
     const result = await analyzeWithProvider(input);
     expect(result.analysis).toEqual(analysis);
-    expect(result.model).toBe('gpt-4.1-mini');
+    expect(result.model).toBe('gpt-6-luna');
     const sent = JSON.parse(fetchMock.mock.calls[0][1].body);
+    expect(sent.model).toBe('gpt-6-luna');
+    expect(sent.reasoning_effort).toBe('none');
+    expect(sent.max_completion_tokens).toBe(2500);
+    expect(sent.temperature).toBeUndefined();
     const promptFacts = JSON.parse(sent.messages[1].content);
     expect(promptFacts.facts.find((fact: { id: string }) => fact.id === 'score-after').value).toBeCloseTo(56.54307, 8);
     expect(promptFacts.scenario).toBeUndefined();
@@ -69,6 +75,8 @@ describe('AI-анализ', () => {
     expect(fetchMock.mock.calls[0][0]).toBe('https://integrate.api.nvidia.com/v1/chat/completions');
     const sent = JSON.parse(fetchMock.mock.calls[0][1].body);
     expect(sent.model).toBe('nvidia/nemotron-3-super-120b-a12b');
+    expect(sent.temperature).toBe(0.2);
+    expect(sent.reasoning_effort).toBeUndefined();
     expect(sent.response_format).toBeUndefined();
   });
 });
