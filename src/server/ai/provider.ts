@@ -14,7 +14,16 @@ export async function analyzeWithProvider(input: AnalysisInput): Promise<{ provi
   const timeout = Number(process.env.AI_TIMEOUT_MS || 30000);
   const url = `${base.replace(/\/$/, '')}/chat/completions`;
   const nvidia = new URL(base).hostname === 'integrate.api.nvidia.com';
-  const system = 'Ты аналитик учебного симулятора Астаны. Пиши по-русски. Верни только JSON с полями summary, strengths, risks, consequences, recommendation. Каждое утверждение — объект {text,factIds}. strengths/risks/consequences — массивы из 1–4 элементов. factIds — 1–8 существующих ID из facts. Не пиши числовые литералы в text: все числа UI выведет из facts. Не пересчитывай и не меняй Score. Не выдавай модель за реальный прогноз. Дай конкретные сильные стороны, риски, последствия и один совет.';
+  const system = [
+    'Ты аналитик учебного симулятора Астаны. Пиши по-русски.',
+    'Верни только JSON с полями summary, strengths, risks, consequences, recommendation.',
+    'Каждое утверждение — объект {text,factIds}. strengths/risks/consequences — массивы из 1–4 элементов.',
+    'factIds — 1–8 существующих ID из facts. Не пиши числовые литералы в text: все числа UI выведет из facts.',
+    'Не пересчитывай и не меняй Score. Не выдавай модель за реальный прогноз.',
+    'Назови в рисках или последствиях конкретный компромисс: выбранное мероприятие, район и его стоимость или лаг относительно ожидаемой пользы.',
+    'В рекомендации назови конкретное выбранное мероприятие и район, объясни, что стоит сохранить или изменить, и привяжи совет к фактам о мере, районе и изменённом показателе.',
+    'Не предлагай невыбранную меру как проверенное улучшение: её результат не рассчитывался.',
+  ].join(' ');
   let response: Response;
   try {
     response = await fetch(url, { method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model, temperature: 0.2, ...(nvidia ? {} : { response_format: { type: 'json_object' } }), messages: [{ role: 'system', content: system }, { role: 'user', content: JSON.stringify(input) }] }), signal: AbortSignal.timeout(Number.isFinite(timeout) ? Math.min(Math.max(timeout, 1000), 60000) : 30000) });

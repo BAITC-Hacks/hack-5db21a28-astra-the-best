@@ -42,6 +42,8 @@ describe('AI-анализ', () => {
     const sent = JSON.parse(fetchMock.mock.calls[0][1].body);
     expect(JSON.parse(sent.messages[1].content).scenario.result.score).toBeCloseTo(56.54307, 8);
     expect(sent.messages[1].content).toContain('synergy-safe-feedback-nura');
+    expect(sent.messages[0].content).toContain('конкретный компромисс');
+    expect(sent.messages[0].content).toContain('Не предлагай невыбранную меру');
   });
 
   it('отклоняет числовые литералы и вымышленные ссылки', async () => {
@@ -54,14 +56,14 @@ describe('AI-анализ', () => {
   it('использует NVIDIA chat endpoint без неподтверждённого JSON-mode поля', async () => {
     process.env.AI_API_KEY = 'test-nvidia-key';
     process.env.AI_BASE_URL = 'https://integrate.api.nvidia.com/v1';
-    process.env.AI_MODEL = 'meta/llama-3.3-70b-instruct';
+    process.env.AI_MODEL = 'nvidia/nemotron-3-super-120b-a12b';
     const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({ choices: [{ message: { content: JSON.stringify(analysis) } }] }), { status: 200 }));
     vi.stubGlobal('fetch', fetchMock);
     const result = await analyzeWithProvider(input);
     expect(result.provider).toBe('integrate.api.nvidia.com');
     expect(fetchMock.mock.calls[0][0]).toBe('https://integrate.api.nvidia.com/v1/chat/completions');
     const sent = JSON.parse(fetchMock.mock.calls[0][1].body);
-    expect(sent.model).toBe('meta/llama-3.3-70b-instruct');
+    expect(sent.model).toBe('nvidia/nemotron-3-super-120b-a12b');
     expect(sent.response_format).toBeUndefined();
   });
 });
