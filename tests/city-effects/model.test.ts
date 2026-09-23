@@ -47,7 +47,7 @@ describe('city effects scene', () => {
     expect(before.every((item) => item.status === 'planned')).toBe(true);
     expect(after.every((item) => item.status === 'applied')).toBe(true);
     expect(after.find((item) => item.measureId === 'M7')?.realizedEffects[0].value).toBe(10);
-    expect(after.find((item) => item.measureId === 'M10')?.synergies.some((item) => item.name === 'M10 + M12')).toBe(true);
+    expect(after.find((item) => item.measureId === 'M10')?.synergies.some((item) => item.name === 'Освещение и камеры (расширение Safe City) + Единая цифровая платформа обращений')).toBe(true);
     const stale = deriveEffectMarkers({ scenario, decisions: control.slice(0, 4), result, comparison: 'after' });
     expect(stale.every((item) => item.status === 'planned')).toBe(true);
     const negative = deriveEffectMarkers({ scenario, decisions: [{ measureId: 'M11', districtId: 'nura' }], comparison: 'before' });

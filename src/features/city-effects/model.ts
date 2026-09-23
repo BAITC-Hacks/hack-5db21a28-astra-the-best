@@ -63,12 +63,12 @@ export function deriveEffectMarkers({ scenario, decisions, preview, result, comp
       const coordinates: readonly [number, number] = [anchor[0] + Math.cos(angle) * radius, anchor[1] + Math.sin(angle) * radius * 0.62];
       const fullEffects = Object.entries(measure.effects).map(([id, value]) => ({ indicatorId: id as IndicatorId, name: indicators.get(id as IndicatorId) ?? id, value: value ?? 0 }));
       const realizedEffects = current?.ledger.measures.filter((entry) => entry.measureId === measure.id && entry.districtId === districtId).map((entry) => ({ indicatorId: entry.indicatorId, name: indicators.get(entry.indicatorId) ?? entry.indicatorId, value: entry.realizedEffect })) ?? [];
-      const synergies = current?.ledger.synergies.filter((entry) => entry.districtId === districtId && entry.measureIds.includes(measure.id)).map((entry) => ({ name: entry.measureIds.join(' + '), effects: Object.entries(entry.effects).map(([id, value]) => `${indicators.get(id as IndicatorId) ?? id} ${signed(value ?? 0)}`).join(', ') })) ?? [];
-      const critical = current?.result.criticalIndicators.filter((entry) => entry.districtId === districtId).map((entry) => `${indicators.get(entry.indicatorId) ?? entry.indicatorId}: ${entry.value.toFixed(2)}`) ?? [];
+      const synergies = current?.ledger.synergies.filter((entry) => entry.districtId === districtId && entry.measureIds.includes(measure.id)).map((entry) => ({ name: entry.measureIds.map((id) => measures.get(id)?.name ?? id).join(' + '), effects: Object.entries(entry.effects).map(([id, value]) => `${indicators.get(id as IndicatorId) ?? id} ${signed(value ?? 0)} балла`).join(', ') })) ?? [];
+      const critical = current?.result.criticalIndicators.filter((entry) => entry.districtId === districtId).map((entry) => `${indicators.get(entry.indicatorId) ?? entry.indicatorId}: ${entry.value.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} балла`) ?? [];
       markers.push({ key: `${measure.id}-${districtId}-${isPreview ? 'preview' : 'decision'}`, measureId: measure.id, districtId, coordinates, status: isPreview ? 'preview' : current ? 'applied' : 'planned', icon: EFFECT_ICONS[measure.id], title: EFFECT_DESCRIPTIONS[measure.id], districtName, directionId: measure.directionId, lagQuarters: measure.lagQuarters, realizedFraction: (scenario.horizonQuarters - measure.lagQuarters) / scenario.horizonQuarters, fullEffects, realizedEffects, synergies, critical });
     }
   }
   return markers;
 }
 
-export function signed(value: number): string { return `${value >= 0 ? '+' : '−'}${Math.abs(value).toFixed(2)}`; }
+export function signed(value: number): string { return `${value > 0 ? '+' : value < 0 ? '−' : ''}${Math.abs(value).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`; }

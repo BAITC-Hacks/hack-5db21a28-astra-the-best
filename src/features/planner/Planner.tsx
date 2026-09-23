@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { formatBudget, budgetDisclaimer, measureFundingScope } from '@/lib/budget';
 import type { Decision, DirectionId, DistrictId, Measure, MeasureId, ScenarioResponse } from '@/contracts';
 import { validateDecisions } from '@/domain/validation';
 import { SelectMenu } from '@/components/SelectMenu';
@@ -20,7 +21,7 @@ export interface PlannerProps {
   calculating?: boolean;
 }
 
-const signed = (value: number) => `${value > 0 ? '+' : '−'}${Math.abs(value)}`;
+const signed = (value: number) => `${value > 0 ? '+' : value < 0 ? '−' : ''}${Math.abs(value).toLocaleString('ru-RU')}`;
 
 export function Planner({ scenario, decisions, selectedDistrictId, onDistrictSelect, onDecisionsChange, onCalculate, onMeasureSelect, loading = false, error, onRetry, calculating = false }: PlannerProps) {
   const [direction, setDirection] = useState<DirectionId | 'all'>('all');
@@ -55,22 +56,34 @@ export function Planner({ scenario, decisions, selectedDistrictId, onDistrictSel
   }
 
   return <section className={styles.planner} aria-label="Редактор городских решений">
-    <header className={styles.header}><div><span className={styles.kicker}>Панель акима · два условных года</span><h2>План для Астаны</h2><p>Синтетическая учебная модель. Выберите ровно пять мероприятий.</p></div><div className={styles.budget}><strong>{validation.remainingBudget} / {scenario.budget}</strong><span>Остаток бюджета</span><small>{decisions.length} / {scenario.rules.requiredDecisions} решений</small></div></header>
-    <div className={styles.budgetBar} role="progressbar" aria-label="Использованный бюджет" aria-valuenow={validation.cost} aria-valuemin={0} aria-valuemax={scenario.budget}><span style={{ width: `${Math.min(100, Math.max(0, validation.cost))}%` }} /></div>
-    <div className={styles.directions} aria-label="Меры по направлениям">{scenario.directions.map((item) => <span key={item.id}>{item.name}: {validation.directionCounts[item.id]}/{scenario.rules.maxPerDirection}</span>)}</div>
+    <header className={styles.header}><div><span className={styles.kicker}>Панель акима · два условных года</span><h2>План для Астаны</h2><p>Выберите ровно пять мероприятий. {budgetDisclaimer}</p></div><div className={styles.budget}><span>Остаток из общего бюджета</span><strong>{formatBudget(validation.remainingBudget)} / {formatBudget(scenario.budget)}</strong><small>{decisions.length} / {scenario.rules.requiredDecisions} решений</small></div></header>
+    <div className={styles.budgetBar} role="progressbar" aria-label="Использованный бюджет" aria-valuetext={`${formatBudget(validation.cost)} из ${formatBudget(scenario.budget)}`} aria-valuenow={validation.cost} aria-valuemin={0} aria-valuemax={scenario.budget}><span style={{ width: `${Math.min(100, Math.max(0, validation.cost / scenario.budget * 100))}%` }} /></div>
+    <p className={styles.ruleHint}>Не более {scenario.rules.maxPerDirection} решений в каждом направлении:</p><div className={styles.directions} aria-label="Меры по направлениям">{scenario.directions.map((item) => <span key={item.id}>{item.name}: <strong>{validation.directionCounts[item.id]} из {scenario.rules.maxPerDirection}</strong></span>)}</div>
     <section className={styles.plan}><div className={styles.sectionTitle}><h3>Ваши решения</h3>{replacement && <button type="button" onClick={() => setReplacement(null)}>Отменить замену</button>}</div><ol className={styles.slots}>{Array.from({ length: scenario.rules.requiredDecisions }, (_, index) => {
       const decision = decisions[index];
       if (!decision) return <li className={styles.emptySlot} key={`empty-${index}`}>Решение {index + 1} · свободно</li>;
       const measure = scenario.measures.find((item) => item.id === decision.measureId);
-      return <li className={`${styles.slot} ${replacement === decision.measureId ? styles.replacing : ''}`} key={decision.measureId}><div><strong>{measureNames.get(decision.measureId)}</strong><small>{decision.districtId ? districtNames.get(decision.districtId) : 'Весь город'} · {measure?.cost} ед.</small></div><div className={styles.slotActions}><button type="button" aria-label={`Заменить ${measureNames.get(decision.measureId)}`} onClick={() => setReplacement(decision.measureId)}>Заменить</button><button type="button" aria-label={`Удалить ${measureNames.get(decision.measureId)}`} onClick={() => { onDecisionsChange(decisions.filter((item) => item.measureId !== decision.measureId)); if (replacement === decision.measureId) setReplacement(null); }}>Удалить</button></div></li>;
+      return <li className={`${styles.slot} ${replacement === decision.measureId ? styles.replacing : ''}`} key={decision.measureId}><div><strong>{measureNames.get(decision.measureId)}</strong><small>{decision.districtId ? districtNames.get(decision.districtId) : 'Весь город'} · {formatBudget(measure?.cost ?? 0)}</small></div><div className={styles.slotActions}><button type="button" aria-label={`Заменить ${measureNames.get(decision.measureId)}`} onClick={() => setReplacement(decision.measureId)}>Заменить</button><button type="button" aria-label={`Удалить ${measureNames.get(decision.measureId)}`} onClick={() => { onDecisionsChange(decisions.filter((item) => item.measureId !== decision.measureId)); if (replacement === decision.measureId) setReplacement(null); }}>Удалить</button></div></li>;
     })}</ol>{replacement && <p className={styles.hint}>Выберите новую меру в каталоге. Она займёт место «{measureNames.get(replacement)}».</p>}</section>
     <div className={styles.controls}><SelectMenu label="Район для районных мер" value={selectedDistrictId ?? ''} onChange={(id) => onDistrictSelect(id as DistrictId)} options={[{ value: '', label: 'Выберите район' }, ...scenario.districts.map((item) => ({ value: item.id, label: item.name }))]} /><SelectMenu label="Направление" value={direction} onChange={(id) => setDirection(id as DirectionId | 'all')} options={[{ value: 'all', label: 'Все направления' }, ...scenario.directions.map((item) => ({ value: item.id, label: item.name }))]} /></div>
+    <h3 className={styles.catalogTitle}>Каталог мероприятий</h3><p className={styles.ruleHint}>Квартал — 3 месяца. Эффект учитывается с момента начала действия до конца {scenario.horizonQuarters} кварталов модели.</p>
     <div className={styles.catalog} aria-label="Каталог мероприятий">{visible.map((measure) => {
       const { proposed, reason } = candidate(measure);
       const fraction = (scenario.horizonQuarters - measure.lagQuarters) / scenario.horizonQuarters;
-      return <article className={`${styles.card} ${focused === measure.id ? styles.focused : ''}`} key={measure.id} onMouseEnter={() => setFocus(measure.id)} onMouseLeave={() => setFocus(null)} onFocus={() => setFocus(measure.id)}><div className={styles.cardTop}><span>{measure.id} · {directionNames.get(measure.directionId)}</span><strong>{measure.cost} ед.</strong></div><h4>{measure.name}</h4><p className={styles.scope}>{measure.scope === 'city' ? 'Весь город' : selectedDistrictId ? `Район: ${districtNames.get(selectedDistrictId)}` : 'Нужен район'} · эффект через {measure.lagQuarters} кв. · учтено {Math.round(fraction * 100)}%</p><ul className={styles.effects}>{Object.entries(measure.effects).map(([id, value]) => <li className={value! < 0 ? styles.negative : styles.positive} key={id}>{indicatorNames.get(id as keyof typeof measure.effects) ?? id} {signed(value!)}</li>)}</ul><button type="button" disabled={Boolean(reason)} onClick={() => { onDecisionsChange(proposed); setReplacement(null); }}>{replacement ? 'Заменить мерой' : 'Добавить в план'}</button>{reason && <p className={styles.reason}>{reason}</p>}</article>;
+      return <article className={`${styles.card} ${focused === measure.id ? styles.focused : ''}`} key={measure.id} onMouseEnter={() => setFocus(measure.id)} onMouseLeave={() => setFocus(null)} onFocus={() => setFocus(measure.id)}>
+        <div className={styles.cardTop}><span>{measure.id} · {directionNames.get(measure.directionId)}</span><strong>{formatBudget(measure.cost)}</strong></div>
+        <h4>{measure.name}</h4><p className={styles.scope}>{measureFundingScope[measure.id]}</p>
+        <dl className={styles.measureFacts}>
+          <div><dt>Где действует</dt><dd>{measure.scope === 'city' ? 'Весь город' : selectedDistrictId ? districtNames.get(selectedDistrictId) : 'Выберите район'}</dd></div>
+          <div><dt>Начало действия</dt><dd>{measure.lagQuarters === 0 ? 'Сразу' : `Через ${measure.lagQuarters * 3} мес.`}</dd></div>
+          <div><dt>Доля эффекта за {scenario.horizonQuarters} кварталов</dt><dd>{(fraction * 100).toLocaleString('ru-RU')}%</dd></div>
+        </dl>
+        <p className={styles.effectsTitle}>Полный эффект · изменение в баллах</p>
+        <ul className={styles.effects}>{Object.entries(measure.effects).map(([id, value]) => <li className={value! < 0 ? styles.negative : styles.positive} key={id}><span>{indicatorNames.get(id as keyof typeof measure.effects) ?? id}</span><strong>{signed(value!)}</strong></li>)}</ul>
+        <button type="button" disabled={Boolean(reason)} onClick={() => { onDecisionsChange(proposed); setReplacement(null); }}>{replacement ? 'Заменить мерой' : 'Добавить в план'}</button>{reason && <p className={styles.reason}>{reason}</p>}
+      </article>;
     })}</div>
-    <details className={styles.baseline}><summary>Исходные показатели пяти районов</summary><div className={styles.baselineGrid}>{scenario.districts.map((district) => <article key={district.id}><h4>{district.name}</h4><p>{district.profile}</p><dl>{scenario.indicators.map((indicator) => <div key={indicator.id}><dt>{indicator.name}</dt><dd>{district.indicators[indicator.id]} {indicator.unit}</dd></div>)}</dl></article>)}</div></details>
+    <details className={styles.baseline}><summary>Исходные показатели пяти районов</summary><p>Шкала от 0 до 100 баллов. Чем выше, тем лучше. Ниже {scenario.rules.criticalThreshold} — критическое значение.</p><div className={styles.baselineGrid}>{scenario.districts.map((district) => <article key={district.id}><h4>{district.name}</h4><p>{district.profile}</p><dl>{scenario.indicators.map((indicator) => <div key={indicator.id}><dt>{indicator.name}</dt><dd>{district.indicators[indicator.id]} {indicator.unit}</dd></div>)}</dl></article>)}</div></details>
     <footer className={styles.footer} aria-live="polite"><p>{finalValidation.valid ? 'План готов к расчёту.' : validation.issues.length ? validation.issues.map((issue) => issue.message).join(' ') : `Добавьте ещё ${scenario.rules.requiredDecisions - decisions.length} ${scenario.rules.requiredDecisions - decisions.length === 1 ? 'решение' : 'решения'}.`}</p><button type="button" disabled={!finalValidation.valid || calculating} onClick={onCalculate}>{calculating ? 'Рассчитываем…' : 'Рассчитать сценарий'}</button></footer>
   </section>;
 }

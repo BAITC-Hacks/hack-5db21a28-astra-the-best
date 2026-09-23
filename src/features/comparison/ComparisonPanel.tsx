@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { formatBudget } from '@/lib/budget';
 import type { Decision, ScenarioResponse, SimulationResponse } from '@/contracts';
 import { simulate, scenarioId } from '@/domain/simulation';
 import { findImprovement } from '@/domain/search/improve';
@@ -14,7 +15,7 @@ export interface ComparisonPanelProps {
   onLoadDecisions: (decisions: readonly Decision[]) => void;
 }
 const number = (value: number) => value.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const signed = (value: number) => `${value >= 0 ? '+' : '−'}${number(Math.abs(value))}`;
+const signed = (value: number) => `${value > 0 ? '+' : value < 0 ? '−' : ''}${number(Math.abs(value))}`;
 
 export function ComparisonPanel({ scenario, simulation, onLoadDecisions }: ComparisonPanelProps) {
   const [saved, setSaved] = useState<SavedCollection>({ entries: [], warning: null });
@@ -61,13 +62,13 @@ export function ComparisonPanel({ scenario, simulation, onLoadDecisions }: Compa
     {saved.warning && <p role="status">{saved.warning}</p>}
     {message && <p role="status">{message}</p>}
     {(current || comparisons.length > 0) && <div className={styles.tableScroll} role="region" aria-label="Таблица сравнения" tabIndex={0}><table>
-      <caption>Дельта Score — относительно текущего расчёта</caption>
-      <thead><tr><th scope="col">Сценарий</th><th scope="col">Score</th><th scope="col">Дельта</th><th scope="col">Бюджет</th><th scope="col">Критические показатели</th><th scope="col">Действия</th></tr></thead>
+      <caption>Индекс качества жизни: выше — лучше. Разница показывает, насколько сохранённый план лучше или хуже текущего.</caption>
+      <thead><tr><th scope="col">Сценарий</th><th scope="col">Индекс · Score</th><th scope="col">Разница с текущим</th><th scope="col">Потрачено / бюджет</th><th scope="col">Показателей ниже {scenario.rules.criticalThreshold}</th><th scope="col">Действия</th></tr></thead>
       <tbody>
-        {current && <tr className={styles.current}><th scope="row">Текущий</th><td>{number(current.result.score)}</td><td>—</td><td>{current.cost} / 100</td><td>{current.result.criticalCount}</td><td>На экране</td></tr>}
+        {current && <tr className={styles.current}><th scope="row">Текущий</th><td>{number(current.result.score)}</td><td>—</td><td>{formatBudget(current.cost)} / {formatBudget(scenario.budget)}</td><td>{current.result.criticalCount}</td><td>На экране</td></tr>}
         {comparisons.map(({ entry, result }) => <tr key={result.scenarioId}>
           <th scope="row">{entry.name}<details><summary>Пять решений</summary><ul>{result.decisions.map((decision) => <li key={decision.measureId}>{describe(decision)}</li>)}</ul></details></th>
-          <td>{number(result.result.score)}</td><td>{current ? signed(result.result.score - current.result.score) : '—'}</td><td>{result.cost} / 100</td><td>{result.result.criticalCount}</td>
+          <td>{number(result.result.score)}</td><td>{current ? signed(result.result.score - current.result.score) : '—'}</td><td>{formatBudget(result.cost)} / {formatBudget(scenario.budget)}</td><td>{result.result.criticalCount}</td>
           <td><div className={styles.actions}><button type="button" aria-label={`Открыть ${entry.name}`} onClick={() => load(result.decisions)}>В план</button><button type="button" aria-label={`Удалить ${entry.name}`} onClick={() => {
             try { setSaved(deleteSavedScenario(window.localStorage, scenario, scenarioId(entry.request))); setMessage('Сценарий удалён.'); }
             catch (error) { setMessage(error instanceof Error ? error.message : 'Не удалось удалить сценарий.'); }
@@ -77,14 +78,14 @@ export function ComparisonPanel({ scenario, simulation, onLoadDecisions }: Compa
     </table></div>}
     {current && <div className={styles.improvement}>
       <h3>Можно ли улучшить одну меру?</h3>
-      <p>Проверим замену одной меры или её района. Это локальный поиск по формуле Score; глобальный оптимум не гарантируется. API не используется.</p>
+      <p>Проверим, улучшит ли результат замена одного решения или района. Более удачное сочетание нескольких решений может остаться за пределами этой проверки.</p>
       <button type="button" onClick={() => { setSearch(findImprovement({ datasetVersion: scenario.datasetVersion, decisions: current.decisions }, scenario)); }}>Найти проверяемое улучшение</button>
       {activeSearch && <div aria-live="polite">
         <p>Проверено вариантов: {activeSearch.checked}. Соответствуют всем правилам: {activeSearch.validCandidates}.</p>
         {activeSearch.best ? <>
-          <p className={styles.gain}>Score {number(current.result.score)} → {number(activeSearch.best.simulation.result.score)} <strong>({signed(activeSearch.best.gain)})</strong></p>
+          <p className={styles.gain}>Индекс качества жизни: {number(current.result.score)} → {number(activeSearch.best.simulation.result.score)} <strong>({signed(activeSearch.best.gain)} балла)</strong></p>
           <dl><dt>Вместо</dt><dd>{describe(activeSearch.best.removed)}</dd><dt>Предлагается</dt><dd>{describe(activeSearch.best.added)}</dd></dl>
-          <p>Бюджет: {current.cost} → {activeSearch.best.simulation.cost} из 100. Критические показатели: {current.result.criticalCount} → {activeSearch.best.simulation.result.criticalCount}.</p>
+          <p>Бюджет: {formatBudget(current.cost)} → {formatBudget(activeSearch.best.simulation.cost)} из {formatBudget(scenario.budget)}. Критические показатели: {current.result.criticalCount} → {activeSearch.best.simulation.result.criticalCount}.</p>
           <button type="button" onClick={() => load(activeSearch.best!.simulation.decisions)}>Перенести улучшение в план</button>
         </> : <p>Вариант с более высоким Score при замене одной меры не найден. Другие сочетания пяти мер могут дать иной результат.</p>}
       </div>}

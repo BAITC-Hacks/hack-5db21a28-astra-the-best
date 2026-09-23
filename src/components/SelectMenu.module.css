@@ -12,3 +12,7 @@
 .option:hover,.active { background:var(--surface-soft,#e8f5f0); color:var(--primary-dark,#0c615c); }
 .option[aria-selected=true] { font-weight:750; }
 @media (max-width:700px) { .menu { border-radius:12px; } .option { min-height:44px; } }
+.label { font-size:.875rem; line-height:1.5; }
+.trigger { min-height:46px; font-size:.9375rem; line-height:1.4; }
+.value { overflow:visible; text-overflow:clip; white-space:normal; overflow-wrap:break-word; }
+.option { font-size:.9375rem; line-height:1.45; min-height:44px; padding:10px 12px; }

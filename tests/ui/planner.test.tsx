@@ -27,7 +27,7 @@ describe('Planner', () => {
     await user.click(screen.getByRole('combobox', { name: /Район для районных мер/ }));
     await user.click(screen.getByRole('option', { name: 'Сарыарка' }));
     await user.click(within(card('M5')).getByRole('button', { name: 'Добавить в план' }));
-    expect(screen.getByText('5 / 100')).toBeTruthy();
+    expect(screen.getByText('500 млн ₸ / 10 млрд ₸')).toBeTruthy();
     await user.click(screen.getByRole('button', { name: 'Рассчитать сценарий' }));
     expect(calculate).toHaveBeenCalledOnce();
   });

@@ -25,13 +25,21 @@ function detail(marker: EffectMarker): HTMLElement {
   scope.textContent = `${marker.districtName} · ${marker.status === 'preview' ? 'Черновик' : marker.status === 'applied' ? 'После расчёта' : 'Запланировано'}`;
   root.append(scope);
   const lag = document.createElement('p');
-  lag.textContent = `Начало эффекта через ${marker.lagQuarters} кв. · учтено ${(marker.realizedFraction * 100).toFixed(0)}% за два года.`;
+  lag.textContent = `${marker.lagQuarters === 0 ? 'Действует сразу.' : `Начало действия: через ${marker.lagQuarters * 3} мес.`} За два года учитывается ${(marker.realizedFraction * 100).toLocaleString('ru-RU')}% полного эффекта.`;
   root.append(lag);
+  const effectLabel = document.createElement('p');
+  effectLabel.className = styles.effectLabel;
+  effectLabel.textContent = marker.status === 'applied' ? 'Учтённое изменение за два года' : 'Полный эффект на показатели';
+  root.append(effectLabel);
   const effects = document.createElement('ul');
   const values = marker.status === 'applied' ? marker.realizedEffects : marker.fullEffects;
   for (const effect of values) {
     const item = document.createElement('li');
-    item.textContent = `${effect.name}: ${signed(effect.value)} ${marker.status === 'applied' ? 'учтено' : 'полный эффект'}`;
+    const name = document.createElement('span');
+    name.textContent = effect.name;
+    const value = document.createElement('strong');
+    value.textContent = `${signed(effect.value)} балла`;
+    item.append(name, value);
     if (effect.value < 0) item.className = styles.negative;
     effects.append(item);
   }
@@ -39,7 +47,7 @@ function detail(marker: EffectMarker): HTMLElement {
   for (const synergy of marker.synergies) {
     const item = document.createElement('p');
     item.className = styles.synergy;
-    item.textContent = `Синергия ${synergy.name}: ${synergy.effects}`;
+    item.textContent = `Совместный бонус — ${synergy.name}: ${synergy.effects}`;
     root.append(item);
   }
   if (marker.critical.length) {
@@ -80,7 +88,7 @@ export function CityEffects({ map, scenario, decisions, preview, result, compari
         button.addEventListener('click', (event) => {
           event.stopPropagation();
           for (const popup of popups) popup.remove();
-          const popup = new MapPopup({ offset: 20, closeOnMove: true }).setLngLat([...item.coordinates]).setDOMContent(detail(item)).addTo(map);
+          const popup = new MapPopup({ offset: 20, closeOnMove: true, className: styles.popup, maxWidth: 'min(360px, calc(100vw - 32px))' }).setLngLat([...item.coordinates]).setDOMContent(detail(item)).addTo(map);
           popups.push(popup);
         });
         markers.push(new MapMarker({ element: button, anchor: 'bottom' }).setLngLat([...item.coordinates]).addTo(map));

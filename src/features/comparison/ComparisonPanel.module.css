@@ -28,3 +28,24 @@
 .gain { font-size: 20px; font-variant-numeric: tabular-nums; }
 @media (max-width: 480px) { .saveRow button { width: 100%; } .improvement dl { grid-template-columns: 1fr; } }
 @media print { .saveRow, .actions, .improvement button { display: none; } .panel { box-shadow: none; } .tableScroll { overflow: visible; } }
+.panel { font-size:1rem; overflow-wrap:normal; }
+.panel p { max-width:80ch; }
+.eyebrow { font-size:.875rem; }
+.tableScroll { isolation:isolate; }
+.tableScroll table { font-size:.9375rem; min-width:820px; }
+.tableScroll caption { font-size:.875rem; line-height:1.6; padding:14px 16px; background:var(--surface-soft); }
+.tableScroll td,.tableScroll th { padding:16px; line-height:1.55; }
+.tableScroll td:not(:first-child):not(:last-child) { text-align:right; }
+.tableScroll thead th:not(:first-child):not(:last-child) { text-align:right; }
+.tableScroll details { font-size:.875rem; line-height:1.55; }
+.tableScroll th:first-child { min-width:180px; }
+.improvement { line-height:1.6; }
+.improvement dl { padding:16px; border-radius:12px; background:var(--surface-soft); }
+.gain { line-height:1.6; }
+.gain strong { display:inline-block; white-space:nowrap; }
+@media(max-width:700px){
+  .panel { padding:18px 14px; }
+  .tableScroll th:first-child { position:sticky; left:0; z-index:1; width:170px; min-width:170px; max-width:170px; background:var(--surface); box-shadow:2px 0 0 var(--border); }
+  .tableScroll thead th:first-child { background:var(--surface-soft); }
+  .tableScroll::before { content:"Прокрутите таблицу влево или вправо"; display:block; position:sticky; left:0; width:100%; padding:10px 12px; font-size:.875rem; line-height:1.5; color:var(--ink-muted); background:var(--surface-soft); }
+}

@@ -33,7 +33,7 @@ describe('ReportView', () => {
   it('shows score, budget, all districts and measure effects on one page', () => {
     const html = render({ status: 'idle' });
     expect(html).toContain('55,00');
-    expect(html).toContain('83,00 / 100,00');
+    expect(html).toContain('8,3 млрд ₸ / 10 млрд ₸');
     for (const district of scenario.districts) expect(html).toContain(district.name);
     expect(html).toContain('Критические значения');
     expect(html).toContain('Учтено за 8 кв.');
