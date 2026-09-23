@@ -1,0 +1,27 @@
+{
+  "task": "P22",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-01a0cdba-ai-validation",
+  "claimed_at": "2026-09-23T15:57:09.7652573+05:00",
+  "updated_at": "2026-09-23T16:07:25.7627564+05:00",
+  "signature": "Codex / codex-20260923-01a0cdba-ai-validation accepts task P22",
+  "artifacts": [
+    "src/server/ai/facts.ts",
+    "src/server/ai/provider.ts",
+    "src/server/ai/validation.ts",
+    "tests/ai/provider.test.ts",
+    "tests/ai/validation.test.ts"
+  ],
+  "checks": [
+    "AI unit tests: 43 passed after final changes",
+    "npm.cmd test before final grammar/subtotal polish: 116 tests passed across 15 files",
+    "Final targeted AI/results/export: 53 tests passed across 4 files",
+    "npm.cmd run typecheck: passed",
+    "npx.cmd eslint src/server/ai tests/ai: passed",
+    "Scoped git diff --check: passed",
+    "Joint P21/P22 live POST /api/analyze: HTTP200, gpt-6-luna, 18966ms, 67 facts; first response unsupported subtotal5.6 repaired successfully; validated budget10/spent9.5/left0.5 billion KZT and Score52.56 to56.54",
+    "Final grammar and explicit district subtotals added after live call, covered by targeted regressions; current facts70; no duplicate paid live calls"
+  ],
+  "notes": "Completed at shared D:\\HackAlem. Removed blanket digit ban. Checks statement-local references, numeric values/signs/units, proper score rounding and currency scale; supports server-rendered {{fact-id}} quantities and identifiers. Added lag/horizon/realized/before-after/synergy/subtotal facts; all money facts and outgoing costs use explicit billion KZT via P21 helper. One invalid-content repair under same total timeout; HTTP failures/timeouts never auto-retried. Diagnostic reasons serialized without raw reports or secrets. Qualitative semantic truth is not guaranteed by this deterministic quantity/reference validator. Luna none/max2500 unchanged. Coordination handoff to P21 complete; P18 onboarding files handed to P24 separately."
+}
