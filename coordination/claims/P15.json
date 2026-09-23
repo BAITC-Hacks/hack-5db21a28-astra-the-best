@@ -1,0 +1,23 @@
+{
+  "task": "P15",
+  "status": "done",
+  "agent": "CodexDesktop",
+  "session": "codex-desktop-20260923-01a0cd54",
+  "claimed_at": "2026-09-23T13:47:09.0740213+05:00",
+  "updated_at": "2026-09-23T13:51:22.3727264+05:00",
+  "signature": "CodexDesktop / codex-desktop-20260923-01a0cd54 accepts task P15",
+  "artifacts": [
+    "public/geo/astana-osm-source.json",
+    "public/geo/astana-game-zones.geojson",
+    "scripts/build-geo.py",
+    "docs/MAP_SOURCES.md"
+  ],
+  "checks": [
+    {
+      "command": "python scripts/build-geo.py + independent Shapely topology assertions + repeat SHA256",
+      "result": "PASS: five valid disjoint zones, matching P01 IDs, city coverage within 1e-6 and deterministic rebuild",
+      "at": "2026-09-23T13:51:22.3727264+05:00"
+    }
+  ],
+  "notes": "P13 should fit initial camera to GeoJSON bbox and use properties.id and properties.anchor. Source six current OSM districts; game Almaty merges Sarayshyk; Esil excludes Nura due major OSM source overlap. Keep ODbL attribution visible. Shapely is needed only to regenerate geometry, not at runtime."
+}

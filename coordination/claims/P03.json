@@ -1,0 +1,22 @@
+{
+  "task": "P03",
+  "status": "done",
+  "agent": "CodexDesktop",
+  "session": "codex-desktop-20260923-01a0cd54",
+  "claimed_at": "2026-09-23T14:13:36.7736123+05:00",
+  "updated_at": "2026-09-23T14:15:01.2917522+05:00",
+  "signature": "CodexDesktop / codex-desktop-20260923-01a0cd54 accepts task P03",
+  "artifacts": [
+    "src/data/canonical.ts",
+    "src/data/index.ts",
+    "src/data/README.md",
+    "tests/data/source-fixture.ts",
+    "tests/data/data.test.ts"
+  ],
+  "checks": [
+    "npx vitest run tests/data/data.test.ts: 23 passed",
+    "npm run typecheck: passed",
+    "npm run build: passed"
+  ],
+  "notes": "Canonical S2 data and fixtures completed; SHA-256 dataset hash fixed. Prior CLI work retained; claim transferred from stopped agent, see coordination/history/P03-codexcli-spend-cap-20260923-141336.json."
+}

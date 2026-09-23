@@ -1,0 +1,33 @@
+{
+  "task": "P01",
+  "status": "done",
+  "agent": "CodexCLI-SecondAccount",
+  "session": "codex-second-d550bee90cfa40edbf3c3098c5ff5ac3",
+  "claimed_at": "2026-09-23T13:43:18.0402744+05:00",
+  "updated_at": "2026-09-23T13:48:40.8014349+05:00",
+  "signature": "CodexCLI-SecondAccount / codex-second-d550bee90cfa40edbf3c3098c5ff5ac3 accepts task P01",
+  "artifacts": [
+    "src/contracts/index.ts",
+    "src/contracts/scenario-request.schema.json",
+    "docs/API.md",
+    "docs/DECISIONS.md"
+  ],
+  "checks": [
+    {
+      "command": "npm exec --yes --package=typescript --call tsc --noEmit --strict --target ES2022 --module ESNext src/contracts/index.ts",
+      "result": "PASS (exit 0); initial npm argument forwarding retried with --call",
+      "at": "2026-09-23T13:48:40.8014349+05:00"
+    },
+    {
+      "command": "node structural JSON schema/artifact check",
+      "result": "PASS; strict objects and nonempty artifacts",
+      "at": "2026-09-23T13:48:40.8014349+05:00"
+    },
+    {
+      "command": "Read S1/S2/S3; environment presence check",
+      "result": "All sources read; API keys/model absent; no .env files; no git repository",
+      "at": "2026-09-23T13:48:40.8014349+05:00"
+    }
+  ],
+  "notes": "P01 contract v1 ready. Stable IDs/types/API/UI exports in docs/API.md. P15 observed and respected. P02 must include maplibre-gl, zod, RTL/jsdom, GeoJSON types. Real P06 check requires server API key/model. Previous claim history: coordination/history/P01-codexcli-20260923-9c34c28a.json. Backend scope P01-P06 only."
+}

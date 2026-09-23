@@ -1,0 +1,5 @@
+:root { color-scheme: light; font-family: Arial, sans-serif; color: #193c39; background: #f4f7ef; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+button, input, select, textarea { font: inherit; }
+:focus-visible { outline: 3px solid #007d72; outline-offset: 3px; }

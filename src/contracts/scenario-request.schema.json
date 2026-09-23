@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hackalem:scenario-request:v1",
+  "title": "ScenarioRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["datasetVersion", "decisions"],
+  "properties": {
+    "datasetVersion": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "decisions": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["measureId"],
+        "properties": {
+          "measureId": { "type": "string", "minLength": 1, "maxLength": 64 },
+          "districtId": { "type": "string", "minLength": 1, "maxLength": 64 }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "task": "P13",
+  "status": "done",
+  "agent": "CodexDesktop",
+  "session": "codex-desktop-20260923-01a0cd54",
+  "claimed_at": "2026-09-23T14:05:47.6765447+05:00",
+  "updated_at": "2026-09-23T14:16:02.5082694+05:00",
+  "signature": "CodexDesktop / codex-desktop-20260923-01a0cd54 accepts task P13",
+  "artifacts": [
+    "src/features/city-map/CityMap.tsx",
+    "src/features/city-map/CityMap.module.css",
+    "public/maplibre-gl-worker.mjs",
+    "public/maplibre-gl-shared.mjs",
+    "src/app/page.tsx",
+    "src/app/globals.css"
+  ],
+  "checks": [
+    "Browser: whole-city overview, zoom-15 3D buildings, 10 indicator layers, Nura selection and values verified",
+    "npm run typecheck: passed",
+    "npm test: 27 passed",
+    "npm run build: passed"
+  ],
+  "notes": "MapLibre/OpenFreeMap complete for P13. CityMapProps exposes scenario, selectedDistrictId, onDistrictSelect, onMapReady for P14/P09. Geometry and attribution from P15. Home page currently shows map directly until P09 replaces composition."
+}

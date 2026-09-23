@@ -1,0 +1,217 @@
+﻿RU
+
+
+Название задачи: «Аким на 5 часов» - AI-симулятор управления городом
+Проблема:
+        При принятии решений по развитию города необходимо учитывать одновременно несколько направлений: транспорт, озеленение, социальную инфраструктуру, безопасность и качество городских сервисов. Ограниченность ресурсов требует оценки различных сценариев и понимания того, как распределение бюджета может повлиять на качество городской среды.
+Пользователь:
+Городской управленец, аналитик либо пользователь симулятора.
+Задача:
+        Разработать AI-симулятор, в котором команда получает одинаковый виртуальный бюджет и набор данных о состоянии условных районов города.
+Пользователь должен принять 5 управленческих решений по следующим направлениям:
+* транспорт; 
+* озеленение; 
+* социальная инфраструктура; 
+* безопасность; 
+* городской сервис. 
+AI должен анализировать выбранные решения, их стоимость и предполагаемое влияние на городские показатели, после чего формировать итоговую оценку сценария и рекомендации.
+Входные данные:
+* фиксированный виртуальный бюджет; 
+* набор показателей по условным районам города; 
+* перечень возможных мероприятий и их условная стоимость; 
+* показатели по пяти направлениям городского развития. 
+Для хакатона может использоваться заранее подготовленный синтетический датасет, не содержащий персональных или ограниченных данных.
+Ожидаемый результат:
+        Работающий AI-симулятор, позволяющий распределить ограниченный бюджет между городскими инициативами, принять пять решений и получить итоговый Astana Quality of Life Score с объяснением влияния принятых решений.
+Must have:
+* единый виртуальный бюджет для всех пользователей; 
+* возможность принять решения по 5 заданным направлениям; 
+* автоматический контроль превышения бюджета; 
+* AI-анализ принятых решений; 
+* расчет итогового Astana Quality of Life Score; 
+* объяснение сильных сторон, рисков и возможных последствий выбранного сценария. 
+Опционально:
+* сравнение результатов нескольких команд; 
+* визуализация изменений показателей районов; 
+* AI-рекомендации по улучшению выбранного сценария; 
+* моделирование неожиданных городских событий, требующих перераспределения бюджета; 
+* автоматическая генерация краткой презентации решения команды. 
+Данные/доступы:
+Подготовленный синтетический набор данных по условным районам города: транспортная нагрузка, обеспеченность зелеными зонами, социальной инфраструктурой, показатели безопасности и качества городских сервисов, а также перечень возможных мероприятий и их условная стоимость.
+Критерии проверки:
+1. Все команды начинают с одинакового виртуального бюджета и исходных данных. 
+2. Система не позволяет превысить установленный бюджет. 
+3. Принятые решения влияют на итоговые показатели модели. 
+4. AI формирует понятное объяснение итогового результата и основных компромиссов. 
+5. Изменение набора решений приводит к изменению Astana Quality of Life Score.
+        
+________________
+
+
+Критерий
+	Что оцениваем
+	Баллы
+	Соответствие задаче и работоспособность
+	Оценивается, насколько решение соответствует поставленной задаче и позволяет реализовать основной заявленный сценарий.
+	25
+	Техническая реализация
+	Оценивается качество технической реализации решения: выбранный подход, архитектура, взаимодействие компонентов, использование AI/agentic AI и других технологий. Учитывается соответствие фактической реализации заявленной логике проекта.
+	25
+	README и воспроизводимость
+	Оценивается, насколько документация позволяет понять устройство проекта, используемые технологии, порядок запуска и основной сценарий работы. Также учитывается возможность воспроизвести и проверить решение на основании материалов репозитория.
+	25
+	Ценность и применимость решения
+	Оценивается, насколько решение отвечает обозначенной проблеме. Учитывается практическая применимость представленного подхода.
+	15
+	Потенциал развития и оригинальность подхода
+	Оценивается потенциал дальнейшего развития решения, его применения в более широком масштабе, а также наличие обоснованных нестандартных или оригинальных подходов к реализации задачи.
+	10
+	Итого
+	—
+	100
+	
+
+KZ
+ 
+Тапсырманың атауы: «5 сағатқа әкім» - қаланы басқарудың AI-симуляторы
+Мәселе:
+               Қаланы дамыту бойынша шешімдер қабылдау кезінде бірнеше бағытты бір мезгілде ескеру қажет: көлік, көгалдандыру, әлеуметтік инфрақұрылым, қауіпсіздік және қалалық қызметтердің сапасы. Ресурстардың шектеулілігі әртүрлі сценарийлерді бағалауды және бюджетті бөлу қалалық ортаның сапасына қалай әсер ететінін түсінуді талап етеді.
+Пайдаланушы:
+ Қала басқарушысы, талдаушы немесе симулятор пайдаланушысы.
+Міндет:
+               Команда бірдей виртуалды бюджет пен қаланың шартты аудандарының жай-күйі туралы деректер жиынтығын алатын AI-симуляторды әзірлеу.
+Пайдаланушы келесі бағыттар бойынша 5 басқарушылық шешім қабылдауы тиіс:
+−                    көлік;
+−                    көгалдандыру;
+−                    әлеуметтік инфрақұрылым;
+−                    қауіпсіздік;
+−                    қалалық сервис.
+AI таңдалған шешімдерді, олардың құнын және қалалық көрсеткіштерге болжамды әсерін талдап, содан кейін сценарийдің қорытынды бағасы мен ұсынымдарды қалыптастыруы тиіс.
+Кіріс деректері:
+−                    белгіленген виртуалды бюджет;
+−                    қаланың шартты аудандары бойынша көрсеткіштер жиынтығы;
+−                    ықтимал іс-шаралар тізбесі және олардың шартты құны;
+−                    қалалық дамудың бес бағыты бойынша көрсеткіштер.
+Хакатон үшін дербес немесе шектеулі деректерді қамтымайтын, алдын ала дайындалған синтетикалық датасет пайдаланылуы мүмкін.
+Күтілетін нәтиже:
+               Шектеулі бюджетті қалалық бастамалар арасында бөлуге, бес шешім қабылдауға және қабылданған шешімдердің әсерін түсіндіре отырып, қорытынды Astana Quality of Life Score көрсеткішін алуға мүмкіндік беретін жұмыс істейтін AI-симулятор.
+Must have:
+−                    барлық пайдаланушылар үшін бірыңғай виртуалды бюджет;
+−                    белгіленген 5 бағыт бойынша шешім қабылдау мүмкіндігі;
+−                    бюджеттің асып кетуін автоматты бақылау;
+−                    қабылданған шешімдерді AI-талдау;
+−                    қорытынды Astana Quality of Life Score есептеу;
+−                    таңдалған сценарийдің күшті жақтарын, тәуекелдерін және ықтимал салдарын түсіндіру.
+Опционалды:
+−                    бірнеше команданың нәтижелерін салыстыру;
+−                    аудан көрсеткіштерінің өзгерістерін визуализациялау;
+−                    таңдалған сценарийді жақсарту бойынша AI-ұсынымдар;
+−                    бюджетті қайта бөлуді талап ететін күтпеген қалалық оқиғаларды модельдеу;
+−                    команда шешімінің қысқаша презентациясын автоматты түрде генерациялау.
+Деректер/қолжетімділік:
+ Қаланың шартты аудандары бойынша дайындалған синтетикалық деректер жиынтығы: көлік жүктемесі, жасыл аймақтармен, әлеуметтік инфрақұрылыммен қамтамасыз етілу, қауіпсіздік және қалалық қызметтер сапасының көрсеткіштері, сондай-ақ ықтимал іс-шаралар тізбесі және олардың шартты құны.
+Тексеру критерийлері:
+1.              Барлық командалар бірдей виртуалды бюджет пен бастапқы деректерден бастайды.
+2.              Жүйе белгіленген бюджеттен асуға мүмкіндік бермейді.
+3.              Қабылданған шешімдер модельдің қорытынды көрсеткіштеріне әсер етеді.
+4.              AI қорытынды нәтиже мен негізгі ымыралардың түсінікті түсіндірмесін қалыптастырады.
+5.              Шешімдер жиынтығын өзгерту Astana Quality of Life Score өзгерісіне әкеледі.
+________________
+
+
+
+
+Критерий
+	Нені бағалаймыз
+	Ұпай
+	Тапсырмаға сәйкестігі және жұмыс істеу қабілеті
+	Шешімнің қойылған тапсырмаға қаншалықты сәйкес келетіні және мәлімделген негізгі сценарийді іске асыруға мүмкіндік беретіні бағаланады.
+	25
+	Техникалық іске асыру
+	Шешімнің техникалық іске асырылу сапасы бағаланады: таңдалған тәсіл, архитектура, компоненттердің өзара әрекеттесуі, AI/agentic AI және басқа технологияларды пайдалану. Нақты іске асырудың жобаның мәлімделген логикасына сәйкестігі ескеріледі.
+	25
+	README және қайта іске қосу мүмкіндігі
+	Құжаттаманың жоба құрылымын, пайдаланылған технологияларды, іске қосу тәртібін және негізгі жұмыс сценарийін түсінуге қаншалықты мүмкіндік беретіні бағаланады. Сондай-ақ репозиторий материалдары негізінде шешімді қайта іске қосу және тексеру мүмкіндігі ескеріледі.
+	25
+	Шешімнің құндылығы және қолданылуы
+	Шешімнің көрсетілген мәселені қаншалықты шешетіні бағаланады. Ұсынылған тәсілдің практикалық қолданылуы ескеріледі.
+	15
+	Даму әлеуеті және тәсілдің бірегейлігі
+	Шешімді одан әрі дамыту және оны кең ауқымда қолдану әлеуеті, сондай-ақ тапсырманы іске асырудағы негізделген стандарттан тыс немесе бірегей тәсілдердің болуы бағаланады.
+	10
+	Барлығы
+	—
+	100
+	
+
+EN
+ 
+Task name: "Akim for 5 Hours" - an AI city management simulator
+Problem:
+               When making decisions on city development, several areas must be considered at once: transport, greening, social infrastructure, safety and the quality of city services. Limited resources require evaluating different scenarios and understanding how budget allocation can affect the quality of the urban environment.
+User:
+ A city manager, an analyst or a simulator user.
+Task:
+               Develop an AI simulator in which a team receives the same virtual budget and a dataset on the state of hypothetical city districts.
+The user must make 5 management decisions in the following areas:
+−                    transport;
+−                    greening;
+−                    social infrastructure;
+−                    safety;
+−                    city services.
+The AI must analyze the chosen decisions, their cost and expected impact on city indicators, and then produce a final scenario assessment and recommendations.
+Input data:
+−                    a fixed virtual budget;
+−                    a set of indicators for hypothetical city districts;
+−                    a list of possible measures and their notional cost;
+−                    indicators across five areas of urban development.
+For the hackathon, a pre-prepared synthetic dataset containing no personal or restricted data may be used.
+Expected result:
+               A working AI simulator that allows users to allocate a limited budget among city initiatives, make five decisions and receive a final Astana Quality of Life Score with an explanation of the impact of the decisions made.
+Must have:
+−                    a single virtual budget for all users;
+−                    the ability to make decisions in the 5 specified areas;
+−                    automatic budget overrun control;
+−                    AI analysis of the decisions made;
+−                    calculation of the final Astana Quality of Life Score;
+−                    an explanation of the strengths, risks and possible consequences of the chosen scenario.
+Optional:
+−                    comparison of results across several teams;
+−                    visualization of changes in district indicators;
+−                    AI recommendations for improving the chosen scenario;
+−                    simulation of unexpected city events that require budget reallocation;
+−                    automatic generation of a short presentation of the team's solution.
+Data/access:
+ A prepared synthetic dataset for hypothetical city districts: traffic load, availability of green areas and social infrastructure, safety and city service quality indicators, as well as a list of possible measures and their notional cost.
+Verification criteria:
+1.              All teams start with the same virtual budget and initial data.
+2.              The system does not allow the set budget to be exceeded.
+3.              The decisions made affect the model's final indicators.
+4.              The AI produces a clear explanation of the final result and the main trade-offs.
+5.              Changing the set of decisions changes the Astana Quality of Life Score.
+________________
+
+
+
+
+Criterion
+	What is evaluated
+	Points
+	Compliance with the task and functionality
+	The assessment considers how well the solution meets the assigned task and enables the main stated scenario to be implemented.
+	25
+	Technical implementation
+	The quality of the solution’s technical implementation is assessed, including the selected approach, architecture, interaction between components, and use of AI/agentic AI and other technologies. The consistency of the actual implementation with the stated project logic is taken into account.
+	25
+	README and reproducibility
+	The assessment considers whether the documentation makes it possible to understand the project structure, technologies used, launch procedure, and main operating scenario. The possibility of reproducing and checking the solution based on the repository materials is also taken into account.
+	25
+	Value and applicability of the solution
+	The assessment considers how well the solution addresses the stated problem. The practical applicability of the proposed approach is taken into account.
+	15
+	Development potential and originality of the approach
+	The assessment considers the potential for further development of the solution and its use at a broader scale, as well as the presence of well-founded unconventional or original approaches to implementing the task.
+	10
+	Total
+	—
+	100

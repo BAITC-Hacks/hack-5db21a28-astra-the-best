@@ -1,0 +1,20 @@
+{
+  "task": "P04",
+  "status": "done",
+  "agent": "CodexDesktop",
+  "session": "codex-desktop-20260923-01a0cd54",
+  "claimed_at": "2026-09-23T14:16:02.643925+05:00",
+  "updated_at": "2026-09-23T14:19:50.8268510+05:00",
+  "signature": "CodexDesktop / codex-desktop-20260923-01a0cd54 accepts task P04",
+  "artifacts": [
+    "src/domain/validation.ts",
+    "src/domain/simulation.ts",
+    "tests/domain/simulation.test.ts"
+  ],
+  "checks": [
+    "npm run typecheck: passed",
+    "npm test: 39 passed",
+    "npm run build: passed"
+  ],
+  "notes": "Domain exports match docs/API.md. Control scenario Score 56.54307, baseline 52.55768; validations, all synergies, lag, negative effects, clipping and critical threshold tested."
+}
