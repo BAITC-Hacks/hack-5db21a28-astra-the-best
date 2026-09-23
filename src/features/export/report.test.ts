@@ -1,7 +1,9 @@
+// @vitest-environment jsdom
 import { describe, expect, it } from 'vitest';
 import { scenario } from '@/data';
 import { simulate } from '@/domain/simulation';
 import { buildAnalysisInput } from '@/server/ai/facts';
+import { scoreColor } from '@/features/city-map/score-colors';
 import type { AnalysisState, ScenarioRequest } from '@/contracts';
 import { buildReportHtml, buildReportJson, prepareReport } from './report';
 
@@ -26,6 +28,53 @@ describe('portable report', () => {
     expect(json.analysis.scenarioId).toBe(simulation.scenarioId);
     expect(buildReportHtml(input)).toContain(String(simulation.result.score));
     expect(buildReportHtml(input)).toContain('Синтетическая учебная модель');
+  });
+  it('colors absolute 0–100 scores in the standalone HTML without coloring changes or money', () => {
+    const document = new DOMParser().parseFromString(buildReportHtml(input), 'text/html');
+    const districtScores = simulation.result.districts.flatMap((district) => [
+      simulation.baseline.districts.find((before) => before.districtId === district.districtId)!.score,
+      district.score,
+    ]);
+    const expectedValues = [simulation.result.score, simulation.baseline.score, simulation.result.score, simulation.result.weightedAverage, simulation.result.minimumDistrictScore, ...districtScores];
+    const coloredValues = [...document.querySelectorAll<HTMLElement>('.score-value')];
+    expect(coloredValues).toHaveLength(expectedValues.length);
+    coloredValues.forEach((element, index) => {
+      expect(element.style.color).toBe(scoreColor(expectedValues[index], 'text'));
+      expect(element.textContent).toBe(index === 2 ? String(expectedValues[index]) : expectedValues[index].toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+    });
+    expect(document.querySelectorAll('p.score .score-value')).toHaveLength(1);
+    expect(document.querySelectorAll('.stats .score-value')).toHaveLength(0);
+    const tables = document.querySelectorAll('table');
+    expect(tables).toHaveLength(2);
+    expect(tables[0].querySelectorAll('.score-value')).toHaveLength(0);
+    expect(tables[1].querySelectorAll('tbody tr')).toHaveLength(5);
+    expect(tables[1].querySelectorAll('tbody .score-value')).toHaveLength(10);
+    expect(tables[1].querySelectorAll('tbody td:last-child .score-value')).toHaveLength(0);
+    const changeSummary = [...document.querySelectorAll('section:first-of-type p')].find((paragraph) => paragraph.textContent?.includes('Изменение:'));
+    expect(changeSummary?.querySelectorAll('.score-value')).toHaveLength(1);
+  });
+  it('colors only absolute metric values in AI fact references', () => {
+    if (analysis.status !== 'success') throw new Error('fixture');
+    const metricIds = ['score-before', 'score-after', 'district-nura', 'district-before-nura', 'before-nura-S1', 'after-nura-S1'];
+    const neutralIds = ['score-delta', 'district-change-nura', 'budget-spent', 'realized-M7', 'critical-threshold'];
+    const citedStatement = { ...statement, factIds: [...metricIds, ...neutralIds] };
+    const html = buildReportHtml({ ...input, analysis: { status: 'success', response: { ...analysis.response, analysis: { ...analysis.response.analysis, summary: citedStatement } } } });
+    const document = new DOMParser().parseFromString(html, 'text/html');
+    const aiSection = [...document.querySelectorAll('section')].find((section) => section.querySelector('h2')?.textContent === 'AI-анализ текущего сценария');
+    const source = aiSection?.querySelector('p.source');
+    const coloredValues = [...(source?.querySelectorAll<HTMLElement>('.score-value') ?? [])];
+    expect(coloredValues).toHaveLength(metricIds.length);
+    metricIds.forEach((id, index) => {
+      const fact = analysis.response.facts.find((entry) => entry.id === id)!;
+      expect(typeof fact.value).toBe('number');
+      if (typeof fact.value !== 'number') throw new Error('fixture');
+      expect(coloredValues[index].textContent).toBe(fact.value.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+      expect(coloredValues[index].style.color).toBe(scoreColor(fact.value, 'text'));
+    });
+    neutralIds.forEach((id) => {
+      const fact = analysis.response.facts.find((entry) => entry.id === id)!;
+      expect(source?.textContent).toContain(`${fact.label} — ${typeof fact.value === 'number' ? fact.value.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : fact.value} ${fact.unit}`);
+    });
   });
   it('rejects stale, invalid or tampered simulation results', () => {
     expect(() => prepareReport({ ...input, simulation: { ...simulation, datasetVersion: 'old' } })).toThrow();

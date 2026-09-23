@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import type { Map as MapLibreMap, Marker, Popup } from 'maplibre-gl';
 import type { Decision, ScenarioResponse, SimulationResponse } from '@/contracts';
+import { scoreColor } from '@/features/city-map/score-colors';
 import { deriveEffectMarkers, signed, type EffectMarker } from './model';
 import { createImpactHighlight } from './impact';
 import styles from './CityEffects.module.css';
@@ -71,7 +72,16 @@ function detail(marker: EffectMarker): HTMLElement {
   if (marker.critical.length) {
     const critical = document.createElement('p');
     critical.className = styles.critical;
-    critical.textContent = `Критические показатели района: ${marker.critical.join('; ')}.`;
+    critical.append('Критические показатели района: ');
+    marker.critical.forEach((entry, index) => {
+      if (index > 0) critical.append('; ');
+      critical.append(`${entry.name}: `);
+      const value = document.createElement('strong');
+      value.textContent = entry.value.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      value.style.color = scoreColor(entry.value, 'text');
+      critical.append(value, ' балла');
+    });
+    critical.append('.');
     root.append(critical);
   }
   const disclaimer = document.createElement('small');

@@ -175,7 +175,8 @@ test('whole-city controls, indicator legend and map attribution are available', 
   await expect(page.getByRole('button', { name: 'Весь город' })).toBeVisible();
   await expect(page.getByRole('button', { name: '3D центр' })).toBeVisible();
   await chooseMenu(page, 'Слой показателей', 'Разгрузка дорог');
-  await expect(page.getByText(/Ниже 40 — критично/)).toBeVisible();
+  await expect(page.getByRole('img', { name: /Цветовая шкала от 0 до 100 баллов/ })).toBeVisible();
+  await expect(page.getByText(/Шкала 0–100 баллов/)).toHaveCount(0);
   await expect(page.getByRole('link', { name: /OpenStreetMap contributors/ }).first()).toBeVisible();
   await expect(page.getByRole('link', { name: /OpenFreeMap/ }).first()).toBeVisible();
 });

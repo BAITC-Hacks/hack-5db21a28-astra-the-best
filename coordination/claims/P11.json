@@ -1,23 +1,20 @@
 {
   "task": "P11",
   "status": "done",
-  "agent": "CodexSubagent-Sol",
-  "session": "codex-subagent-sol-20260923-p11-6a1d4e",
-  "claimed_at": "2026-09-23T14:28:31.6379776+05:00",
-  "updated_at": "2026-09-23T15:45:35.7664237+05:00",
-  "signature": "CodexSubagent-Sol / codex-subagent-sol-20260923-p11-6a1d4e accepts task P11",
+  "agent": "Codex",
+  "session": "codex-20260923-01a0ce2f-readme-style",
+  "claimed_at": "2026-09-23T17:48:14.3242698+05:00",
+  "updated_at": "2026-09-23T17:50:01.3652841+05:00",
+  "signature": "Codex / codex-20260923-01a0ce2f-readme-style accepts task P11",
   "artifacts": [
     "README.md",
-    "docs/DEMO.md"
+    "coordination/history/P11-before-visual-style-20260923-01a0ce2f.json"
   ],
   "checks": [
-    "Separate clean copy: npm.cmd ci passed, 0 vulnerabilities",
-    "Clean copy: npm.cmd run typecheck passed; npm.cmd test 57 passed; npm.cmd run build passed",
-    "Clean copy after P09 fixes: npm.cmd run lint passed",
-    "Clean copy production start port 3100: HTTP page 200, 5 districts, control cost 95 and Score 56.54307",
-    "P09 done and live OpenAI call documented by P06/P09 owner",
-    "Root integrated optional E2E: 3/3 passed in 18.7s (O01 save/reload/load/improvement/server Score; O03 HTML+JSON downloads; O02 toggle and 390px no overflow)",
-    "Root npm test: 80 passed after optional integration"
+    "README link validation: PASS; all 11 explicit section anchors and all local targets resolve.",
+    "git diff --check -- README.md: PASS.",
+    "Read-only source audit: existing versions, commands, control values, Sol and deployment status agree with local sources.",
+    "Documentation-only visual edit; no application tests rerun."
   ],
-  "notes": "README/DEMO updated for delivered P16/P17 and integrated P18/O01/O02/O03 behavior. Original clean-copy install/typecheck/lint/build/production smoke passed; root integrated optional browser E2E 3/3 and npm test 80 passed. Chrome channel install requirement corrected. Documentation makes no claim about still-pending P18 390x360 or O02 FPS checks; those belong to their owners. No deployment URL claimed; P12 will supply one if deployed."
+  "notes": "Latest user request: visual README similar to Magurin/medprice.xyz, preserving all 11 jury topics. P11 and follow-up P49 were done before this iteration; previous P11 record preserved intact in history. Added centered project header, concise pitch, grouped technology badges, 11-item linked contents, numbered sections and separators. Existing commands, tables, Mermaid, control numbers and limitations retained. Finished and released README to P52 integrator for commit/push; no Git mutations performed by this session."
 }

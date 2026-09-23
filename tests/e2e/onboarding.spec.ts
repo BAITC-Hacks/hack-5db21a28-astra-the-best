@@ -6,16 +6,11 @@ async function openCityPractice(page: Page) {
   await page.goto('/');
 }
 
-async function learnCityIndicators(page: Page, testInfo?: TestInfo) {
+async function learnCityOverview(page: Page, testInfo?: TestInfo) {
   const guide = page.getByRole('complementary', { name: 'Помощник градоначальника' });
-  await guide.getByRole('button', { name: 'Изучить показатели', exact: true }).click();
-  for (let index = 0; index < 10; index++) {
-    await test.step(`City indicator ${index + 1} of 10`, async () => {
-      await checkSpotlight(page);
-      if (index === 4 && testInfo) await page.screenshot({ path: testInfo.outputPath('city-school-indicator.png') });
-      await guide.getByRole('button', { name: index === 9 ? 'Сравнить районы' : 'Следующий показатель', exact: true }).click();
-    });
-  }
+  await expect(guide.getByRole('button', { name: 'Следующий показатель', exact: true })).toHaveCount(0);
+  if (testInfo) await page.screenshot({ path: testInfo.outputPath('city-indicators-overview.png') });
+  await guide.getByRole('button', { name: 'Сравнить районы', exact: true }).click();
   await checkSpotlight(page);
   await expect(guide.getByRole('heading', { name: 'Теперь посмотрим на весь город', exact: true })).toBeVisible();
   await page.getByRole('region', { name: 'Показатели района Нура', exact: true }).getByRole('button', { name: 'Закрыть', exact: true }).click();
@@ -27,6 +22,17 @@ async function learnCityIndicators(page: Page, testInfo?: TestInfo) {
   if (testInfo) await page.screenshot({ path: testInfo.outputPath('city-indicator-comparison.png') });
   await guide.getByRole('button', { name: 'Понятно, составим план', exact: true }).click();
   await page.locator('[data-guide-zone="nura"]').click();
+}
+
+async function districtAndLegendColor(page: Page, value: string) {
+  const districtNumber = page.locator('[data-guide-indicator="S1"] dd');
+  const legendNumber = page.locator('[data-guide-zone="nura"] strong');
+  await expect(districtNumber).toContainText(value);
+  await expect(legendNumber).toHaveText(value);
+  const districtColor = await districtNumber.evaluate((element) => getComputedStyle(element).color);
+  const legendColor = await legendNumber.evaluate((element) => getComputedStyle(element).color);
+  expect(districtColor).toBe(legendColor);
+  return districtColor;
 }
 
 async function checkSpotlight(page: Page) {
@@ -74,7 +80,8 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 
     await page.getByRole('button', { name: 'Нура', exact: true }).click();
     await expect(guide.getByRole('heading', { name: /Нура: узнайте/ })).toBeVisible();
     await checkSpotlight(page);
-    await learnCityIndicators(page, testInfo);
+    await learnCityOverview(page, testInfo);
+    const beforeColor = await districtAndLegendColor(page, '38,00');
     expect(aiRequests).toBe(0);
     expect(simulationRequests).toBe(0);
     await checkSpotlight(page);
@@ -120,6 +127,9 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 
     await expect(guide.getByRole('heading', { name: /Нура: узнайте/ })).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(guide).toHaveCount(0);
+    const afterColor = await districtAndLegendColor(page, '48,00');
+    expect(afterColor).not.toBe(beforeColor);
+    await page.screenshot({ path: testInfo.outputPath('city-colored-indicators-after.png') });
     await page.getByRole('button', { name: 'План · 5/5' }).click();
     await page.getByRole('button', { name: /^Удалить / }).first().click();
     await expect(page.getByRole('button', { name: 'Рассчитать сценарий' })).toBeDisabled();
@@ -147,7 +157,7 @@ test('onboarding: unavailable map still lets the mayor select a district and ope
   await expect(page.getByRole('alert').filter({ hasText: 'Не удалось загрузить карту' })).toBeVisible();
   await checkSpotlight(page);
   await page.getByRole('button', { name: 'Нура', exact: true }).click();
-  await learnCityIndicators(page);
+  await learnCityOverview(page);
   await page.getByRole('button', { name: 'План · 0/5' }).click();
   await expect(page.getByRole('heading', { name: 'Добавьте ваше первое решение' })).toBeVisible();
   await page.keyboard.press('Escape');

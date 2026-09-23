@@ -15,13 +15,13 @@ export class AiError extends Error { constructor(public code: ErrorCode, message
 
 export async function analyzeWithProvider(input: AnalysisInput): Promise<{ provider: string; model: string; analysis: AnalysisContent }> {
   const apiKey = process.env.AI_API_KEY;
-  const model = process.env.AI_MODEL || 'gpt-6-luna';
+  const model = process.env.AI_MODEL || 'gpt-6-sol';
   if (!apiKey) throw new AiError('AI_NOT_CONFIGURED', 'AI-анализ пока не настроен.', 503);
   const base = process.env.AI_BASE_URL || 'https://api.openai.com/v1';
   const timeout = Number(process.env.AI_TIMEOUT_MS || 30000);
   const url = `${base.replace(/\/$/, '')}/chat/completions`;
   const nvidia = new URL(base).hostname === 'integrate.api.nvidia.com';
-  const generationOptions = model === 'gpt-6-luna' && !nvidia
+  const generationOptions = (model === 'gpt-6-sol' || model === 'gpt-6-luna') && !nvidia
     ? { reasoning_effort: 'none', max_completion_tokens: 2500 }
     : { temperature: 0.2 };
   const system = [
@@ -33,6 +33,8 @@ export async function analyzeWithProvider(input: AnalysisInput): Promise<{ provi
     'Обычные числа тоже допустимы, но только значения из фактов, указанных в factIds этого утверждения, с правильной единицей. Score можно округлить до двух знаков. Не выводи новые проценты, суммы или прогнозы. Количества пиши цифрами, не словами.',
     'Деньги в facts и selectedMeasures.cost указаны в млрд ₸, это виртуальные ассигнования. Не называй их реальными сметами. Районные суммы уже рассчитаны в budget-<район>, общегородские отдельно в budget-city; не складывай суммы самостоятельно. Используй факты lag для лагов, horizon для горизонта, realized для доли эффекта, before/after/change для показателей.',
     'Не пересчитывай и не меняй Score. Не выдавай модель за реальный прогноз.',
+    'Факты effect-<мера>-<район>-<показатель> — вклад выбранной меры в показатель с учётом лага до ограничения шкалой; синергии переданы отдельно. Это не отдельный вклад меры в городской Score: его нельзя получать сложением этих эффектов. Факты district-before/district-change содержат уже рассчитанные баллы района до и их изменение.',
+    'Если есть факты critical-<район>-<показатель>, назови оставшиеся критические проблемы в рисках, даже когда change равен нулю. Отсутствие изменения не означает отсутствие проблемы. Используй effect для связи конкретной меры с пользой, а after/change — для фактического итогового изменения с учётом синергий и ограничения шкалы.',
     'Назови в рисках или последствиях конкретный компромисс: выбранное мероприятие, район и его стоимость или лаг относительно ожидаемой пользы.',
     'В рекомендации назови полное название конкретного выбранного мероприятия и район, объясни, что стоит сохранить или изменить, и привяжи совет к фактам о мере, районе и изменённом показателе.',
     'Не предлагай невыбранную меру как проверенное улучшение: её результат не рассчитывался.',

@@ -91,3 +91,43 @@
 .legendHeader button { flex:none; width:36px; min-height:36px; justify-content:center; padding:0; font-size:1.4rem; }
 .legend.legendCollapsed { right:auto; width:auto; max-width:calc(100% - 20px); padding:8px 12px; overflow:visible; }
 .legendCollapsed > :not(.legendHeader) { display:none; }
+
+/* Reserve the bottom strip for the camera and keep the complete district summary readable. */
+.controls {
+  top:auto;
+  right:auto;
+  bottom:24px;
+  left:50%;
+  z-index:4;
+  transform:translateX(-50%);
+  flex-direction:row;
+  width:max-content;
+  max-width:calc(100% - 24px);
+}
+.controls button { min-height:44px; white-space:nowrap; }
+.legend { z-index:2; }
+.zoneCard {
+  bottom:88px;
+  width:min(640px,calc(100% - 48px));
+  max-height:calc(100% - 112px);
+  padding:0 24px 20px;
+}
+.zoneCardHeader { margin:0 -24px; padding:18px 24px; }
+.zoneCard dl { grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:28px; }
+.zoneCard dl div { gap:14px; }
+@media(max-width:760px) {
+  .controls { bottom:16px; }
+  .legend { bottom:76px; max-height:calc(100% - 148px); }
+  .zoneCard {
+    left:10px;
+    right:10px;
+    bottom:76px;
+    width:auto;
+    max-height:calc(100% - 148px);
+    padding:0 16px 16px;
+  }
+  .zoneCardHeader { margin:0 -16px; padding:12px 16px; }
+  .zoneCard dl { grid-template-columns:minmax(0,1fr); }
+  .zoneCard dl div { padding:6px 0; }
+  .zoneCard p { margin:10px 0; }
+}

@@ -55,6 +55,18 @@ describe('ReportView', () => {
     expect(html).toContain('Повторить AI-анализ');
   });
 
+  it('shows the analysis loading panel only for the current scenario', () => {
+    const loading = render({ status: 'loading', scenarioId: simulation.scenarioId });
+    expect(loading).toContain('Готовим разбор вашего сценария');
+    expect(loading).toContain('role="status"');
+    expect(loading).toContain('55,00');
+    expect(loading).not.toContain('Получить AI-анализ');
+
+    const stale = render({ status: 'loading', scenarioId: 'old-scenario' });
+    expect(stale).not.toContain('Готовим разбор вашего сценария');
+    expect(stale).toContain('Получить AI-анализ');
+  });
+
   it('does not display analysis from another scenario', () => {
     const html = render({ status: 'success', response: { datasetVersion: scenario.datasetVersion, scenarioId: 'old-scenario', provider: 'test', model: 'test', facts: [], analysis: { summary: { text: 'OLD ANALYSIS', factIds: [] }, strengths: [], risks: [], consequences: [], recommendation: { text: 'OLD ADVICE', factIds: [] } } } });
     expect(html).not.toContain('OLD ANALYSIS');

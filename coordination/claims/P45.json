@@ -1,0 +1,23 @@
+{
+  "task": "P45",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-rubric-p45-ai",
+  "claimed_at": "2026-09-23T17:31:44.6259861+05:00",
+  "updated_at": "2026-09-23T17:36:35.5824702+05:00",
+  "signature": "Codex / codex-20260923-rubric-p45-ai accepts task P45",
+  "artifacts": [
+    "src/server/ai/facts.ts",
+    "src/server/ai/provider.ts",
+    "tests/ai/facts.test.ts"
+  ],
+  "checks": [
+    "2026-09-23 17:33 +05 npm.cmd test -- --run tests/ai --maxWorkers=2: PASS 48 tests across 3 files (5 new regressions).",
+    "2026-09-23 17:33 +05 npx.cmd eslint src/server/ai/facts.ts src/server/ai/provider.ts tests/ai/facts.test.ts: PASS.",
+    "2026-09-23 17:34 +05 npm.cmd run typecheck: PASS.",
+    "2026-09-23 17:34 +05 git diff --check -- src/server/ai/facts.ts src/server/ai/provider.ts tests/ai/facts.test.ts: PASS.",
+    "2026-09-23 17:36 +05 root shared live check: HTTP 200, gpt-6-sol, 10.19 seconds, 135 facts; valid 81-unit M1/esil M2 M4/esil M10/esil M12 scenario. AI risks explicitly identify critical Nura S1=38/S2=35 and weakest Nura; second risk grounds M4/esil E1 effect9, lag2 and 1.5bn KZT. Evidence reported by root to P45 owner.",
+    "2026-09-23 root independent full suite: 163/163 tests PASS; TypeScript PASS (reported by root)."
+  ],
+  "notes": "Implemented complete remaining critical facts including unchanged Nura S1=38/S2=35; before/change district scores; each realized per-measure per-district indicator effect from ledger (lag applied, before clipping). Prompt requires remaining critical risks and distinguishes effect contributions from nonlinear city Score and final clipped delta. Preserved Sol none/max2500, fact validation and contracts. Five new regressions cover unchanged risks, M7 realized10, city district coverage/unique IDs, district score delta, clipping distinction. No live paid call by subagent; root completed shared live integration check and reported HTTP200, both unchanged critical risks explained. All source edits and required checks complete; handoff to root. Status done following attributed live confirmation. Prior provider model changes from P43 retained. No commit/push."
+}

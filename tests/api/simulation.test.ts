@@ -34,6 +34,21 @@ describe('API сценария и расчёта', () => {
     expect((await response.json()).error.code).toBe('INVALID_FORMAT');
   });
 
+  it('запрещает даже пустой район у городской меры, но принимает отсутствие поля', async () => {
+    const decisions = controlRequest.decisions.map((decision) => decision.measureId === 'M12' ? { ...decision, districtId: '' } : decision);
+    const rejected = await post(JSON.stringify({ ...controlRequest, decisions }));
+    const body = await rejected.json();
+    expect(rejected.status).toBe(422);
+    expect(body.error.code).toBe('DISTRICT_FORBIDDEN');
+    expect(body.error.issues).toContainEqual(expect.objectContaining({ measureIds: ['M12'], districtId: '' }));
+    expect(body.result).toBeUndefined();
+    expect(body.score).toBeUndefined();
+
+    const accepted = await post(JSON.stringify(controlRequest));
+    expect(accepted.status).toBe(200);
+    expect((await accepted.json()).result.score).toBeCloseTo(56.54307, 8);
+  });
+
   it('отклоняет старую версию, неизвестную меру и неполный набор без Score', async () => {
     const stale = await post(JSON.stringify({ ...controlRequest, datasetVersion: 'old' }));
     expect(stale.status).toBe(409);

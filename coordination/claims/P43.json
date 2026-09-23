@@ -1,0 +1,46 @@
+{
+  "task": "P43",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-01a0ce2f-sol",
+  "claimed_at": "2026-09-23T17:18:00.9929669+05:00",
+  "updated_at": "2026-09-23T17:22:14.9597675+05:00",
+  "signature": "Codex / codex-20260923-01a0ce2f-sol accepts task P43",
+  "artifacts": [
+    "src/server/ai/provider.ts",
+    "tests/ai/provider.test.ts",
+    ".env.example",
+    ".env.local (local AI_MODEL only; untracked)",
+    "PLAN.md",
+    "scripts/claim-task.ps1",
+    "README.md (initial targeted model lines handed to P11 owner)"
+  ],
+  "checks": [
+    {
+      "at": "2026-09-23T17:22:14.9597675+05:00",
+      "result": "PASS: 13 tests",
+      "command": "npm.cmd test -- --run tests/ai/provider.test.ts"
+    },
+    {
+      "at": "2026-09-23T17:22:14.9597675+05:00",
+      "result": "PASS",
+      "command": "npm.cmd run typecheck"
+    },
+    {
+      "at": "2026-09-23T17:22:14.9597675+05:00",
+      "result": "PASS",
+      "command": "npx.cmd eslint src/server/ai/provider.ts tests/ai/provider.test.ts"
+    },
+    {
+      "at": "2026-09-23T17:22:14.9597675+05:00",
+      "result": "HTTP 200; gpt-6-sol; api.openai.com; 70 facts; structured analysis with 3 strengths; matching scenarioId",
+      "command": "Live POST http://127.0.0.1:3000/api/analyze with control scenario"
+    },
+    {
+      "at": "2026-09-23T17:22:14.9597675+05:00",
+      "result": "PASS",
+      "command": "git diff --check -- src/server/ai/provider.ts tests/ai/provider.test.ts .env.example PLAN.md scripts/claim-task.ps1"
+    }
+  ],
+  "notes": "User requested Sol for AI analysis. Default, example and local AI_MODEL now gpt-6-sol. OpenAI GPT-6 Sol continues reasoning_effort none and max_completion_tokens 2500; explicit Luna override remains compatible; NVIDIA request path unchanged. Existing fact grounding, repair and JSON schema preserved. Historical Luna validation records kept. README model lines were updated then file ownership transferred to the restarted P11 documentation task; P43 will not edit README further. Live Sol response verified. No unrelated working-tree changes touched."
+}

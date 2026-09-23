@@ -1,0 +1,26 @@
+{
+  "task": "P34",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-01a0ce1f-map-layout",
+  "claimed_at": "2026-09-23T17:00:55.3159031+05:00",
+  "updated_at": "2026-09-23T17:14:16.0269571+05:00",
+  "signature": "Codex / codex-20260923-01a0ce1f-map-layout accepts task P34",
+  "artifacts": [
+    "src/features/city-map/CityMap.module.css",
+    "src/app/AppShell.module.css",
+    "tmp/p34/final-1280x800.png",
+    "tmp/p34/final-390x844.png",
+    "tmp/p34/final-390x360.png"
+  ],
+  "checks": [
+    "2026-09-23: npm run typecheck PASS, exit 0.",
+    "2026-09-23: Playwright one-off geometry PASS at 1280x800, 1024x768, 768x800, 390x844, 390x360 after real UI calculation: cameras horizontally centered, all 10 values present, no camera/summary/compare overlap, controls unobstructed, no horizontal overflow, final row reachable. External base map style fixture isolated tile availability.",
+    "2026-09-23: Final browser baseline audit PASS for all five districts at 1280x800 and390x844: all10 values visible without scrolling; 390x360 final row readable below sticky header after scrolling. Camera buttons clickable. Screenshots visually inspected.",
+    "2026-09-23: Existing onboarding.spec.ts run by read-only layout_review subagent:4passed/1failed; sole390x844 loading-status overlap fixed with legend z-index2; targeted rerun PASS1/1(24.5s).",
+    "2026-09-23: git diff --check on both CSS files PASS. Production build not rerun by P34 because shared P32 integration is active; verification ownership requested from integrator.",
+    "2026-09-23 follow-up: npm run build compiled CSS successfully in1326ms; whole production build stopped at OptimizerPanel.tsx102/139 TS2304 missing scoreColor during parallel palette edits. Reported exact issue to palette owner01a0ce25 and root. No P34 source errors.",
+    "2026-09-23 final follow-up: npm run build PASS exit0 after palette owner fixed OptimizerPanel scoreColor import. CSS compilation, TypeScript and all8 static pages complete. Prior production blocker resolved."
+  ],
+  "notes": "Implemented and available in shared D:\\HackAlem. P32 and P24 explicitly handed off CityMap controls/zoneCard/legend CSS; P24 also handed off AppShell compare layout. Camera bottom centered; summary640px and two columns desktop, one readable compact column mobile; comparison no longer overlays summary. Legend stays above noninteractive status. TSX, guide anchors, colors, data and formulas untouched. P34 scope addition for legend/compare requested from PLAN owner. Source edits complete and released to integrator; no commit/push requested. Short viewport intentionally scrolls with sticky close header. Original narrow summary was380px with560px cap and755px scroll content; all five final baseline summaries fit normal desktop/phone. No fake AI or paid requests used."
+}

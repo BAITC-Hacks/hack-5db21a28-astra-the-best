@@ -1,0 +1,26 @@
+{
+  "task": "P46",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-rubric-p46-release",
+  "claimed_at": "2026-09-23T17:31:35.4240815+05:00",
+  "updated_at": "2026-09-23T17:43:56.9323430+05:00",
+  "signature": "Codex / codex-20260923-rubric-p46-release accepts task P46",
+  "artifacts": [
+    "docs/RELEASE_CHECK.md",
+    "docs/VERCEL.md",
+    "PLAN.md",
+    "scripts/claim-task.ps1",
+    "tmp/rubric-build-20260923",
+    "tmp/rubric-live-ai.json"
+  ],
+  "checks": [
+    "Independent Vitest163/163 in23files and typecheck PASS",
+    "Isolated production build Next16.3.6 Turbopack PASS using existing dependencies",
+    "Live Sol HTTP200 in10.19sec,135facts, correct unchanged Nura critical38/35",
+    "Clean npm ci with separate cache and allowed network PASS:459packages installed",
+    "git diff --check PASS",
+    "Fresh dependency production build completed exit0 after interruption; recorded in RELEASE_CHECK"
+  ],
+  "notes": "Release verification and Vercel instructions complete. npm ci459packages and clean dependency production build passed; completion of that build came after10minute target, documented honestly. Actual final Git integration/push/submission remain separately P12. No deployment claimed."
+}

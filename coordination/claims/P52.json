@@ -1,0 +1,27 @@
+{
+  "task": "P52",
+  "status": "review",
+  "agent": "Codex",
+  "session": "codex-20260923-rubric-p52-push",
+  "claimed_at": "2026-09-23T17:45:58.1876829+05:00",
+  "updated_at": "2026-09-23T17:49:36.2218222+05:00",
+  "signature": "Codex / codex-20260923-rubric-p52-push accepts task P52",
+  "artifacts": [
+    "main release integration",
+    "docs/RELEASE_CHECK.md",
+    "PLAN.md",
+    "scripts/claim-task.ps1"
+  ],
+  "checks": [
+    "origin confirmed as hackathon team repository",
+    "Remote main equals initial local HEAD6698bfa; no force required",
+    "git diff --check PASS",
+    ".env.local ignored and only.env.example tracked",
+    "Production build after P50/P51 PASS; live API empty city district rejected422",
+    "Full Vitest 2026-09-23 17:46 +05 PASS: 164 tests in 23 files",
+    "Independent scan of 74 changed/untracked files found no secret candidates",
+    "Accidental src/contracts/index.js preserved under ignored tmp/release-artifacts and excluded from release",
+    "Staged diff check PASS"
+  ],
+  "notes": "Explicit user authorization to commit and push all current project work. Final push/remote verification pending; platform form and Vercel deployment are separate, not claimed."
+}

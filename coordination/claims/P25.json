@@ -4,20 +4,19 @@
   "agent": "Codex",
   "session": "codex-20260923-learning-tests-p25",
   "claimed_at": "2026-09-23T16:07:08.0862393+05:00",
-  "updated_at": "2026-09-23T16:34:58.3522176+05:00",
+  "updated_at": "2026-09-23T16:55:24.4086897+05:00",
   "signature": "Codex / codex-20260923-learning-tests-p25 accepts task P25",
   "artifacts": [
     "tests/ui/city-guide.test.tsx",
     "tests/e2e/onboarding.spec.ts",
-    "tmp/p25-city-onboarding-fixed/",
-    "tmp/p25-city-scenario/"
+    "tmp/p25-short-overview/"
   ],
   "checks": [
-    "2026-09-23: npx.cmd vitest run tests/ui/city-guide.test.tsx tests/ui/onboarding.test.tsx --maxWorkers=1: 5 passed; targeted city-guide rerun after close/reselect source fix: 3 passed.",
-    "2026-09-23: npx.cmd playwright test tests/e2e/onboarding.spec.ts --workers=1 --reporter=list --output=tmp/p25-city-onboarding-fixed: 5 passed (28.7s). Full journey 1280x800, 390x844, 390x360; all ten target/card separation checks; real close/layer/reselect actions; no simulate or AI before explicit action; mocked AI error/retry; skip/replay/Escape/offline map.",
-    "2026-09-23: scoped ESLint and git diff --check for owned test paths: passed.",
-    "2026-09-23: visual screenshots of school metric and map comparison inspected at desktop/mobile; target unobscured, compact card scrollable at390x360.",
-    "2026-09-23: scenario.spec.ts regression run: 11 passed, 2 failed (47.3s). Failures are missing M7 marker exact aria-label at line124 and missing M1 marker count at line167. Root/P23/P26 notified; not represented as all E2E passing."
+    "2026-09-23 16:54: npx.cmd vitest run tests/ui/city-guide.test.tsx tests/ui/onboarding.test.tsx --maxWorkers=1: 5 passed. General overview, no individual metric steps, real layer gate, replay, post-calculation critical state; existing skip/storage tests retained.",
+    "2026-09-23 16:54: npx.cmd playwright test tests/e2e/onboarding.spec.ts --workers=1 --reporter=list --output=tmp/p25-short-overview: 5 passed (23.3s). Journeys1280x800/390x844/390x360, close/layer/reselect/plan/report, no paid AI, no simulate/AI during overview, mocked AI error/retry, replay/Escape/offline map.",
+    "2026-09-23 16:54: browser color equivalence passes for Nura S1 card dd and same legend strong at38before and48after; color changes after calculation, numbers stay equal. Checked in all3 journey viewports.",
+    "2026-09-23: scoped ESLint and final git diff --check for owned two test paths: passed.",
+    "2026-09-23: current mobile overview and desktop colored post-calculation screenshots inspected; retained Spotlight appearance and legible district values. Earlier revision outputs remain in tmp, not current validation."
   ],
-  "notes": "Final scope follows explicit user correction: no standalone learning mode. Removed own learning.test.tsx/learning.spec.ts and reverted learning-key seeding; scenario.spec.ts retains only pre-existing P21 monetary assertion diff. New city-guide unit tests cover canonical ten indicators, actual Nura values, threshold40/critical38, full16/realized10 school effect, layer gate and post-calculation48 plus previous navigation. Found real mobile zoneCard-over-layer pointer obstruction; root fixed with guided close-card action, validated at both mobile sizes. Explicit P18 onboarding.spec and P21 scenario.spec transfers honored; P25 now releases these files. P24 root authorized done for owned tests; two unrelated scenario marker failures remain pending P23/P26 ownership and are recorded above. No production files edited, no paid AI calls. Shared workspace, no cherry-pick required."
+  "notes": "Final follow-up scope: short general city overview only, without ten individual lessons. Existing tests rewritten; no new files, scenario suite and foreign files untouched in this revision. Current screenshots tmp/p25-short-overview: city-indicators-overview.png, city-indicator-comparison.png, city-colored-indicators-after.png. DOM-based training/color checks pass even while external map tiles load. Production changes owned by P24. P25 releases the two test files again; shared workspace, no cherry-pick needed. Old standalone tests/seeding remain removed. Previous revision scenario marker failures were passed to root/P23/P26; this revision did not rerun or edit that unrelated suite."
 }

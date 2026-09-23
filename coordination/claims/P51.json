@@ -1,0 +1,17 @@
+{
+  "task": "P51",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-rubric-p51-fix",
+  "claimed_at": "2026-09-23T17:42:14.7327+05:00",
+  "updated_at": "2026-09-23T17:43:16.2829360+05:00",
+  "signature": "Codex / codex-20260923-rubric-p51-fix accepts task P51",
+  "artifacts": [
+    "src/domain/validation.ts",
+    "tests/api/simulation.test.ts"
+  ],
+  "checks": [
+    "2026-09-23: npx.cmd vitest run tests/api/simulation.test.ts tests/domain/simulation.test.ts --maxWorkers=2 PASS18/18; empty city district422 DISTRICT_FORBIDDEN noresult/Score; omitted field200 Score56.54307."
+  ],
+  "notes": "P51 complete in shared workspace. City decision explicitly rejects districtId empty string while undefined remains valid for typed callers. No formula, prices or request contract changes."
+}

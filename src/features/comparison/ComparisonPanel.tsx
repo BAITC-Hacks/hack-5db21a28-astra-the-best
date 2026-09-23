@@ -6,6 +6,7 @@ import type { Decision, ScenarioResponse, SimulationResponse } from '@/contracts
 import { simulate, scenarioId } from '@/domain/simulation';
 import { findImprovement } from '@/domain/search/improve';
 import { validateScenarioRequest } from '@/domain/validation';
+import { scoreColor } from '@/features/city-map/score-colors';
 import { COMPARISON_STORAGE_KEY, deleteSavedScenario, readSavedScenarios, saveScenario, type SavedCollection } from './storage';
 import styles from './ComparisonPanel.module.css';
 
@@ -65,10 +66,10 @@ export function ComparisonPanel({ scenario, simulation, onLoadDecisions }: Compa
       <caption>Индекс качества жизни: выше — лучше. Разница показывает, насколько сохранённый план лучше или хуже текущего.</caption>
       <thead><tr><th scope="col">Сценарий</th><th scope="col">Индекс · Score</th><th scope="col">Разница с текущим</th><th scope="col">Потрачено / бюджет</th><th scope="col">Показателей ниже {scenario.rules.criticalThreshold}</th><th scope="col">Действия</th></tr></thead>
       <tbody>
-        {current && <tr className={styles.current}><th scope="row">Текущий</th><td>{number(current.result.score)}</td><td>—</td><td>{formatBudget(current.cost)} / {formatBudget(scenario.budget)}</td><td>{current.result.criticalCount}</td><td>На экране</td></tr>}
+        {current && <tr className={styles.current}><th scope="row">Текущий</th><td><strong style={{ color: scoreColor(current.result.score, 'text') }}>{number(current.result.score)}</strong></td><td>—</td><td>{formatBudget(current.cost)} / {formatBudget(scenario.budget)}</td><td>{current.result.criticalCount}</td><td>На экране</td></tr>}
         {comparisons.map(({ entry, result }) => <tr key={result.scenarioId}>
           <th scope="row">{entry.name}<details><summary>Пять решений</summary><ul>{result.decisions.map((decision) => <li key={decision.measureId}>{describe(decision)}</li>)}</ul></details></th>
-          <td>{number(result.result.score)}</td><td>{current ? signed(result.result.score - current.result.score) : '—'}</td><td>{formatBudget(result.cost)} / {formatBudget(scenario.budget)}</td><td>{result.result.criticalCount}</td>
+          <td><strong style={{ color: scoreColor(result.result.score, 'text') }}>{number(result.result.score)}</strong></td><td>{current ? signed(result.result.score - current.result.score) : '—'}</td><td>{formatBudget(result.cost)} / {formatBudget(scenario.budget)}</td><td>{result.result.criticalCount}</td>
           <td><div className={styles.actions}><button type="button" aria-label={`Открыть ${entry.name}`} onClick={() => load(result.decisions)}>В план</button><button type="button" aria-label={`Удалить ${entry.name}`} onClick={() => {
             try { setSaved(deleteSavedScenario(window.localStorage, scenario, scenarioId(entry.request))); setMessage('Сценарий удалён.'); }
             catch (error) { setMessage(error instanceof Error ? error.message : 'Не удалось удалить сценарий.'); }
@@ -83,7 +84,7 @@ export function ComparisonPanel({ scenario, simulation, onLoadDecisions }: Compa
       {activeSearch && <div aria-live="polite">
         <p>Проверено вариантов: {activeSearch.checked}. Соответствуют всем правилам: {activeSearch.validCandidates}.</p>
         {activeSearch.best ? <>
-          <p className={styles.gain}>Индекс качества жизни: {number(current.result.score)} → {number(activeSearch.best.simulation.result.score)} <strong>({signed(activeSearch.best.gain)} балла)</strong></p>
+          <p className={styles.gain}>Индекс качества жизни: <span style={{ color: scoreColor(current.result.score, 'text') }}>{number(current.result.score)}</span> → <span style={{ color: scoreColor(activeSearch.best.simulation.result.score, 'text') }}>{number(activeSearch.best.simulation.result.score)}</span> <strong>({signed(activeSearch.best.gain)} балла)</strong></p>
           <dl><dt>Вместо</dt><dd>{describe(activeSearch.best.removed)}</dd><dt>Предлагается</dt><dd>{describe(activeSearch.best.added)}</dd></dl>
           <p>Бюджет: {formatBudget(current.cost)} → {formatBudget(activeSearch.best.simulation.cost)} из {formatBudget(scenario.budget)}. Критические показатели: {current.result.criticalCount} → {activeSearch.best.simulation.result.criticalCount}.</p>
           <button type="button" onClick={() => load(activeSearch.best!.simulation.decisions)}>Перенести улучшение в план</button>

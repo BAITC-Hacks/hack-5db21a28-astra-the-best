@@ -85,3 +85,6 @@
 .mode button[aria-pressed=true]{background:transparent;color:#fff;box-shadow:none;text-shadow:0 1px 2px #0006}
 @media(max-width:700px){.mode{--mode-padding:3px;--mode-gap:1px}.mode button{padding:8px 10px;font-size:13px}}
 @media(prefers-reduced-motion:reduce){.mode::before,.mode button{transition:none}}
+
+/* The compact summary leaves a top strip for comparison and a bottom camera dock. */
+@media(max-width:760px){.compare{top:12px;left:10px;right:auto;bottom:auto}}

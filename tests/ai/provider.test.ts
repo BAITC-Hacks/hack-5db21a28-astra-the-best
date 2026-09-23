@@ -49,9 +49,9 @@ describe('AI-анализ', () => {
     vi.stubGlobal('fetch', fetchMock);
     const result = await analyzeWithProvider(input);
     expect(result.analysis).toEqual(analysis);
-    expect(result.model).toBe('gpt-6-luna');
+    expect(result.model).toBe('gpt-6-sol');
     const sent = JSON.parse(fetchMock.mock.calls[0][1].body);
-    expect(sent.model).toBe('gpt-6-luna');
+    expect(sent.model).toBe('gpt-6-sol');
     expect(sent.reasoning_effort).toBe('none');
     expect(sent.max_completion_tokens).toBe(2500);
     expect(sent.temperature).toBeUndefined();

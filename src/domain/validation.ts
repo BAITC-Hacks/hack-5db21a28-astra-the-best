@@ -36,7 +36,7 @@ export function validateDecisions(decisions: readonly Decision[], { mode, scenar
     cost += measure.cost;
     counts[measure.directionId]++;
     if (measure.scope === 'district' && !decision.districtId) issues.push({ code: 'DISTRICT_REQUIRED', message: `Для меры ${decision.measureId} выберите район.`, measureIds: [decision.measureId] });
-    if (measure.scope === 'city' && decision.districtId) issues.push({ code: 'DISTRICT_FORBIDDEN', message: `Городской мере ${decision.measureId} район не нужен.`, measureIds: [decision.measureId], districtId: decision.districtId });
+    if (measure.scope === 'city' && decision.districtId !== undefined) issues.push({ code: 'DISTRICT_FORBIDDEN', message: `Городской мере ${decision.measureId} район не нужен.`, measureIds: [decision.measureId], districtId: decision.districtId });
     if (decision.districtId && !districts.has(decision.districtId)) issues.push({ code: 'UNKNOWN_DISTRICT', message: `Неизвестный район ${decision.districtId}.`, measureIds: [decision.measureId], districtId: decision.districtId });
   }
   if (cost > scenario.budget) issues.push({ code: 'BUDGET_EXCEEDED', message: `Бюджет превышен на ${formatBudget(cost - scenario.budget)}.` });

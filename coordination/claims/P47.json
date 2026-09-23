@@ -1,0 +1,19 @@
+{
+  "task": "P47",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-rubric-p47-docs",
+  "claimed_at": "2026-09-23T17:32:42.3133966+05:00",
+  "updated_at": "2026-09-23T17:33:35.6495726+05:00",
+  "signature": "Codex / codex-20260923-rubric-p47-docs accepts task P47",
+  "artifacts": [
+    "docs/API.md",
+    "docs/ACCEPTANCE.md"
+  ],
+  "checks": [
+    "PASS: local Markdown links resolve (5 references).",
+    "PASS: git diff --check -- docs/API.md docs/ACCEPTANCE.md (line-ending advisory only).",
+    "Source audit: provider.ts, validation.ts, facts.ts (including P45 additions), analyze/optimize routes, contracts and P43 claim."
+  ],
+  "notes": "Docs only. Fact templates, supported numeric literals, semantic limitation, timeout/repair/default Sol, optimize and in-memory serverless limits documented. Historical acceptance kept historical; P43 live HTTP 200 / 70 facts cited as owner evidence, not rerun. P45 fact fields verified in source; no claim of new live-AI acceptance. No tests, paid AI, build, commit or changes outside scope. Octarin file recall returned unrelated mark-i memories, not applied; feedback recorded."
+}

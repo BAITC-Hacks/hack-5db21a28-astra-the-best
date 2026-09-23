@@ -26,7 +26,19 @@
 .slotActions { display:flex; gap:5px; flex-wrap:wrap; }
 .slotActions button { font-size:.72rem; padding:5px 7px; }
 .emptySlot { border-style:dashed; color:#71878d; font-size:.78rem; display:flex; align-items:center; }
-.hint { font-size:.78rem; color:#156c73; }
+.hint {
+  margin:12px 0 0;
+  padding:12px 14px;
+  border:1px solid #b5c5d3;
+  border-left:4px solid #3f5e78;
+  border-radius:10px;
+  background:#e7eef5;
+  color:var(--ink);
+  font-size:.9375rem;
+  font-weight:700;
+  line-height:1.5;
+  box-shadow:0 3px 10px #273b4c12;
+}
 .controls { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:20px 0 12px; }
 .controls { min-width:0; }
 .catalog { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; max-height:520px; overflow:auto; padding:2px; }
@@ -122,7 +134,7 @@
 .slot strong { font-size:.9375rem; line-height:1.45; }
 .slot small { font-size:.875rem; margin-top:5px; }
 .slotActions button { font-size:.875rem; min-height:36px; padding:6px 10px; }
-.emptySlot,.hint { font-size:.875rem; }
+.emptySlot { font-size:.875rem; }
 .emptySlot { min-height:48px; color:var(--ink-muted); }
 .controls { gap:16px; margin:24px 0; }
 .catalogTitle { margin:24px 0 0; font-size:1.125rem; }

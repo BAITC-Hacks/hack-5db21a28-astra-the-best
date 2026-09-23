@@ -1,0 +1,22 @@
+{
+  "task": "P50",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-rubric-p50-fix",
+  "claimed_at": "2026-09-23T17:41:45.2725613+05:00",
+  "updated_at": "2026-09-23T17:43:56.9067288+05:00",
+  "signature": "Codex / codex-20260923-rubric-p50-fix accepts task P50",
+  "artifacts": [
+    "src/features/results/ReportView.tsx",
+    "src/features/optimizer/OptimizerPanel.tsx",
+    "src/features/export/report.ts",
+    "src/features/export/report.test.ts"
+  ],
+  "checks": [
+    "Vitest export/report+results+optimizer:28/28 PASS",
+    "npm run typecheck PASS",
+    "Scoped ESLint four files PASS",
+    "git diff --check PASS"
+  ],
+  "notes": "User requested urgent fixes before Vercel. Excluded district-change IDs from absolute0-100 palette in all3consumers, preserving district-before. Extended existing regression. No formula or AI changes; no commit/push."
+}

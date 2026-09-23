@@ -1,0 +1,22 @@
+{
+  "task": "P11",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-01a0ce32-readme",
+  "claimed_at": "2026-09-23T17:19:13.0360019+05:00",
+  "updated_at": "2026-09-23T17:29:13.9383884+05:00",
+  "signature": "Codex / codex-20260923-01a0ce32-readme accepts task P11",
+  "artifacts": [
+    "README.md",
+    "coordination/history/P11-before-readme-20260923-01a0ce32.json"
+  ],
+  "checks": [
+    "2026-09-23T17:26:27.4536597+05:00 | npm.cmd test -- tests/domain/simulation.test.ts tests/api/simulation.test.ts | PASS: 17 tests across 2 files; baseline 52.55768, cost 95, result 56.54307, delta 3.98539.",
+    "2026-09-23T17:26:27.4536597+05:00 | README local-link validation | PASS: all 11 distinct relative links resolve.",
+    "2026-09-23T17:26:27.4536597+05:00 | git diff --check -- README.md | PASS; only Git line-ending advisory.",
+    "2026-09-23T17:26:27.4536597+05:00 | Source audit against package.json, .env.example, API/domain/features, tests and delivery docs | All 11 requested topics covered; command names and model gpt-6-sol match source; no deployed URL invented.",
+    "2026-09-23T17:26:27.4536597+05:00 | Independent read-only subagent audit | Control choices, optimizer, storage, export and onboarding verified against implementation; no edits.",
+    "2026-09-23T17:26:27.4536597+05:00 | Existing P43 evidence (not rerun by P11) | Live gpt-6-sol API success and README handoff recorded by P43 owner."
+  ],
+  "notes": "Completed explicit user request to rewrite README for hackathon jury. Previous done claim preserved unchanged at coordination/history/P11-before-readme-20260923-01a0ce32.json. Scope only README and own coordination record; docs/DEMO.md and application files unchanged by this session. P43 explicitly handed off README before replacement; current model agrees with provider and .env.example. Added problem/audience, actual global optimizer, architecture diagram, runtime/env/setup/test commands, reproducible jury walkthrough, data/integrations, concrete limits and honest deployment status. This documentation refresh ran 17 targeted tests and link/diff validation; clean install/build and full browser suite were not repeated (prior clean-run evidence remains in archived P11). No commit/push/deployment. Stopped before hackathon deadline 2026-09-23T17:29:00+05:00. Handoff to P49 confirmed: README.md may receive a short originality/evidence emphasis and links to docs/JURY_DEMO.md and docs/RELEASE_CHECK.md once those files exist. Preserve the completed 11-topic README, verified scenario numbers and current model/configuration. P11 will not edit README further."
+}

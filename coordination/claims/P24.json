@@ -4,7 +4,7 @@
   "agent": "Codex",
   "session": "codex-20260923-01a0cdef-learning",
   "claimed_at": "2026-09-23T16:06:22.5212771+05:00",
-  "updated_at": "2026-09-23T16:35:49.7050280+05:00",
+  "updated_at": "2026-09-23T17:01:01.0153407+05:00",
   "signature": "Codex / codex-20260923-01a0cdef-learning accepts task P24",
   "artifacts": [
     "src/app/AppShell.tsx",
@@ -14,12 +14,13 @@
     "docs/LEARNING.md"
   ],
   "checks": [
-    "2026-09-23: npm.cmd run build PASS (final city-guide source, TypeScript and static generation)",
-    "2026-09-23: scoped eslint AppShell/MayorGuide/CityMap/city-guide/onboarding tests PASS",
-    "2026-09-23: npx.cmd vitest run --maxWorkers=2:121passed before final close-card step; final focused city-guide+onboarding tests5/5 passed after step",
-    "2026-09-23 P25: onboarding E2E5/5 passed28.7s;1280x800,390x844,390x360,skip/replay/Escape,offline map; actual clicks, all10 metric spotlight geometry, report mockedAI success/error",
-    "Visual inspection: final desktop school metric,390x844school,390x360comparison screenshots PASS",
-    "P25 broader scenario11/13: unrelated current marker M7name/M1availability failures forwarded to P23/P26, not claimed as all-E2E pass"
+    "2026-09-23 final follow-up: P25 vitest city-guide+onboarding 5/5 PASS; single overview, no per-metric buttons, replay and current critical summary.",
+    "2026-09-23 final follow-up: P25 onboarding Playwright 5/5 PASS (23.3s), desktop1280x800/mobile390x844/390x360, skip/replay/Escape/offline, report mockedAI success/error.",
+    "2026-09-23: Browser color equivalence PASS: same Nura S1 dd and legend strong38before/48after in all3viewports; value and color update together.",
+    "2026-09-23: scoped eslint MayorGuide.tsx/CityMap.tsx PASS; P25 scoped tests eslint PASS; git diff --check for source/docs/tests PASS.",
+    "2026-09-23: Root visual inspection desktop colored district card and390x844short overview PASS; screenshots in tmp/p25-short-overview.",
+    "2026-09-23: npm run typecheck blocked by parallel city-effects/impact.ts14/15/16/19 readonly filter vs MapLibre FilterSpecification; no errors in P24 files, sent integrator for owner fix. Earlier build success predates this follow-up; not claimed as current build.",
+    "2026-09-23 follow-up typecheck: impact.ts fixed by P32; latest tsc error only P33 tests/ui/onboarding-progress.test.tsx43 unknown exact ByRoleOptions, owner informed. Parallel test still being written; own10checks remain passed."
   ],
-  "notes": "User explicitly corrected scope: no separate learning tab/course. Removed P24 standalone learning source; restored City/Report navigation, original city welcome and onboarding flag. Expanded existing Spotlight:10actual metric rows with definitions/current values/thresholds/full and lag-adjusted measure examples, real S1 layer selection and cross-district comparison before planner/report. Replay starts city even with result. P23 explicitly transferred only CityMap controlled indicator props and data-guide row/zone anchors; all P23 content/styles preserved. Parallel-user glass nav and removal of floating movement control retained. P25 rewrites tests; previous standalone-course verification is obsolete. Explicit handoff: .mode rules in AppShell.module.css transferred to task01a0ce07 for user-requested sliding active pill; P24 will not edit CSS further. PLAN/script released to P23 owner01a0cdbe to register P26 marker spacing; coordinate P27 pill registration there. Final user-corrected delivery complete: two navigation modes, original welcome, extended city Spotlight; explicit close-card action frees mobile legend before real layer selection. Standalone course/source/tests fully removed. CityMap anchors/props released for P28 legend color scale; preserve data-guide-zone/data-guide-indicator. Final artifacts available in shared workspace; root integrator handles Git."
+  "notes": "Latest user request implemented: retain City/Report and original Spotlight, one general city overview of0–100/color/critical threshold, then close-card→actual S1layer→district comparison→plan/report. Removed ten individual metric lessons and examples. All district dd values now use existing P28 scoreColor(text), exactly as legend, including before/after. Existing close-card mobile access, compactLegend/forceLegendExpanded, data-guide anchors, scenario preservation, map behavior retained. P26 explicitly transferred dd style. docs/LEARNING and PLAN P24/P25 updated. P25 tests done and released. P33 explicitly received only MayorGuide counter/phase; P24 stops editing TSX. MayorGuide.module.css explicitly transferred to hover task01a0ce1e (ID assigned by integration). PLAN/script released. Shared workspace integrated; root01a0cd54 handles selective Git commit. Scope complete; general typecheck currently has foreign impact.ts issue forwarded to integrator. Latest durable product choice supersedes prior all-ten-metrics memory in Octarin."
 }

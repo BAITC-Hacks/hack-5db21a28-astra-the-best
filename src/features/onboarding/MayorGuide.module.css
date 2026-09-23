@@ -14,7 +14,107 @@
 .intro{font-size:1rem;line-height:1.6;color:var(--ink-muted);margin:0 0 24px}
 .brief{display:grid;grid-template-columns:repeat(3,1fr);border-block:1px solid var(--border);padding:18px 0;gap:12px}.brief div{display:flex;flex-direction:column;gap:3px}.brief div+div{border-left:1px solid var(--border);padding-left:18px}.brief strong{font-size:1.7rem;letter-spacing:-.05em}.brief span{font-size:.74rem;color:var(--ink-muted)}
 .promise{font-size:.9rem;line-height:1.6;margin:22px 0}.welcomeActions{display:flex;flex-wrap:wrap;gap:10px}
-.primary{border:2px solid transparent;border-radius:999px;padding:11px 18px;background:var(--metal-face,linear-gradient(#353b44,#10141a)) padding-box,var(--metal-border,linear-gradient(#e7e9ec,#747b86)) border-box;color:white;font-size:.84rem;font-weight:650;box-shadow:inset 0 1px 1px #ffffff60,0 4px 10px #151a2220;cursor:pointer}.primary:hover{filter:brightness(1.18)}
+.primary{border:2px solid transparent;border-radius:999px;padding:11px 18px;background:var(--metal-face,linear-gradient(#353b44,#10141a)) padding-box,var(--metal-border,linear-gradient(#e7e9ec,#747b86)) border-box;color:white;font-size:.84rem;font-weight:650;box-shadow:inset 0 1px 1px #ffffff60,0 4px 10px #151a2220;cursor:pointer}
 .secondary{border:1px solid var(--border);border-radius:999px;padding:10px 15px;background:var(--surface);color:var(--ink);font-size:.84rem;cursor:pointer}.footnote{font-size:.74rem;line-height:1.55;color:var(--ink-muted);margin:18px 0 0}
 @media(max-width:700px){.help{padding:8px;font-size:.76rem;gap:4px}.help span{display:none}.welcome{padding:20px;border-radius:21px}.seal{margin-top:12px}.welcomeActions{flex-direction:column}.brief div+div{padding-left:10px}.brief strong{font-size:1.4rem}.brief span{font-size:.68rem}.eyebrow{font-size:.61rem;letter-spacing:.08em}}
 @media(max-height:500px){.seal{display:none}.welcome h1{font-size:1.65rem;margin-top:16px}.intro{font-size:.85rem}}
+
+.primary,
+.secondary {
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease, background-color .18s ease, border-color .18s ease;
+}
+.skip {
+  border-radius: 4px;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .16em;
+  transition: color .18s ease, text-decoration-color .18s ease, text-underline-offset .18s ease;
+}
+.primary:focus-visible {
+  filter: brightness(1.15);
+  box-shadow: inset 0 1px 2px #ffffff80, 0 7px 16px #151a2238;
+}
+.secondary:focus-visible {
+  background-color: var(--surface-soft);
+  border-color: var(--ink-muted);
+}
+.skip:focus-visible {
+  color: var(--ink);
+  text-underline-offset: .3em;
+}
+@media (hover: hover) and (pointer: fine) {
+  .primary:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.15);
+    box-shadow: inset 0 1px 2px #ffffff80, 0 7px 16px #151a2238;
+  }
+  .secondary:hover {
+    transform: translateY(-1px);
+    background-color: var(--surface-soft);
+    border-color: var(--ink-muted);
+    box-shadow: 0 4px 10px #151a2218;
+  }
+  .skip:hover {
+    color: var(--ink);
+    text-decoration-color: currentColor;
+    text-underline-offset: .3em;
+  }
+}
+.primary:active,
+.secondary:active {
+  transform: translateY(0) scale(.98);
+  box-shadow: inset 0 2px 4px #151a2230;
+}
+.primary:active { filter: brightness(1.03); }
+.skip:active { color: var(--ink); text-underline-offset: .12em; }
+@media (prefers-reduced-motion: reduce) {
+  .primary,
+  .secondary,
+  .skip { transition: none; }
+  .primary:hover,
+  .secondary:hover,
+  .primary:active,
+  .secondary:active { transform: none; }
+}
+
+.welcome { scrollbar-width: none; }
+.welcome::-webkit-scrollbar { display: none; }
+
+.close {
+  position: relative;
+  font-size: 0;
+  line-height: 0;
+  transition: background-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+.close::before,
+.close::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 1.5px;
+  border-radius: 999px;
+  background: currentColor;
+}
+.close::before { transform: translate(-50%, -50%) rotate(45deg); }
+.close::after { transform: translate(-50%, -50%) rotate(-45deg); }
+@media (hover: hover) and (pointer: fine) {
+  .close:hover {
+    background-color: var(--surface-soft);
+    box-shadow: 0 4px 10px #151a2218;
+  }
+}
+.close:active { transform: scale(.96); }
+@media (prefers-reduced-motion: reduce) {
+  .close { transition: none; }
+  .close:active { transform: none; }
+}
+
+.welcomeActions > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  line-height: 1.2;
+  text-align: center;
+}

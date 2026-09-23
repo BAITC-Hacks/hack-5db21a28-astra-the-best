@@ -29,28 +29,19 @@ function Harness({ hasResult = false, simulation, comparison = 'before' }: { has
 beforeEach(() => localStorage.clear());
 afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
-describe('City metric tutorial', () => {
-  it('explains all ten real district metrics before asking to compare districts', async () => {
+describe('City overview tutorial', () => {
+  it('gives one general overview then goes directly to district comparison', async () => {
     const user = userEvent.setup();
     const fetch = vi.fn();
     vi.stubGlobal('fetch', fetch);
     render(<Harness />);
     await user.click(screen.getByRole('button', { name: 'Начать проверку' }));
-    await user.click(screen.getByRole('button', { name: 'Изучить показатели' }));
-    for (let index = 0; index < scenario.indicators.length; index++) {
-      const indicator = scenario.indicators[index];
-      const value = scenario.districts.find((district) => district.id === 'nura')!.indicators[indicator.id];
-      expect(screen.getByRole('heading', { level: 2 }).textContent).toContain(indicator.name);
-      expect(screen.getByLabelText('Помощник градоначальника').getAttribute('data-target')).toContain(indicator.id);
-      expect(screen.getByLabelText('Помощник градоначальника').textContent).toContain(`Нура: ${value} из 100.`);
-      if (indicator.id === 'T2') expect(screen.getByLabelText('Помощник градоначальника').textContent).toContain('Ровно 40 — граница, штрафа за этот показатель нет.');
-      if (indicator.id === 'S1') {
-        expect(screen.getByLabelText('Помощник градоначальника').textContent).toContain('Это критическое значение: ниже 40.');
-        expect(screen.getByLabelText('Помощник градоначальника').textContent).toContain('полный эффект +16, с задержкой 3 кв. учитывается +10');
-      }
-      await user.click(screen.getByRole('button', { name: index === 9 ? 'Сравнить районы' : 'Следующий показатель' }));
-    }
+    expect(screen.getByRole('heading', { level: 2 }).textContent).toMatch(/Нура: узнайте/);
+    expect(screen.getByLabelText('Помощник градоначальника').textContent).toMatch(/0.{0,5}100/);
+    expect(screen.getByLabelText('Помощник градоначальника').textContent).toContain('ниже 40');
+    expect(screen.queryByRole('button', { name: 'Изучить показатели' })).toBeNull();
     expect(screen.queryByRole('button', { name: 'Следующий показатель' })).toBeNull();
+    await user.click(screen.getByRole('button', { name: 'Сравнить районы' }));
     expect(screen.queryByRole('button', { name: 'Понятно, составим план' })).toBeNull();
     expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('Теперь посмотрим на весь город');
     await user.click(screen.getByRole('button', { name: 'Закрыть район' }));
@@ -68,11 +59,11 @@ describe('City metric tutorial', () => {
     render(<Harness hasResult />);
     await user.click(screen.getByRole('button', { name: 'Начать проверку' }));
     expect(screen.getByRole('heading', { level: 2 }).textContent).toMatch(/Нура: узнайте/);
-    expect(screen.getByRole('button', { name: 'Изучить показатели' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Сравнить районы' })).toBeTruthy();
     expect(screen.queryByRole('heading', { name: 'Вот результат вашей работы' })).toBeNull();
   });
 
-  it('explains the currently displayed post-calculation numbers and supports the previous metric', async () => {
+  it('describes the current critical state after calculation without individual metric steps', async () => {
     const user = userEvent.setup();
     const simulation = simulate({ datasetVersion: scenario.datasetVersion, decisions: [
       { measureId: 'M7', districtId: 'nura' }, { measureId: 'M8', districtId: 'nura' }, { measureId: 'M10', districtId: 'nura' }, { measureId: 'M12' }, { measureId: 'M5', districtId: 'saryarka' },
@@ -80,12 +71,9 @@ describe('City metric tutorial', () => {
     render(<Harness hasResult simulation={simulation} comparison="after" />);
     await user.click(screen.getByRole('button', { name: 'Начать проверку' }));
     expect(screen.getByLabelText('Помощник градоначальника').textContent).toContain('Показаны значения после ваших решений');
-    await user.click(screen.getByRole('button', { name: 'Изучить показатели' }));
-    for (let index = 0; index < 4; index++) await user.click(screen.getByRole('button', { name: 'Следующий показатель' }));
-    expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('Школы и детсады');
-    expect(screen.getByLabelText('Помощник градоначальника').textContent).toContain('Нура: 48 из 100.');
-    expect(screen.getByLabelText('Помощник градоначальника').textContent).not.toContain('Это критическое значение');
-    await user.click(screen.getByRole('button', { name: 'Назад' }));
-    expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('Качество воздуха');
+    expect(screen.getByLabelText('Помощник градоначальника').textContent).toContain('Критических значений сейчас нет.');
+    expect(screen.queryByRole('button', { name: 'Следующий показатель' })).toBeNull();
+    await user.click(screen.getByRole('button', { name: 'Сравнить районы' }));
+    expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('Теперь посмотрим на весь город');
   });
 });

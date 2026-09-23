@@ -1,0 +1,22 @@
+{
+  "task": "P35",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-01a0ce1e-hover",
+  "claimed_at": "2026-09-23T16:59:59.3173694+05:00",
+  "updated_at": "2026-09-23T17:04:05.5894855+05:00",
+  "signature": "Codex / codex-20260923-01a0ce1e-hover accepts task P35",
+  "artifacts": [
+    "src/features/onboarding/MayorGuide.module.css",
+    "PLAN.md: P34/P35 registration",
+    "scripts/claim-task.ps1: IDs through P35"
+  ],
+  "checks": [
+    "2026-09-23: git diff --check -- src/features/onboarding/MayorGuide.module.css PLAN.md scripts/claim-task.ps1 PASS",
+    "2026-09-23: Next dev CSS compiled and applied via HMR in real browser; primary hover transform translateY(-2px), brightness(1.15), stronger shadow confirmed via computed styles and screenshot",
+    "2026-09-23: real browser skip hover darkens to rgb(32,37,44), underline offset 3.36px; primary/skip keyboard focus-visible outline confirmed; Compare advances and Skip dismisses",
+    "2026-09-23: welcome secondary real hover translateY(-1px), surface-soft background, darker border and shadow confirmed",
+    "2026-09-23: independent read-only CSS review; reduced-motion transform:none and transition:none reviewed in source; no new tests or production build for scoped CSS-only change"
+  ],
+  "notes": "P24 explicitly handed over MayorGuide.module.css; P33 TSX untouched. CSS hover only on fine pointers, active press response and preserved global keyboard focus. Base sizes and metallic gradients retained. Shared primary/secondary also cover welcome buttons. PLAN/script registration coordinated with root and P34 owner; both files released back to root. MayorGuide.module.css released after validation to task01a0ce22 for separate scrollbar/close-button request; preserve P35 interaction rules. No commit or push."
+}

@@ -1,0 +1,39 @@
+{
+  "task": "P42",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-01a0ce29-notice-emphasis",
+  "claimed_at": "2026-09-23T17:11:59.7716254+05:00",
+  "updated_at": "2026-09-23T17:17:39.5061323+05:00",
+  "signature": "Codex / codex-20260923-01a0ce29-notice-emphasis accepts task P42",
+  "artifacts": [
+    "PLAN.md (P42 registration)",
+    "scripts/claim-task.ps1 (P42 allowed)",
+    "src/features/planner/Planner.module.css",
+    "C:\\Users\\Magyr\\.codex\\visualizations\\2026\\09\\23\\01a0ce29-4145-7f22-bb8e-726f82d8c430\\p42-viewport-1280.png",
+    "C:\\Users\\Magyr\\.codex\\visualizations\\2026\\09\\23\\01a0ce29-4145-7f22-bb8e-726f82d8c430\\p42-viewport-390.png"
+  ],
+  "checks": [
+    {
+      "command": "Playwright Chrome at 1280x844 and 390x844",
+      "result": "Replacement hint visible in graphite callout, 15px/700 text, 4px left border, no horizontal overflow; hidden after cancel",
+      "at": "2026-09-23T17:17:39.5061323+05:00"
+    },
+    {
+      "command": "npx.cmd vitest run tests/ui/planner.test.tsx --reporter=dot",
+      "result": "Initial run: 3 passed, 1 default 5s timeout during concurrent dev activity",
+      "at": "2026-09-23T17:17:39.5061323+05:00"
+    },
+    {
+      "command": "npx.cmd vitest run tests/ui/planner.test.tsx --reporter=dot --testTimeout=20000",
+      "result": "4 passed",
+      "at": "2026-09-23T17:17:39.5061323+05:00"
+    },
+    {
+      "command": "git diff --check -- PLAN.md scripts/claim-task.ps1 src/features/planner/Planner.module.css",
+      "result": "passed",
+      "at": "2026-09-23T17:17:39.5061323+05:00"
+    }
+  ],
+  "notes": "Only the replacement hint CSS changed; P38-owned Planner.tsx was untouched. Visual checks saved at desktop and mobile widths. Initial default Vitest timeout resolved by rerun with 20s per test."
+}

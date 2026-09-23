@@ -1,0 +1,19 @@
+{
+  "task": "P49",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-rubric-p49-readme",
+  "claimed_at": "2026-09-23T17:34:42.0834765+05:00",
+  "updated_at": "2026-09-23T17:36:00.4276300+05:00",
+  "signature": "Codex / codex-20260923-rubric-p49-readme accepts task P49",
+  "artifacts": [
+    "README.md"
+  ],
+  "checks": [
+    "2026-09-23T17:36:00.4276300+05:00 | README relative links | PASS: all 14 distinct relative targets exist, including JURY_DEMO, RELEASE_CHECK, VERCEL.",
+    "2026-09-23T17:36:00.4276300+05:00 | git diff --check -- README.md | PASS; only CRLF advisory.",
+    "2026-09-23T17:36:00.4276300+05:00 | Original structure preserved | Existing README has 10 H2 headings covering requested topics; no existing section, command, model configuration or control number removed.",
+    "2026-09-23T17:36:00.4276300+05:00 | Source cross-check | Optimizer documentation confirms 694395 scenarios and independent simulate verification; future steps labelled unimplemented."
+  ],
+  "notes": "P11 explicit handoff honored. Added one architecture paragraph on reproducible search, canonical Score, AI facts and independent numeric verification; links to three new supporting documents; three concrete future steps. Memory for README returned unrelated projects and was not used. Parent requested preserve 11 sections; inherited README actually had 10 H2 headings, kept unchanged. No code changes, tests, commit or push."
+}

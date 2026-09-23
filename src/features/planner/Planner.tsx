@@ -5,6 +5,8 @@ import { formatBudget, budgetDisclaimer, measureFundingScope } from '@/lib/budge
 import type { Decision, DirectionId, DistrictId, Measure, MeasureId, ScenarioResponse } from '@/contracts';
 import { validateDecisions } from '@/domain/validation';
 import { SelectMenu } from '@/components/SelectMenu';
+import { OptimizerPanel } from '@/features/optimizer/OptimizerPanel';
+import { scoreColor } from '@/features/city-map/score-colors';
 import styles from './Planner.module.css';
 
 export interface PlannerProps {
@@ -58,6 +60,13 @@ export function Planner({ scenario, decisions, selectedDistrictId, onDistrictSel
   return <section className={styles.planner} aria-label="Редактор городских решений">
     <header className={styles.header}><div><span className={styles.kicker}>Панель акима · два условных года</span><h2>План для Астаны</h2><p>Выберите ровно пять мероприятий. {budgetDisclaimer}</p></div><div className={styles.budget}><span>Остаток из общего бюджета</span><strong>{formatBudget(validation.remainingBudget)} / {formatBudget(scenario.budget)}</strong><small>{decisions.length} / {scenario.rules.requiredDecisions} решений</small></div></header>
     <div className={styles.budgetBar} role="progressbar" aria-label="Использованный бюджет" aria-valuetext={`${formatBudget(validation.cost)} из ${formatBudget(scenario.budget)}`} aria-valuenow={validation.cost} aria-valuemin={0} aria-valuemax={scenario.budget}><span style={{ width: `${Math.min(100, Math.max(0, validation.cost / scenario.budget * 100))}%` }} /></div>
+    <OptimizerPanel scenario={scenario} decisions={decisions} disabled={calculating} onApply={(next) => {
+      setReplacement(null);
+      setFocus(null);
+      onDecisionsChange(next);
+      const districtId = next.find((decision) => decision.districtId)?.districtId;
+      if (districtId) onDistrictSelect(districtId);
+    }} />
     <p className={styles.ruleHint}>Не более {scenario.rules.maxPerDirection} решений в каждом направлении:</p><div className={styles.directions} aria-label="Меры по направлениям">{scenario.directions.map((item) => <span key={item.id}>{item.name}: <strong>{validation.directionCounts[item.id]} из {scenario.rules.maxPerDirection}</strong></span>)}</div>
     <section className={styles.plan}><div className={styles.sectionTitle}><h3>Ваши решения</h3>{replacement && <button type="button" onClick={() => setReplacement(null)}>Отменить замену</button>}</div><ol className={styles.slots}>{Array.from({ length: scenario.rules.requiredDecisions }, (_, index) => {
       const decision = decisions[index];
@@ -83,7 +92,10 @@ export function Planner({ scenario, decisions, selectedDistrictId, onDistrictSel
         <button type="button" disabled={Boolean(reason)} onClick={() => { onDecisionsChange(proposed); setReplacement(null); }}>{replacement ? 'Заменить мерой' : 'Добавить в план'}</button>{reason && <p className={styles.reason}>{reason}</p>}
       </article>;
     })}</div>
-    <details className={styles.baseline}><summary>Исходные показатели пяти районов</summary><p>Шкала от 0 до 100 баллов. Чем выше, тем лучше. Ниже {scenario.rules.criticalThreshold} — критическое значение.</p><div className={styles.baselineGrid}>{scenario.districts.map((district) => <article key={district.id}><h4>{district.name}</h4><p>{district.profile}</p><dl>{scenario.indicators.map((indicator) => <div key={indicator.id}><dt>{indicator.name}</dt><dd>{district.indicators[indicator.id]} {indicator.unit}</dd></div>)}</dl></article>)}</div></details>
+    <details className={styles.baseline}><summary>Исходные показатели пяти районов</summary><p>Шкала от 0 до 100 баллов. Чем выше, тем лучше. Ниже {scenario.rules.criticalThreshold} — критическое значение.</p><div className={styles.baselineGrid}>{scenario.districts.map((district) => <article key={district.id}><h4>{district.name}</h4><p>{district.profile}</p><dl>{scenario.indicators.map((indicator) => {
+      const value = district.indicators[indicator.id];
+      return <div key={indicator.id}><dt>{indicator.name}</dt><dd><span style={{ color: scoreColor(value, 'text') }}>{value}</span> {indicator.unit}</dd></div>;
+    })}</dl></article>)}</div></details>
     <footer className={styles.footer} aria-live="polite"><p>{finalValidation.valid ? 'План готов к расчёту.' : validation.issues.length ? validation.issues.map((issue) => issue.message).join(' ') : `Добавьте ещё ${scenario.rules.requiredDecisions - decisions.length} ${scenario.rules.requiredDecisions - decisions.length === 1 ? 'решение' : 'решения'}.`}</p><button type="button" disabled={!finalValidation.valid || calculating} onClick={onCalculate}>{calculating ? 'Рассчитываем…' : 'Рассчитать сценарий'}</button></footer>
   </section>;
 }

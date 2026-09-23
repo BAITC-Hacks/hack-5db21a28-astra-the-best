@@ -36,12 +36,35 @@ export function buildAnalysisInput(result: SimulationResponse, scenario: Scenari
     const label = districtId ? `Районные мероприятия: ${scenario.districts.find((district) => district.id === districtId)!.name}` : 'Общегородские мероприятия';
     facts.push({ id: `budget-${districtId ?? 'city'}`, label, value: toTenge(cost) / 1e9, unit: 'млрд ₸', districtId });
   }
-  for (const district of result.result.districts) facts.push({ id: `district-${district.districtId}`, label: `Итог района ${scenario.districts.find((item) => item.id === district.districtId)?.name}`, value: district.score, unit: 'балла', districtId: district.districtId });
-  for (const entry of result.ledger.indicators.filter((item) => item.delta !== 0)) {
+  for (const district of result.result.districts) {
+    const name = scenario.districts.find((item) => item.id === district.districtId)!.name;
+    const before = result.baseline.districts.find((item) => item.districtId === district.districtId)!.score;
+    const scope = { districtId: district.districtId, unit: 'балла' };
+    facts.push(
+      { id: `district-${district.districtId}`, label: `Итог района ${name}`, value: district.score, ...scope },
+      { id: `district-before-${district.districtId}`, label: `Баллы района ${name} до`, value: before, ...scope },
+      { id: `district-change-${district.districtId}`, label: `Изменение баллов района ${name}`, value: district.score - before, ...scope },
+    );
+  }
+  // Effects are taken from the ledger after lag, before clipping. They are not
+  // independent contributions to the nonlinear city Score.
+  for (const entry of result.ledger.measures) {
+    const measure = selectedMeasures.find((item) => item.id === entry.measureId)!;
+    const district = scenario.districts.find((item) => item.id === entry.districtId)!;
+    const indicator = scenario.indicators.find((item) => item.id === entry.indicatorId)!;
+    facts.push({ id: `effect-${entry.measureId}-${entry.districtId}-${entry.indicatorId}`, label: `Вклад «${measure.name}» в ${indicator.name}, ${district.name} (с учётом лага, до ограничения шкалой)`, value: entry.realizedEffect, unit: 'балла', measureId: entry.measureId, districtId: entry.districtId, indicatorId: entry.indicatorId });
+  }
+  // Unchanged critical values still explain a scenario's remaining risks.
+  for (const entry of result.ledger.indicators.filter((item) => item.delta !== 0 || item.after < scenario.rules.criticalThreshold)) {
     const label = `${scenario.districts.find((item) => item.id === entry.districtId)?.name}: ${scenario.indicators.find((item) => item.id === entry.indicatorId)?.name}`;
     for (const [prefix, value, suffix] of [['change', entry.delta, 'изменение'], ['before', entry.before, 'до'], ['after', entry.after, 'после']] as const) {
       facts.push({ id: `${prefix}-${entry.districtId}-${entry.indicatorId}`, label: `${label} (${suffix})`, value, unit: 'балла', districtId: entry.districtId, indicatorId: entry.indicatorId });
     }
+  }
+  for (const entry of result.result.criticalIndicators) {
+    const district = scenario.districts.find((item) => item.id === entry.districtId)!;
+    const indicator = scenario.indicators.find((item) => item.id === entry.indicatorId)!;
+    facts.push({ id: `critical-${entry.districtId}-${entry.indicatorId}`, label: `Остаётся критическим: ${district.name}, ${indicator.name}`, value: entry.value, unit: 'балла', districtId: entry.districtId, indicatorId: entry.indicatorId });
   }
   for (const synergy of result.ledger.synergies) {
     const label = `Синергия ${synergy.measureIds.join(' + ')} в районе ${scenario.districts.find((item) => item.id === synergy.districtId)?.name}`;

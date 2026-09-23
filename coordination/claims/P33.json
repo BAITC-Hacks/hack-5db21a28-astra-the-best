@@ -1,0 +1,28 @@
+{
+  "task": "P33",
+  "status": "done",
+  "agent": "Codex",
+  "session": "codex-20260923-01a0ce09-guide-progress",
+  "claimed_at": "2026-09-23T16:53:53.3318643+05:00",
+  "updated_at": "2026-09-23T17:05:30.7436235+05:00",
+  "signature": "Codex / codex-20260923-01a0ce09-guide-progress accepts task P33",
+  "artifacts": [
+    "src/features/onboarding/MayorGuide.tsx",
+    "src/features/onboarding/tour-progress.ts",
+    "tests/ui/onboarding-progress.test.tsx",
+    "PLAN.md",
+    "scripts/claim-task.ps1"
+  ],
+  "checks": [
+    "npx.cmd vitest run tests/ui/onboarding-progress.test.tsx tests/ui/city-guide.test.tsx tests/ui/onboarding.test.tsx --maxWorkers=2:9passed",
+    "Scoped ESLint for MayorGuide/tour-progress/onboarding-progress:PASS",
+    "npm.cmd run typecheck:PASS after final test typing fix and owner P32 filter fix",
+    "npx.cmd playwright test tests/e2e/onboarding.spec.ts --workers=1 --output=tmp/p33-onboarding:5passed28.5s; desktop1280x800,mobile390x844/390x360,skip/replay/Escape,offline map,AI mocked success/error",
+    "Visual inspection:390x360 comparison header5/18 and1280x800 first measure8/18 visible and correct",
+    "Scoped git diff --check:PASS",
+    "Independent read-only review: fixed replay Score-to-City-to-Report counter regression via reportOpened flag; added regression and reran all9 focused UI tests:PASS",
+    "Final scoped ESLint and diff check:PASS",
+    "Shared typecheck passed before final reportOpened refinement; final npx.cmd tsc --noEmit --incremental false only reports active P32 tests/city-effects/placement.test.ts missing removed city-effects/layout import; no P33 diagnostics. Forwarded to P32 owner, no foreign test edits."
+  ],
+  "notes": "P24 explicitly handed off counter/phase after shortening city lessons; preserve its new short overview text/branches and its CityMap work. P33 replaces six coarse phases with semantic route steps, snapshot at tour start; typical fresh route18, existing state skips satisfied steps, AI waiting/errors/retries reuse one step. Restores initially skipped steps if revisited. New helper required with MayorGuide integration. PLAN/script released to P24 after registration; later P34+ registrations owned elsewhere. Independent review complete; final return-to-report regression fixed and9UI checks passed. Full5E2E and screenshots passed before this final counter-only flag change. P33 complete in shared workspace; remaining whole-workspace typecheck error belongs to concurrent P32 removed layout import. No Git writes requested."
+}

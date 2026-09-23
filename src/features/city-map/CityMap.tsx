@@ -152,13 +152,12 @@ export function CityMap({ scenario, result, comparison = 'before', selectedDistr
         <div className={styles.scoreScaleBar} style={{ background: SCORE_GRADIENT }} aria-hidden="true" />
         <div className={styles.scoreScaleTicks} aria-hidden="true">{SCORE_COLOR_STOPS.map(({ value }) => <span key={value}>{value}</span>)}</div>
       </div>}
-      {activeIndicator && <p className={styles.scale}>Шкала 0–100 баллов. Выше — лучше. Ниже {scenario.rules.criticalThreshold} — критично.</p>}
       <small>Границы адаптированы для модели из 5 районов. Это не официальное деление.</small>
     </div>
     {selectedZone && selectedDistrict && selectedValues && <section className={styles.zoneCard} aria-label={`Показатели района ${selectedZone.name}`} tabIndex={0}>
       <header className={styles.zoneCardHeader}><div><span>{after ? 'После решений' : 'До решений'}</span><h2>{selectedZone.name}</h2></div><button type="button" onClick={() => selectDistrict(null)}>Закрыть</button></header>
       <p>{selectedDistrict.profile}</p><p className={styles.scale}>Все показатели — от 0 до 100 баллов. Чем выше, тем лучше.</p>
-      <dl>{scenario.indicators.map((indicator) => <div key={indicator.id} data-guide-indicator={indicator.id}><dt>{indicator.name}</dt><dd className={selectedValues[indicator.id] < scenario.rules.criticalThreshold ? styles.critical : undefined}>{number(selectedValues[indicator.id])}{selectedValues[indicator.id] < scenario.rules.criticalThreshold && <small>критично</small>}</dd></div>)}</dl>
+      <dl>{scenario.indicators.map((indicator) => <div key={indicator.id} data-guide-indicator={indicator.id}><dt>{indicator.name}</dt><dd style={{ color: scoreColor(selectedValues[indicator.id], 'text') }}>{number(selectedValues[indicator.id])}{selectedValues[indicator.id] < scenario.rules.criticalThreshold && <small>критично</small>}</dd></div>)}</dl>
     </section>}
     {state === 'loading' && <div className={styles.status} role="status">Загружаем карту Астаны…</div>}
     {state === 'error' && <div className={styles.status} role="alert">Не удалось загрузить карту или её геоданные. Проверьте подключение к сети.</div>}
