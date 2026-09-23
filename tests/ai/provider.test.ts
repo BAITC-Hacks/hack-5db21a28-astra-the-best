@@ -40,10 +40,15 @@ describe('AI-анализ', () => {
     expect(result.analysis).toEqual(analysis);
     expect(result.model).toBe('gpt-4.1-mini');
     const sent = JSON.parse(fetchMock.mock.calls[0][1].body);
-    expect(JSON.parse(sent.messages[1].content).scenario.result.score).toBeCloseTo(56.54307, 8);
+    const promptFacts = JSON.parse(sent.messages[1].content);
+    expect(promptFacts.facts.find((fact: { id: string }) => fact.id === 'score-after').value).toBeCloseTo(56.54307, 8);
+    expect(promptFacts.scenario).toBeUndefined();
     expect(sent.messages[1].content).toContain('synergy-safe-feedback-nura');
     expect(sent.messages[0].content).toContain('конкретный компромисс');
     expect(sent.messages[0].content).toContain('Не предлагай невыбранную меру');
+    expect(sent.response_format.type).toBe('json_schema');
+    expect(sent.response_format.json_schema.strict).toBe(true);
+    expect(sent.response_format.json_schema.schema.properties.summary.properties.factIds.items.enum).toContain('score-after');
   });
 
   it('отклоняет числовые литералы и вымышленные ссылки', async () => {

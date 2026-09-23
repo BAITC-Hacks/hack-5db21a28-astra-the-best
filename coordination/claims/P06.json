@@ -4,7 +4,7 @@
   "agent": "CodexDesktop",
   "session": "codex-desktop-20260923-01a0cd54",
   "claimed_at": "2026-09-23T14:23:03.7599527+05:00",
-  "updated_at": "2026-09-23T14:53:03.8427876+05:00",
+  "updated_at": "2026-09-23T15:12:15.3095427+05:00",
   "signature": "CodexDesktop / codex-desktop-20260923-01a0cd54 accepts task P06",
   "artifacts": [
     "src/server/ai/facts.ts",
@@ -20,7 +20,9 @@
     "Real provider call pending local AI_API_KEY",
     "Live OpenAI /api/analyze: HTTP 200, gpt-4.1-mini, 29 facts, validated response",
     "Prompt/model refresh: npm run lint/typecheck/test (58)/build passed",
-    "No additional paid provider call after prompt change"
+    "No additional paid provider call after prompt change",
+    "Structured-output/fact-only prompt: npm run lint/typecheck/test (59)/build passed",
+    "Final live OpenAI call: HTTP 200, 29 facts, concrete Nura/Saryarka tradeoff, valid factIds"
   ],
-  "notes": "Live OpenAI provider call succeeded once before wording refresh. Revised prompt asks for a specific selected measure/district tradeoff and avoids uncomputed alternatives; unit-tested, not rechecked with a paid call. NVIDIA example now names a currently available hosted model."
+  "notes": "OpenAI provider now uses strict JSON schema and compact fact-only payload to reduce tokens. One prompt regression returned HTTP 502 before this fix; final live control call after fix returned HTTP 200 with concrete selected measures/districts, risks and 29 facts. No automatic retries. NVIDIA adapter unchanged and untested live."
 }
