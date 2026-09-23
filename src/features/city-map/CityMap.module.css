@@ -29,3 +29,7 @@
   .controls{top:10px;left:10px;right:auto}
   .legend,.zoneCard{max-height:45%;overflow:auto}
 }
+.legend button[role="combobox"] { min-height:43px; padding:10px 12px; border:1px solid var(--border,#a9cec6); border-radius:12px; background:linear-gradient(180deg,var(--surface,#fff),var(--surface-soft,#f7fcfa)); color:var(--ink,#184a49); box-shadow:0 2px 8px rgba(17,34,37,.07); font-size:.88rem; }
+.legend button[role="combobox"]:hover,.legend button[role="combobox"][aria-expanded="true"] { border-color:var(--primary,#348f82); background:var(--surface-soft,#f2faf6); box-shadow:0 3px 12px rgba(17,34,37,.14); }
+.legend button[role="combobox"] span { width:auto; height:auto; border-radius:0; flex:1; }
+.legend button[role="combobox"]:focus-visible { outline:3px solid var(--primary,#198c91); outline-offset:2px; }

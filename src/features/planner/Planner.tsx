@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { Decision, DirectionId, DistrictId, Measure, MeasureId, ScenarioResponse } from '@/contracts';
 import { validateDecisions } from '@/domain/validation';
+import { SelectMenu } from '@/components/SelectMenu';
 import styles from './Planner.module.css';
 
 export interface PlannerProps {
@@ -63,7 +64,7 @@ export function Planner({ scenario, decisions, selectedDistrictId, onDistrictSel
       const measure = scenario.measures.find((item) => item.id === decision.measureId);
       return <li className={`${styles.slot} ${replacement === decision.measureId ? styles.replacing : ''}`} key={decision.measureId}><div><strong>{measureNames.get(decision.measureId)}</strong><small>{decision.districtId ? districtNames.get(decision.districtId) : 'Весь город'} · {measure?.cost} ед.</small></div><div className={styles.slotActions}><button type="button" aria-label={`Заменить ${measureNames.get(decision.measureId)}`} onClick={() => setReplacement(decision.measureId)}>Заменить</button><button type="button" aria-label={`Удалить ${measureNames.get(decision.measureId)}`} onClick={() => { onDecisionsChange(decisions.filter((item) => item.measureId !== decision.measureId)); if (replacement === decision.measureId) setReplacement(null); }}>Удалить</button></div></li>;
     })}</ol>{replacement && <p className={styles.hint}>Выберите новую меру в каталоге. Она займёт место «{measureNames.get(replacement)}».</p>}</section>
-    <div className={styles.controls}><label>Район для районных мер<select value={selectedDistrictId ?? ''} onChange={(event) => onDistrictSelect(event.target.value as DistrictId)}><option value="">Выберите район</option>{scenario.districts.map((item) => <option value={item.id} key={item.id}>{item.name}</option>)}</select></label><label>Направление<select value={direction} onChange={(event) => setDirection(event.target.value as DirectionId | 'all')}><option value="all">Все направления</option>{scenario.directions.map((item) => <option value={item.id} key={item.id}>{item.name}</option>)}</select></label></div>
+    <div className={styles.controls}><SelectMenu label="Район для районных мер" value={selectedDistrictId ?? ''} onChange={(id) => onDistrictSelect(id as DistrictId)} options={[{ value: '', label: 'Выберите район' }, ...scenario.districts.map((item) => ({ value: item.id, label: item.name }))]} /><SelectMenu label="Направление" value={direction} onChange={(id) => setDirection(id as DirectionId | 'all')} options={[{ value: 'all', label: 'Все направления' }, ...scenario.directions.map((item) => ({ value: item.id, label: item.name }))]} /></div>
     <div className={styles.catalog} aria-label="Каталог мероприятий">{visible.map((measure) => {
       const { proposed, reason } = candidate(measure);
       const fraction = (scenario.horizonQuarters - measure.lagQuarters) / scenario.horizonQuarters;

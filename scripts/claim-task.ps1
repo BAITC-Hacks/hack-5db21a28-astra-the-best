@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)]
-    [ValidatePattern('^(P(0[1-9]|1[0-5])|O0[1-3])$')]
+    [ValidatePattern('^(P(0[1-9]|1[0-7])|O0[1-3])$')]
     [string]$Task,
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]

@@ -1,0 +1,48 @@
+{
+  "task": "P16",
+  "status": "done",
+  "agent": "CodexDesktop",
+  "session": "codex-desktop-20260923-01a0cdbe",
+  "claimed_at": "2026-09-23T15:13:04.0762496+05:00",
+  "updated_at": "2026-09-23T15:19:59.3997743+05:00",
+  "signature": "CodexDesktop / codex-desktop-20260923-01a0cdbe accepts task P16",
+  "artifacts": [
+    "src/components/SelectMenu.tsx",
+    "src/components/SelectMenu.module.css",
+    "src/features/planner/Planner.tsx",
+    "src/features/planner/Planner.module.css",
+    "src/features/city-map/CityMap.tsx",
+    "src/features/city-map/CityMap.module.css",
+    "tests/ui/select-menu.test.tsx",
+    "PLAN.md",
+    "scripts/claim-task.ps1"
+  ],
+  "checks": [
+    {
+      "command": "npx.cmd tsc --noEmit",
+      "result": "passed",
+      "at": "2026-09-23T15:19:59.4081553+05:00"
+    },
+    {
+      "command": "npx.cmd vitest run tests/ui/select-menu.test.tsx tests/ui/planner.test.tsx",
+      "result": "2 files, 6 tests passed",
+      "at": "2026-09-23T15:19:59.4081553+05:00"
+    },
+    {
+      "command": "npx.cmd eslint src/components/SelectMenu.tsx src/features/planner/Planner.tsx src/features/city-map/CityMap.tsx tests/ui/select-menu.test.tsx",
+      "result": "passed",
+      "at": "2026-09-23T15:19:59.4081553+05:00"
+    },
+    {
+      "command": "Playwright Chrome: 390px and 1280px, all three selections and menu viewport bounds",
+      "result": "passed",
+      "at": "2026-09-23T15:19:59.4081553+05:00"
+    },
+    {
+      "command": "Visual screenshots: map and planner at 390px",
+      "result": "inspected, no clipping; opaque menu adjusted",
+      "at": "2026-09-23T15:19:59.4081553+05:00"
+    }
+  ],
+  "notes": "Три native select заменены общим SelectMenu. P07/P09/P13 владельцы согласовали UI-правки; P10 владелец обновляет свои прежние E2E и planner тесты. Меню проверено на 390 и 1280 px, палитра использует общие CSS-токены P17."
+}
