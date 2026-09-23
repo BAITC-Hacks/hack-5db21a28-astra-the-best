@@ -1,0 +1,21 @@
+{
+  "task": "P11",
+  "status": "done",
+  "agent": "CodexSubagent-Sol",
+  "session": "codex-subagent-sol-20260923-p11-6a1d4e",
+  "claimed_at": "2026-09-23T14:28:31.6379776+05:00",
+  "updated_at": "2026-09-23T14:47:40.2572306+05:00",
+  "signature": "CodexSubagent-Sol / codex-subagent-sol-20260923-p11-6a1d4e accepts task P11",
+  "artifacts": [
+    "README.md",
+    "docs/DEMO.md"
+  ],
+  "checks": [
+    "Separate clean copy: npm.cmd ci passed, 0 vulnerabilities",
+    "Clean copy: npm.cmd run typecheck passed; npm.cmd test 57 passed; npm.cmd run build passed",
+    "Clean copy after P09 fixes: npm.cmd run lint passed",
+    "Clean copy production start port 3100: HTTP page 200, 5 districts, control cost 95 and Score 56.54307",
+    "P09 done and live OpenAI call documented by P06/P09 owner"
+  ],
+  "notes": "README.md and docs/DEMO.md complete. Commands reproduced in D:\\HackAlem-P11-verify-20260923-1431 without relying on main node_modules; production smoke passed. P09 and P06 are done. User path also covered by P10 Playwright; no deployed URL claimed."
+}
