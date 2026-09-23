@@ -1,10 +1,10 @@
 {
   "task": "P19",
-  "status": "review",
+  "status": "done",
   "agent": "Codex",
   "session": "codex-20260923-01a0cdcf-remove-map-card",
   "claimed_at": "2026-09-23T15:30:03.277062+05:00",
-  "updated_at": "2026-09-23T15:35:11.3122210+05:00",
+  "updated_at": "2026-09-23T15:58:22.2220156+05:00",
   "signature": "Codex / codex-20260923-01a0cdcf-remove-map-card accepts task P19",
   "artifacts": [
     "src/features/city-map/CityMap.tsx",
@@ -17,7 +17,9 @@
     "npm.cmd run typecheck: passed",
     "npm.cmd test: 63 passed",
     "Playwright Chrome 390px and 1280px: title absent, controls visible, no horizontal overflow",
-    "git diff --check on P19 files: passed"
+    "git diff --check on P19 files: passed",
+    "P18 owner evidence: onboarding E2E 5 passed; current P21 verification also passed all 5 onboarding tests after card removal",
+    "Root integration evidence: docs/DELIVERY.md records successful production build; optional-features E2E 3/3 confirmed by root"
   ],
-  "notes": "Card removed. P18 remains in_progress and owns tests/e2e/onboarding.spec.ts; its heading assertion must be updated after P18 releases that file. P19 awaiting that final check."
+  "notes": "Card and obsolete CSS removed; mobile map buttons moved up. P18 owner updated onboarding tests and marked done. Confirmed by P18 claim plus P21 browser regression, root production-build evidence in docs/DELIVERY.md. No foreign test changes needed for P19."
 }
