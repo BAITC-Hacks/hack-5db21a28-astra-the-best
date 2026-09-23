@@ -13,6 +13,7 @@ for (const viewport of [{ width: 390, height: 360 }, { width: 390, height: 844 }
     page.on('console', (entry) => { if (entry.type() === 'error') browserErrors.push(`console: ${entry.text()} @ ${entry.location().url}`); });
     await page.setViewportSize(viewport);
     await page.goto('/');
+    await page.getByRole('button', { name: 'Город', exact: true }).click();
     await expect(page.getByRole('button', { name: 'План · 0/5' })).toBeVisible();
     await expect(page.getByText('Загружаем город…')).toBeHidden({ timeout: 20_000 });
     await expect(page.getByRole('status').filter({ hasText: 'Загружаем карту Астаны' })).toBeHidden({ timeout: 20_000 });
@@ -73,6 +74,7 @@ for (const viewport of [{ width: 390, height: 360 }, { width: 390, height: 844 }
 for (const viewport of [{ width: 390, height: 360 }, { width: 390, height: 844 }, { width: 1280, height: 800 }]) test(`keyboard focus audit ${viewport.width}x${viewport.height}`, async ({ page }) => {
   await page.setViewportSize(viewport);
   await page.goto('/');
+  await page.getByRole('button', { name: 'Город', exact: true }).click();
   await expect(page.getByText('Загружаем город…')).toBeHidden({ timeout: 20_000 });
   await expect(page.getByRole('status').filter({ hasText: 'Загружаем карту Астаны' })).toBeHidden({ timeout: 20_000 });
   await page.getByRole('button', { name: 'План · 0/5' }).click();

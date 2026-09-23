@@ -10,10 +10,12 @@ test('1920×1080 map timing and 30-second frame sample', async ({ browser }) => 
   const page = await context.newPage();
   try {
     await page.goto('/');
+    const mapStarted = await page.evaluate(() => performance.now());
+    await page.getByRole('button', { name: 'Город', exact: true }).click();
     await page.locator('canvas.maplibregl-canvas').waitFor({ state: 'visible' });
     await expect(page.getByRole('status').filter({ hasText: 'Загружаем карту Астаны' })).toBeHidden({ timeout: 20_000 });
     await expect(page.getByRole('alert').filter({ hasText: /Не удалось загрузить карту/ })).toHaveCount(0);
-    const firstMapMs = await page.evaluate(() => performance.now());
+    const firstMapMs = await page.evaluate(() => performance.now()) - mapStarted;
 
     const latency = page.evaluate(() => new Promise<number>((resolve) => {
       const button = [...document.querySelectorAll('button')].find((item) => item.textContent?.trim() === 'Нура');
@@ -59,6 +61,7 @@ test('WebGL failure keeps plan and report accessible', async () => {
   const page = await context.newPage();
   try {
     await page.goto('/');
+    await page.getByRole('button', { name: 'Город', exact: true }).click();
     const available = await page.evaluate(() => Boolean(document.createElement('canvas').getContext('webgl2') || document.createElement('canvas').getContext('webgl')));
     expect(available).toBe(false);
     await expect(page.getByRole('alert').filter({ hasText: /Не удалось загрузить карту/ })).toBeVisible({ timeout: 15_000 });
