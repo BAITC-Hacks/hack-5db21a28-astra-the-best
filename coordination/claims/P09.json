@@ -4,7 +4,7 @@
   "agent": "CodexDesktop",
   "session": "codex-desktop-20260923-01a0cd54",
   "claimed_at": "2026-09-23T14:27:12.165946+05:00",
-  "updated_at": "2026-09-23T14:45:58.2892619+05:00",
+  "updated_at": "2026-09-23T15:04:34.7623854+05:00",
   "signature": "CodexDesktop / codex-desktop-20260923-01a0cd54 accepts task P09",
   "artifacts": [
     "src/app/AppShell.tsx",
@@ -25,7 +25,8 @@
     "Browser: 5-decision control scenario, Score 56.54, City/Report state, before/after and markers verified",
     "Responsive browser: 390x640 and 390x360, planner baseline single-column and map panels within viewport",
     "Design pass: npm run lint/typecheck/test (58)/build passed",
-    "Live OpenAI /api/analyze: HTTP 200, gpt-4.1-mini, 29 facts, validated response"
+    "Live OpenAI /api/analyze: HTTP 200, gpt-4.1-mini, 29 facts, validated response",
+    "P10 Chrome layout/keyboard/pointer audit: 3/3 viewport cases passed"
   ],
-  "notes": "Main path integrated; live OpenAI API call succeeded once on 95-unit scenario. Browser City/Report, after/before, effects and mobile layout verified."
+  "notes": "Main path integrated. Keyboard-safe planner: map controls removed from Tab order while editor is open, pointer map selection remains. Responsive 390x360/844 and 1280x800 confirmed by P10."
 }

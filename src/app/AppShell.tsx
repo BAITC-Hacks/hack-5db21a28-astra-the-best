@@ -26,6 +26,7 @@ export function AppShell() {
   const [calculating, setCalculating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [map, setMap] = useState<MapLibreMap | null>(null);
+  const mapStageRef = useRef<HTMLDivElement>(null);
   const generation = useRef(0);
   const simulateAbort = useRef<AbortController | null>(null);
   const analyzeAbort = useRef<AbortController | null>(null);
@@ -46,6 +47,29 @@ export function AppShell() {
 
   useEffect(() => { const start = window.setTimeout(() => { void loadScenario(); }, 0); return () => { window.clearTimeout(start); simulateAbort.current?.abort(); analyzeAbort.current?.abort(); }; }, [loadScenario]);
   useEffect(() => { if (mode === 'city') map?.resize(); }, [mode, map]);
+  useEffect(() => {
+    const root = mapStageRef.current;
+    if (!root || !plannerOpen) return;
+    const previous = new Map<HTMLElement, string | null>();
+    const removeFromTabOrder = () => {
+      root.querySelectorAll<HTMLElement>('button, a[href], input, select, textarea, [tabindex], div').forEach((element) => {
+        const scrollable = element.tagName === 'DIV' && element.scrollHeight > element.clientHeight && /auto|scroll/.test(getComputedStyle(element).overflowY);
+        if (!element.matches('button, a[href], input, select, textarea, [tabindex]') && !scrollable) return;
+        if (!previous.has(element)) previous.set(element, element.getAttribute('tabindex'));
+        if (element.getAttribute('tabindex') !== '-1') element.setAttribute('tabindex', '-1');
+      });
+    };
+    removeFromTabOrder();
+    const observer = new MutationObserver(removeFromTabOrder);
+    observer.observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ['tabindex'] });
+    return () => {
+      observer.disconnect();
+      previous.forEach((tabIndex, element) => {
+        if (tabIndex === null) element.removeAttribute('tabindex');
+        else element.setAttribute('tabindex', tabIndex);
+      });
+    };
+  }, [plannerOpen, scenario]);
 
   const changeDecisions = (next: readonly Decision[]) => {
     generation.current++;
@@ -104,8 +128,8 @@ export function AppShell() {
     <nav className={styles.nav} aria-label="Режим отображения"><div className={styles.brand}>Аким <strong>на 5 часов</strong></div><div className={styles.mode}><button type="button" aria-pressed={mode === 'city'} onClick={() => setMode('city')}>Город</button><button type="button" aria-pressed={mode === 'report'} onClick={() => setMode('report')}>Отчёт</button></div><button type="button" className={styles.planToggle} onClick={() => { setMode('city'); setPlannerOpen((open) => !open); }}>{plannerOpen ? 'Скрыть план' : `План · ${decisions.length}/5`}</button></nav>
     {error && <div className={styles.error} role="alert">{error}<button type="button" onClick={() => setError(null)}>Закрыть</button></div>}
     <div className={mode === 'city' ? styles.cityVisible : styles.cityHidden}>
-      {scenario ? <><CityMap scenario={scenario} result={result} comparison={comparison} selectedDistrictId={selectedDistrictId} onDistrictSelect={setSelectedDistrictId} onMapReady={setMap} /><CityEffects map={map} scenario={scenario} decisions={decisions} preview={preview} result={result} comparison={comparison} /></> : <div className={styles.loading}>{scenarioLoading ? 'Загружаем город…' : <>{scenarioError}<button type="button" onClick={() => { setScenarioLoading(true); void loadScenario(); }}>Повторить</button></>}</div>}
-      {result && <div className={styles.compare} aria-label="Сравнение карты"><button type="button" aria-pressed={comparison === 'before'} onClick={() => setComparison('before')}>До</button><button type="button" aria-pressed={comparison === 'after'} onClick={() => setComparison('after')}>После</button></div>}
+      {scenario ? <div ref={mapStageRef} className={styles.mapStage} aria-hidden={plannerOpen}><CityMap scenario={scenario} result={result} comparison={comparison} selectedDistrictId={selectedDistrictId} onDistrictSelect={setSelectedDistrictId} onMapReady={setMap} /><CityEffects map={map} scenario={scenario} decisions={decisions} preview={preview} result={result} comparison={comparison} /></div> : <div className={styles.loading}>{scenarioLoading ? 'Загружаем город…' : <>{scenarioError}<button type="button" onClick={() => { setScenarioLoading(true); void loadScenario(); }}>Повторить</button></>}</div>}
+      {result && !plannerOpen && <div className={styles.compare} aria-label="Сравнение карты"><button type="button" aria-pressed={comparison === 'before'} onClick={() => setComparison('before')}>До</button><button type="button" aria-pressed={comparison === 'after'} onClick={() => setComparison('after')}>После</button></div>}
       {plannerOpen && <div className={styles.planner}><Planner scenario={scenario} decisions={decisions} selectedDistrictId={selectedDistrictId} onDistrictSelect={setSelectedDistrictId} onDecisionsChange={changeDecisions} onCalculate={() => void calculate()} onMeasureSelect={setSelectedMeasureId} loading={scenarioLoading} error={scenarioError} onRetry={() => void loadScenario()} calculating={calculating} /></div>}
     </div>
     {mode === 'report' && (scenario ? <ReportView scenario={scenario} simulation={result} analysis={analysis} onAnalyze={() => void analyze()} onRetryAnalysis={() => void analyze()} /> : <div className={styles.loading}>{scenarioLoading ? 'Загружаем отчёт…' : scenarioError}</div>)}

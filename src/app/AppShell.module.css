@@ -17,4 +17,8 @@
 @media(prefers-reduced-motion:reduce){.mode button,.planToggle{transition:none}.mode button:hover,.planToggle:hover{transform:none}}
 @media(max-width:700px){.cityVisible>section{min-height:0;height:calc(100svh - 58px)}.planner{width:100%}}
 @media(max-width:700px){.compare{top:160px;left:10px;right:auto;bottom:auto}}
-@media(max-width:700px) and (max-height:500px){.compare{top:10px;left:10px}}
+@media(max-width:700px) and (max-height:500px){.compare{top:60px;left:10px}}
+.cityVisible{height:calc(100vh - 68px);min-height:570px}
+.mapStage{position:absolute;inset:0;min-width:0}
+.mapStage>section{height:100%;min-height:0}
+@media(max-width:700px){.cityVisible{height:calc(100svh - 58px);min-height:0}}

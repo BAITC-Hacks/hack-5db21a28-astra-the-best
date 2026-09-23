@@ -15,7 +15,7 @@
   .title { top:10px; left:10px; width:calc(100% - 70px); padding:12px 14px; }
   .title p { display:none; }
   .title h1 { margin:4px 0 0; font-size:1.22rem; }
-  .controls { top:90px; bottom:auto; right:10px; flex-direction:column; }
+  .controls { top:90px; bottom:auto; left:10px; right:auto; flex-direction:column; }
   .controls button { padding:8px 10px; font-size:.78rem; }
   .legend { left:10px; bottom:10px; width:min(225px,55%); max-height:min(50%,330px); padding:12px; }
   .legend button { min-height:29px; font-size:.82rem; }
@@ -26,6 +26,6 @@
 @media(max-width:380px){.legend{width:56%;}.zoneCard{width:calc(44% - 14px)}}
 @media(max-width:700px) and (max-height:500px){
   .title{display:none}
-  .controls{top:10px;right:10px}
-  .legend,.zoneCard{max-height:calc(100% - 65px)}
+  .controls{top:10px;left:10px;right:auto}
+  .legend,.zoneCard{max-height:45%;overflow:auto}
 }
