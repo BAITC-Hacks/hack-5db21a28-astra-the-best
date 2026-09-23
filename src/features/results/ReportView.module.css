@@ -1,1 +1,26 @@
 .report{max-width:1280px;margin:0 auto;padding:28px 28px 80px;color:#1c3340;font-family:Arial,sans-serif}.hero{display:flex;justify-content:space-between;gap:24px;align-items:center;padding:32px;border-radius:24px;background:linear-gradient(125deg,#e1f2ec,#eef8fb)}.hero h1{font-size:clamp(2rem,4vw,3.5rem);margin:8px 0}.hero p{max-width:560px}.eyebrow{text-transform:uppercase;letter-spacing:.15em;font-size:.75rem;font-weight:700}.score{min-width:240px;padding:24px;border-radius:20px;background:#164658;color:#fff;display:grid;gap:8px}.score span,.score small{font-size:.85rem}.score strong{font-size:clamp(2.5rem,5vw,4rem);line-height:1}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:22px 0}.metric,.card,.district,.section{background:#fff;border:1px solid #dce8e9;border-radius:18px}.metric{padding:18px;display:grid;gap:6px}.metric span,.metric small,.card small{color:#617781}.metric strong{font-size:1.5rem}.section{padding:24px;margin:22px 0}.section h2{margin-top:0}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:12px}.card{padding:18px}.card h3{margin:8px 0}.card p{margin:0 0 12px}.ordinal{font-size:.8rem;color:#07856d;font-weight:700}.districts{display:grid;gap:14px}.district{padding:18px}.districtHeader{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}.districtHeader h3{margin:0 0 12px}.districtHeader small{color:#07856d}.tableWrap{overflow-x:auto}.tableWrap table{width:100%;border-collapse:collapse;min-width:620px;text-align:left}.tableWrap th,.tableWrap td{padding:10px 12px;border-bottom:1px solid #e5eeee}.tableWrap td:not(:first-child){font-variant-numeric:tabular-nums}.tableWrap th small{font-weight:400;color:#69808a}.warning{color:#a34725;font-size:.85em;font-weight:700}.synergies{padding:12px 16px;background:#eaf6ef;border-radius:12px;margin-top:16px}.analysis{display:grid;gap:8px}.analysis ul{padding-left:22px}.analysis li{margin-bottom:12px}.factRefs{display:block;color:#617781;margin-top:4px}.empty{max-width:600px;margin:80px auto;text-align:center;padding:40px;border:1px dashed #aac1c6;border-radius:24px}.report button{cursor:pointer} .section button{border:0;border-radius:10px;background:#116d66;color:#fff;padding:12px 18px;font:inherit;font-weight:700}@media(max-width:700px){.report{padding:12px 12px 56px}.hero{display:block;padding:22px}.score{margin-top:20px;min-width:0}.section{padding:16px}.district{padding:12px}}
+
+.report { color:#193d43; font-family:inherit; line-height:1.5; }
+.hero { position:relative; overflow:hidden; isolation:isolate; background:linear-gradient(115deg,#def2ed 0%,#edf9f5 48%,#e6f0f8 100%); border:1px solid #c9e3df; box-shadow:0 18px 42px rgba(25,75,77,.09); border-radius:30px; }
+.hero::before,.hero::after { content:""; position:absolute; z-index:-1; border-radius:50%; pointer-events:none; }
+.hero::before { width:330px; height:330px; right:15%; top:-210px; background:radial-gradient(circle,#fff9,#fff0 70%); }
+.hero::after { width:230px; height:230px; left:32%; bottom:-180px; background:radial-gradient(circle,#87d8c455,#87d8c400 70%); }
+.hero h1 { line-height:1.08; letter-spacing:-.045em; }
+.eyebrow { color:#286c69; }
+.score { background:linear-gradient(145deg,#174c5b,#126b6a); border:1px solid #ffffff55; border-radius:25px; box-shadow:0 12px 30px rgba(23,76,91,.22); }
+.score strong,.metric strong { font-variant-numeric:tabular-nums; }
+.metric,.card,.district,.section { background:#fff; border-color:#d4e6e3; border-radius:22px; box-shadow:0 5px 20px rgba(34,84,82,.045); }
+.metric { min-width:0; }
+.metric strong { overflow-wrap:anywhere; line-height:1.18; }
+.section h2 { letter-spacing:-.025em; }
+.card { border-radius:18px; }
+.district { padding:20px; }
+.districtHeader strong { font-variant-numeric:tabular-nums; }
+.tableWrap { border:1px solid #e0ece9; border-radius:14px; }
+.tableWrap th,.tableWrap td { line-height:1.45; padding:12px 14px; }
+.tableWrap thead th { background:#edf7f4; color:#275653; font-size:.82rem; }
+.tableWrap tbody tr:nth-child(even) { background:#f8fbfa; }
+.tableWrap tbody tr:hover { background:#edf8f4; }
+.factRefs { line-height:1.5; }
+@media(max-width:700px){.hero{padding:23px;border-radius:23px}.score{border-radius:20px}.district{padding:13px}.tableWrap th,.tableWrap td{padding:10px 11px}}
+

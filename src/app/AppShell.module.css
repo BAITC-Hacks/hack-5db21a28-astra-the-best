@@ -1,1 +1,20 @@
 .app{min-height:100vh;background:#f2f7f4;color:#173b39}.nav{height:68px;position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 24px;background:#f9fcf8;border-bottom:1px solid #d9e8e3;box-shadow:0 2px 16px rgba(23,63,58,.08)}.brand{font-size:1.18rem;font-weight:800;white-space:nowrap}.brand strong{color:#168175}.mode{display:flex;padding:4px;background:#e6f1ec;border-radius:12px}.mode button{border:0;background:transparent;border-radius:9px;padding:9px 20px;color:#416b66;font-weight:700;cursor:pointer}.mode button[aria-pressed=true]{background:#fff;color:#125e58;box-shadow:0 1px 8px rgba(11,70,61,.12)}.planToggle{border:0;border-radius:10px;background:#146e67;color:#fff;padding:11px 16px;font-weight:700;cursor:pointer}.cityVisible{position:relative;display:block}.cityVisible>section{height:calc(100vh - 68px);min-height:570px}.cityHidden{display:none}.planner{position:absolute;z-index:8;top:0;right:0;bottom:0;width:min(470px,100%);overflow:auto;background:#f8fbf7;box-shadow:-10px 0 36px rgba(18,64,58,.2)}.compare{position:absolute;z-index:5;right:24px;bottom:24px;display:flex;gap:5px;padding:5px;border-radius:11px;background:#f8fbf7;box-shadow:0 5px 20px rgba(0,0,0,.15)}.compare button{border:0;background:transparent;padding:8px 14px;border-radius:8px;cursor:pointer}.compare button[aria-pressed=true]{background:#146e67;color:#fff}.error{position:fixed;z-index:40;top:80px;left:50%;transform:translateX(-50%);max-width:min(600px,90vw);background:#fff3e8;border:1px solid #db9467;border-radius:11px;padding:12px 16px;box-shadow:0 8px 24px rgba(0,0,0,.16)}.error button{margin-left:12px;border:0;background:transparent;text-decoration:underline;cursor:pointer}.loading{min-height:300px;display:grid;place-content:center;text-align:center;gap:12px}.loading button{padding:8px 14px;border:0;border-radius:8px;background:#146e67;color:#fff;cursor:pointer}@media(max-width:700px){.nav{padding:0 10px;gap:5px;height:58px}.brand{font-size:.85rem}.mode button{padding:8px 9px;font-size:.8rem}.planToggle{padding:9px;font-size:.8rem}.cityVisible>section{height:calc(100svh - 58px);min-height:500px}.planner{width:100%}.compare{bottom:10px;right:10px}}
+
+/* Liquid surfaces frame the map; controls and copy stay on opaque fills. */
+.app{background:radial-gradient(circle at 5% 5%,#dcefeb 0,transparent 35%),radial-gradient(circle at 95% 15%,#e2eef8 0,transparent 32%),#f1f7f5}
+.nav{background:rgba(248,252,250,.96);border-bottom-color:rgba(134,186,178,.48);box-shadow:0 8px 30px rgba(22,71,73,.11)}
+.brand{letter-spacing:-.035em}
+.mode{background:#deeeeb;border:1px solid #bddad4;border-radius:999px}
+.mode button{border-radius:999px;transition:background .2s ease,box-shadow .2s ease,transform .2s ease}
+.mode button:hover{transform:translateY(-1px)}
+.mode button[aria-pressed=true]{box-shadow:0 3px 12px rgba(11,70,61,.16)}
+.planToggle{border-radius:999px;background:linear-gradient(135deg,#126c68,#188c83);box-shadow:0 7px 18px rgba(18,108,104,.23);transition:transform .2s ease,box-shadow .2s ease}
+.planToggle:hover{transform:translateY(-2px);box-shadow:0 10px 23px rgba(18,108,104,.28)}
+.planner{background:#f8fcfa;border-left:1px solid #bddbd5;box-shadow:-18px 0 50px rgba(11,61,65,.2)}
+.compare{background:#f9fdfb;border:1px solid rgba(151,192,188,.8);border-radius:999px;box-shadow:0 10px 30px rgba(10,51,55,.22)}
+.compare button{border-radius:999px;font-weight:700;color:#24504f}
+.compare button[aria-pressed=true]{background:linear-gradient(135deg,#116d68,#1a9288);color:#fff}
+@media(prefers-reduced-motion:reduce){.mode button,.planToggle{transition:none}.mode button:hover,.planToggle:hover{transform:none}}
+@media(max-width:700px){.cityVisible>section{min-height:0;height:calc(100svh - 58px)}.planner{width:100%}}
+@media(max-width:700px){.compare{top:160px;left:10px;right:auto;bottom:auto}}
+@media(max-width:700px) and (max-height:500px){.compare{top:10px;left:10px}}

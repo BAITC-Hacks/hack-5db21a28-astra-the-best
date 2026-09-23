@@ -58,3 +58,23 @@
 .footer button:hover:not(:disabled) { background:#115a5e; }
 .state { background:#f7fbfa; border-radius:16px; padding:24px; }
 @media (max-width:650px) { .planner { padding:14px; } .header { flex-wrap:wrap; } .budget { text-align:left; width:100%; } .catalog,.controls,.baselineGrid { grid-template-columns:1fr; } .catalog { max-height:none; overflow:visible; } .slot,.footer { flex-wrap:wrap; } .footer button { width:100%; } }
+
+/* This editor is a narrow side panel even on desktop: keep data in one readable column. */
+.planner { background:#f9fcfb; border-color:#bedbd5; border-radius:0; box-shadow:none; padding:24px; line-height:1.45; }
+.header h2 { letter-spacing:-.035em; line-height:1.13; }
+.budget { background:#e3f3ee; border:1px solid #c5e4da; border-radius:16px; }
+.catalog,.controls,.baselineGrid { grid-template-columns:minmax(0,1fr); }
+.catalog { max-height:none; overflow:visible; gap:10px; }
+.card,.slot,.baseline article { border-color:#d4e5e1; border-radius:16px; box-shadow:0 3px 12px rgba(27,81,79,.045); }
+.card { padding:16px; }
+.card h4 { font-size:1rem; line-height:1.32; }
+.baseline { background:#fff; border-radius:16px; }
+.baselineGrid { gap:12px; }
+.baseline article { padding:15px; }
+.baseline h4 { font-size:1rem; }
+.baseline p { font-size:.82rem; line-height:1.4; }
+.baseline dl div { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:start; gap:12px; padding:7px 0; font-size:.8rem; line-height:1.35; }
+.baseline dt { min-width:0; overflow-wrap:normal; }
+.baseline dd { max-width:90px; font-weight:700; color:#1a4548; }
+.footer { background:#f9fcfb; padding:14px 0 2px; }
+@media(max-width:650px){.planner{padding:16px}.catalog{max-height:none}}
