@@ -1,10 +1,10 @@
 {
   "task": "P06",
-  "status": "review",
+  "status": "done",
   "agent": "CodexDesktop",
   "session": "codex-desktop-20260923-01a0cd54",
   "claimed_at": "2026-09-23T14:23:03.7599527+05:00",
-  "updated_at": "2026-09-23T14:27:00.0818486+05:00",
+  "updated_at": "2026-09-23T14:45:58.2533102+05:00",
   "signature": "CodexDesktop / codex-desktop-20260923-01a0cd54 accepts task P06",
   "artifacts": [
     "src/server/ai/facts.ts",
@@ -17,7 +17,8 @@
     "npm test: 56 passed",
     "npm run typecheck: passed",
     "npm run build: passed",
-    "Real provider call pending local AI_API_KEY"
+    "Real provider call pending local AI_API_KEY",
+    "Live OpenAI /api/analyze: HTTP 200, gpt-4.1-mini, 29 facts, validated response"
   ],
-  "notes": "Provider integration, fact validation, timeout, rate limit and API errors implemented. Real OpenAI call required before done; user plans to add AI_API_KEY to ignored .env.local. Default AI_MODEL gpt-4.1-mini."
+  "notes": "Real OpenAI provider call succeeded once on the 95-unit control scenario: HTTP 200, gpt-4.1-mini, 29 facts and validated analysis. Key in ignored .env.local; .env.example sanitized."
 }
