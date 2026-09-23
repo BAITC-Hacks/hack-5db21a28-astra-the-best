@@ -77,3 +77,31 @@
 .baseline dd { max-width:90px; font-weight:700; color:#1a4548; }
 .footer { background:#f9fcfb; padding:14px 0 2px; }
 @media(max-width:650px){.planner{padding:16px}.catalog{max-height:none}}
+
+/* P17: neutral chrome; indicator polarity retains its meaningful colors. */
+.planner,.state{color:var(--ink);background:var(--surface-soft);border-color:var(--border)}
+.header p,.scope,.baseline p,.baseline dt,.slot small,.footer p{color:var(--ink-muted)}
+.kicker,.cardTop{color:#495360}
+.cardTop strong,.baseline dd{color:var(--ink)}
+.budget{background:#e8ebef;border-color:#c9cfd6}
+.budgetBar{background:#d3d8de}
+.budgetBar span{background:linear-gradient(90deg,#69717d,#222832)}
+.directions span{background:#e4e8ec;color:#333b45}
+.card,.slot,.emptySlot,.baseline,.baseline article{border-color:var(--border);background:var(--surface)}
+.focused{border-color:#6e7785;box-shadow:0 0 0 2px #87909e4d}
+.replacing{border-color:#747e8a;background:#edf0f4}
+.footer{background:var(--surface-soft);border-color:var(--border)}
+.planner button:not([role="combobox"]),.state button{border-color:#b3bac3;background:#f9fafb;color:var(--ink);border-radius:999px}
+.planner button:hover:not(:disabled):not([role="combobox"]),.state button:hover{background:#e9edf1}
+.card button:not([role="combobox"]),.footer button:not([role="combobox"]){
+  border:2px solid transparent;
+  color:#fff;
+  background:var(--metal-face) padding-box,var(--metal-border) border-box;
+  box-shadow:inset 0 1px 1px #ffffff65,inset 0 -2px 3px #0005,0 6px 15px #151a2233;
+  text-shadow:0 1px 1px #0008;
+  transition:transform .18s ease,filter .18s ease,box-shadow .18s ease;
+}
+.card button:hover:not(:disabled):not([role="combobox"]),.footer button:hover:not(:disabled):not([role="combobox"]){background:var(--metal-face) padding-box,var(--metal-border) border-box;filter:brightness(1.18);transform:translateY(-2px)}
+.card button:active:not(:disabled),.footer button:active:not(:disabled){transform:translateY(1px)}
+.card button:disabled,.footer button:disabled{background:#d7dce2;color:#59616c;border:1px solid #bac1ca;box-shadow:none;text-shadow:none;opacity:1}
+@media(prefers-reduced-motion:reduce){.card button,.footer button{transition:none}.card button:hover:not(:disabled),.footer button:hover:not(:disabled){transform:none}}

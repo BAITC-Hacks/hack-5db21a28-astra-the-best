@@ -1,0 +1,26 @@
+{
+  "task": "P17",
+  "status": "done",
+  "agent": "CodexDesktop",
+  "session": "codex-desktop-20260923-01a0cd54-p17",
+  "claimed_at": "2026-09-23T15:18:30.7031033+05:00",
+  "updated_at": "2026-09-23T15:24:08.7876723+05:00",
+  "signature": "CodexDesktop / codex-desktop-20260923-01a0cd54-p17 accepts task P17",
+  "artifacts": [
+    "src/app/AppShell.tsx",
+    "src/app/AppShell.module.css",
+    "src/app/globals.css",
+    "src/features/results/ReportView.module.css",
+    "src/features/planner/Planner.module.css",
+    "src/features/city-map/CityMap.module.css"
+  ],
+  "checks": [
+    "npm run lint: passed",
+    "npm run typecheck: passed",
+    "npm test: 61 passed",
+    "npm run build: passed",
+    "npm run test:e2e -- --reporter=line --workers=2: 21 passed",
+    "Chrome screenshots 390x844 city/planner/report and 1280x800 city visually inspected; no nav title, readable neutral surfaces and metallic buttons"
+  ],
+  "notes": "Neutral graphite/silver theme with CSS liquid-metal edges avoids extra WebGL load. P16 owner agreed to color-only edits in CityMap/Planner CSS after e4cd6bf. No behavior or simulation changes."
+}

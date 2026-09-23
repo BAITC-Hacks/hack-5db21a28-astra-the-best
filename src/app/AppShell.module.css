@@ -22,3 +22,26 @@
 .mapStage{position:absolute;inset:0;min-width:0}
 .mapStage>section{height:100%;min-height:0}
 @media(max-width:700px){.cityVisible{height:calc(100svh - 58px);min-height:0}}
+
+/* Liquid metal: glossy rim and a quiet dark face keep labels legible. */
+.app{background:radial-gradient(circle at 12% 0%,#f9fafb 0,transparent 37%),radial-gradient(circle at 100% 100%,#d7dce3 0,transparent 38%),var(--canvas);color:var(--ink)}
+.nav{background:rgba(249,250,252,.97);border-bottom:1px solid var(--border);box-shadow:0 8px 28px rgba(22,28,36,.1)}
+.mode{background:#e2e5ea;border:1px solid #bec4cc}
+.mode button{color:#3c444e}
+.mode button[aria-pressed=true]{color:#fff;background:var(--metal-face);box-shadow:inset 0 1px 1px #ffffff50,0 3px 9px #151a2230}
+.planToggle,.compare button[aria-pressed=true],.loading button{
+  color:#fff;
+  background:var(--metal-face) padding-box,var(--metal-border) border-box;
+  border:2px solid transparent;
+  border-radius:999px;
+  box-shadow:inset 0 1px 1px #ffffff65,inset 0 -2px 3px #0005,0 7px 17px #151a223b;
+  text-shadow:0 1px 1px #0008;
+  transition:transform .18s ease,box-shadow .18s ease,filter .18s ease;
+}
+.planToggle:hover,.loading button:hover{transform:translateY(-2px);filter:brightness(1.18);box-shadow:inset 0 1px 1px #fff8,0 10px 22px #151a2245}
+.planToggle:active,.loading button:active{transform:translateY(1px);box-shadow:inset 0 2px 5px #0009,0 2px 5px #151a2233}
+.planner{background:var(--surface-soft);border-left:1px solid var(--border);box-shadow:-18px 0 48px #151a2233}
+.compare{background:rgba(250,251,252,.98);border:1px solid var(--border);box-shadow:0 9px 28px #151a2233}
+.compare button{color:#3c444e}
+.error{background:#fff7ee;border-color:#d5aa85;color:#4c3020}
+@media(prefers-reduced-motion:reduce){.planToggle,.loading button{transition:none}.planToggle:hover,.loading button:hover{transform:none}}
